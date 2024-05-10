@@ -5,3 +5,10 @@ O projeto Mini Asaas é uma aplicação para controle de recebíveis de uma empr
 * Ferramentas utilizadas e versões:
   - Java 11.0.17
   - Grails 5.0.0
+ 
+
+* Como iniciar o projeto:
+  - sdk use java 11.0.17-amzn
+  - sdk use grails 5.0.0
+  - grails create app Asaas
+  - grails run-app
