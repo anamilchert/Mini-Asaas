@@ -6,9 +6,6 @@ abstract class BaseEntity {
    Boolean deleted = false
 
   static constraints = {
-        dateCreated nullable: false
-        lastUpdated nullable: false
-        deleted nullable: false
     }
 
     static mapping = {
