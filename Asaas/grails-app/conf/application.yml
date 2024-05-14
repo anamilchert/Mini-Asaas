@@ -102,8 +102,8 @@ dataSource:
     pooled: true
     jmxExport: true
     driverClassName: com.mysql.cj.jdbc.Driver
-    username: USERNAME  
-    password: PASSWORD
+    username: ${GRAILS_DB_USERNAME}
+    password: ${GRAILS_DB_PASSWORD}
     dialect: org.hibernate.dialect.MySQL8Dialect 
     properties:
         jmxEnabled: true
