@@ -12,6 +12,8 @@ class Address extends BaseEntity {
     String complement
     String CEP
 
+    static belongsTo = [customer: Customer]
+
     static constraints = {
         street blank: false
         number blank: false, min: 1
