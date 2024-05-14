@@ -6,12 +6,6 @@ enum PaymentType {
   PAYMENTSLIP,
   CARD,
 
-  // final String value
-
-  // PaymentType(String value){
-  //   this.value = value
-  // }
-
   public static PaymentType convert(String paymentType) {
        try {
            if (paymentType instanceof String) paymentType = paymentType.toUpperCase()

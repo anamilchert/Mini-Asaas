@@ -6,13 +6,7 @@ enum PaymentStatus {
   APPROVED,
   CANCELED,
   EXPIRED
-
-  // final String value
-
-  // PaymentStatus(String value){
-  //   this.value = value
-  // }
-
+  
   public static PaymentStatus convert(String paymentStatus) {
        try {
            if (paymentStatus instanceof String) paymentStatus = paymentStatus.toUpperCase()
