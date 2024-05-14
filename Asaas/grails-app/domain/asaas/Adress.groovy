@@ -5,17 +5,19 @@ import asaas.utils.BaseEntity
 class Address extends BaseEntity {
 
     String street
+    String number
+    String neighborhood
     String city
     String state
-    String number
     String complement
     String CEP
 
     static constraints = {
         street blank: false
+        number blank: false, min: 1
+        neighborhood blank: false
         city blank: false
         state blank: false
-        number blank: false, min: 1
         CEP blank: false, size: 8
     }
 
