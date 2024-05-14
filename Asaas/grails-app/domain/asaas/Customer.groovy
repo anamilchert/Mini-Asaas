@@ -12,7 +12,7 @@
         static constraints = {
             name blank: false
             email blank: false, unique: true 
-            cpfCnpj size: 11..14, blank: false
+            cpfCnpj size: 11..14, unique: true, blank: false
             personType blank: false
         }
 
