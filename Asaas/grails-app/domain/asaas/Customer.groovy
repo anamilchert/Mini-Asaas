@@ -11,7 +11,7 @@ class Customer extends BaseEntity {
 
     static constraints = {
         name blank: false
-        email email: true
+        email blank: false, unique: true 
         cpfCnpj size: 11..14, blank: false
         personType blank: false
     }
