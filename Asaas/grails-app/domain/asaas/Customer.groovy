@@ -1,13 +1,19 @@
     package asaas
 
     import asaas.utils.BaseEntity
+    import asaas.Payer
 
     class Customer extends BaseEntity {
 
         String name
+
         String email
+
         String cpfCnpj
+        
         PersonType personType
+
+        static hasMany = [payers: Payer]
 
         static constraints = {
             name blank: false
