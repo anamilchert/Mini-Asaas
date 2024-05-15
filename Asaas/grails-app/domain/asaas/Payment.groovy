@@ -6,9 +6,12 @@ import javax.persistence.Enumerated
 import asaas.utils.BaseEntity
 import asaas.PaymentStatus
 import asaas.PaymentType
+import asaas.Customer
+import asaas.Payer
 
 class Payment extends BaseEntity {
   Integer value
+
   Date maturityDate
 
   @Enumerated(EnumType.STRING)
@@ -16,6 +19,10 @@ class Payment extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
   PaymentType method
+
+  Customer customer
+
+  Payer payer
 
   static constraints = {
     value  min: 0
