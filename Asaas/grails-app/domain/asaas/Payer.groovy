@@ -9,6 +9,7 @@ class Payer extends BaseEntity {
   String cpfCnpj
   PersonType personType
 
+  Address address
 
   static constraints = {
     name  blank:false
