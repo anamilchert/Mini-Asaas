@@ -1,6 +1,8 @@
     package asaas
 
     import asaas.utils.BaseEntity
+    import asaas.Payer
+    import asaas.Address
 
     class Customer extends BaseEntity {
 
@@ -11,8 +13,8 @@
         String cpfCnpj
         
         PersonType personType
-
-        Address address
+      
+        Address address   
 
         static constraints = {
             name blank: false

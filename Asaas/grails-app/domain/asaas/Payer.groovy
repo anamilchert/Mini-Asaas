@@ -1,6 +1,7 @@
 package asaas 
 import asaas.utils.BaseEntity
 import asaas.PersonType
+import asaas.Customer
 
 class Payer extends BaseEntity {
 
@@ -15,6 +16,8 @@ class Payer extends BaseEntity {
   PersonType personType
 
   Address address
+
+  Customer customer
 
   static constraints = {
     name  blank:false
