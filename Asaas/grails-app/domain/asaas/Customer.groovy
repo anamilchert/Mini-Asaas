@@ -14,9 +14,7 @@
         
         PersonType personType
       
-        Address address
-      
-        static hasMany = [payers: Payer]
+        Address address   
 
         static constraints = {
             name blank: false
