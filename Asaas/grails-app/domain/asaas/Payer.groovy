@@ -3,12 +3,18 @@ import asaas.utils.BaseEntity
 import asaas.PersonType
 
 class Payer extends BaseEntity {
+
   String name
+
   String email
+
   String phone
+
   String cpfCnpj
+  
   PersonType personType
 
+  Address address
 
   static constraints = {
     name  blank:false
