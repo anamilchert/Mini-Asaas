@@ -5,8 +5,11 @@
     class Customer extends BaseEntity {
 
         String name
+
         String email
+
         String cpfCnpj
+        
         PersonType personType
 
         Address address

@@ -5,11 +5,17 @@ import asaas.utils.BaseEntity
 class Address extends BaseEntity {
 
     String street
+
     String number
+
     String neighborhood
+
     String city
+
     String state
+
     String complement
+    
     String CEP
 
     Customer customer
