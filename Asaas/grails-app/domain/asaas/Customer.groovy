@@ -1,7 +1,6 @@
     package asaas
 
     import asaas.utils.BaseEntity
-    import asaas.Payer
     import asaas.Address
 
     class Customer extends BaseEntity {

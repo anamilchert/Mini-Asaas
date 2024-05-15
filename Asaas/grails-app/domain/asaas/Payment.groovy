@@ -1,8 +1,5 @@
 package asaas
 
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
-
 import asaas.utils.BaseEntity
 import asaas.PaymentStatus
 import asaas.PaymentType
@@ -14,10 +11,8 @@ class Payment extends BaseEntity {
 
   Date maturityDate
 
-  @Enumerated(EnumType.STRING)
   PaymentStatus status
 
-  @Enumerated(EnumType.STRING)
   PaymentType method
 
   Customer customer

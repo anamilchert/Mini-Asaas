@@ -1,4 +1,5 @@
 package asaas 
+
 import asaas.utils.BaseEntity
 import asaas.PersonType
 import asaas.Customer
