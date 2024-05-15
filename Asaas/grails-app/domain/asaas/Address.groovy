@@ -24,7 +24,7 @@ class Address extends BaseEntity {
         neighborhood blank: false
         city blank: false
         state blank: false
-        CEP blank: false, size: 8:8
+        CEP blank: false, size: 8..8
     }
 
     static namedQueries = {
