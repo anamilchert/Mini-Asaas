@@ -15,11 +15,8 @@ class Address extends BaseEntity {
     String state
 
     String complement
-    
-    String CEP
 
-    Customer customer
-    Payer payer
+    String CEP
 
     static constraints = {
         street blank: false
