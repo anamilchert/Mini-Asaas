@@ -7,7 +7,6 @@
 <body>
     <h1>Criar Novo Cliente</h1>
 
-    <!-- Formulário para inserir dados do cliente -->
     <g:form action="save">
         <label for="name">Nome:</label>
         <input type="text" name="name" id="name" required/><br/>
