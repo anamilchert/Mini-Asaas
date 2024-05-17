@@ -6,12 +6,12 @@ import grails.validation.ValidationException
 
 class CustomerService {
 
-    Customer save(Map params) {
+    public Customer save(Map params) {
         Customer customer = create(params)
         return customer
     }
 
-    Customer create(Map params) {
+    public Customer create(Map params) {
 
         Customer customerValues = validateCustomerParams(params)
 
@@ -43,7 +43,7 @@ class CustomerService {
         return customer
     }
 
-    Customer validateCustomerParams(Map params) {
+    public Customer validateCustomerParams(Map params) {
    
         Customer customer = new Customer()
 
