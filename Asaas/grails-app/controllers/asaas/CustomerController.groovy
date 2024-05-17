@@ -1,5 +1,7 @@
 package asaas
 
+import asaas.Customer
+import asaas.CustomerService
 import grails.validation.ValidationException
 
 class CustomerController {
