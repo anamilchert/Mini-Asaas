@@ -43,7 +43,7 @@ class CustomerService {
         return customer
     }
 
-    public Customer validateCustomerParams(Map params) {
+    private Customer validateCustomerParams(Map params) {
    
         Customer customer = new Customer()
 
