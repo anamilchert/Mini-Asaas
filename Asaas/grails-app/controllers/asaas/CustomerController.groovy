@@ -24,7 +24,7 @@ class CustomerController {
     }
 
     def show(Long id) {
-        Customer customer = Customer.get(id)
+        Customer customer = Customer.read(id)
         if (customer) {
             render(view: 'show', model: [customer: customer])
         } else {
