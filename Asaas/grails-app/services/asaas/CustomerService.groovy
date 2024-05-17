@@ -38,14 +38,9 @@ class CustomerService {
 
         customer.address = address
 
-        saveCustomer(customer)
+        customer.save(flush: true, failOnError: true)
 
         return customer
-    }
-
-    def saveCustomer(Customer customer) {
-
-        return customer.save(flush: true, failOnError: true)
     }
 
     def validateCustomerParams(Map params) {
