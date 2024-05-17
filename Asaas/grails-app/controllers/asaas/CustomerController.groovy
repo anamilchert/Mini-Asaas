@@ -6,6 +6,10 @@ class CustomerController {
 
     def customerService
 
+    def index() {
+        
+    }
+
     def save() {
         try {
             Customer customer = customerService.save(params)
@@ -13,14 +17,14 @@ class CustomerController {
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-            render(view: 'createCustomer', params: params)
+            render(view: 'show', params: params)
         }
     }
 
     def show(Long id) {
         Customer customer = Customer.get(id)
         if (customer) {
-            render(view: 'showCustomer', model: [customer: customer])
+            render(view: 'show', model: [customer: customer])
         } else {
             flash.error = "Conta não encontrada"
             redirect(action: 'index')
