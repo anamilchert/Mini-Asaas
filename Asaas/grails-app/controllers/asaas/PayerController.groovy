@@ -22,17 +22,19 @@ class PayerController {
     try{
       Payer payer = payerService.save(params)
       redirect(action:"show", id:payer.id)
+
     }catch (Exception e){
-      println e
       return "Error when creating payer"
     }
   }
 
   def show(Long id){
-    Payer payer = Payer.get(id)
+    Payer payer = Payer.read(id)
+
     if(payer){
       return [payer: payer]
     }
-    render "Página não encontrada"
+
+    render "Pagador não encontrado"
   }
 }
