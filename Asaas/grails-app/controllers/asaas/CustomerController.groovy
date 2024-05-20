@@ -24,12 +24,13 @@ class CustomerController {
     }
 
     def show(Long id) {
-        Customer customer = Customer.read(id)
-        if (customer) {
+            Customer customer = Customer.read(id)
+                if (!customer) {
+                flash.error = "Conta não encontrada"
+                redirect(action: 'index')
+
+                return 
+            }
             render(view: 'show', model: [customer: customer])
-        } else {
-            flash.error = "Conta não encontrada"
-            redirect(action: 'index')
-        }
     }
 }
