@@ -2,9 +2,10 @@ package asaas
 import grails.util.Holders
 
 enum PaymentType {
-  PIX,
-  PAYMENTSLIP,
-  CARD,
+    BOLETO,
+    CREDIT_CARD,
+    DEBIT_CARD,
+    PIX
 
   public static PaymentType convert(String paymentType) {
        try {
