@@ -5,7 +5,7 @@ import asaas.Customer
 import asaas.PayerService
 
 class PayerController {
-
+  
   def payerService
   
   def index(){
@@ -30,7 +30,7 @@ class PayerController {
   }
 
   def show(Long id){
-    Payer payer = Payer.read(id)
+    Payer payer = payerService.getPayer(id)
 
     if(payer){
       return [payer: payer]
@@ -38,4 +38,11 @@ class PayerController {
 
     render "Pagador não encontrado"
   }
+
+  def list(){
+    Long customerId = params.customerId as Long
+    List<Payer> payerList = payerService.list(customerId)
+    return [payerList: payerList]
+  }
+
 }

@@ -43,26 +43,35 @@ class PayerService {
     return payer
   }
 
-   private Map parseSaveParams(Map params) {
-      Map parsedParams = [:]
+  public Payer getPayer(Long payerId){
+    Payer payer = Payer.read(payerId)
+    return payer
+  }
 
-      parsedParams.name = params.name
-      parsedParams.email = params.email
-      parsedParams.cpfCnpj = params.cpfCnpj
-      parsedParams.phone = params.phone
-      parsedParams.personType = params.personType instanceof String ? PersonType.convert(params.personType) : params.personType
-      parsedParams.street = params.street
-      parsedParams.number = params.number ? (params.number as Integer): null
-      parsedParams.neighborhood = params.neighborhood 
-      parsedParams.city = params.city
-      parsedParams.state = params.state
-      parsedParams.complement = params.complement
-      parsedParams.CEP = params.CEP
-      parsedParams.customerId = params.customerId ? (params.customerId as Long) : null
+  public List<Payer> list(Long customerId){
+    List<Payer> payerList = Payer.query(customerId: customerId).list()
+    return payerList
+  }
 
-      return parsedParams
-    }
+  private Map parseSaveParams(Map params) {
+    Map parsedParams = [:]
 
+    parsedParams.name = params.name
+    parsedParams.email = params.email
+    parsedParams.cpfCnpj = params.cpfCnpj
+    parsedParams.phone = params.phone
+    parsedParams.personType = params.personType instanceof String ? PersonType.convert(params.personType) : params.personType
+    parsedParams.street = params.street
+    parsedParams.number = params.number ? (params.number as Integer): null
+    parsedParams.neighborhood = params.neighborhood 
+    parsedParams.city = params.city
+    parsedParams.state = params.state
+    parsedParams.complement = params.complement
+    parsedParams.CEP = params.CEP
+    parsedParams.customerId = params.customerId ? (params.customerId as Long) : null
+
+    return parsedParams
+  }
 
   private Payer validationSave(Map params){
     Payer payer = new Payer()
