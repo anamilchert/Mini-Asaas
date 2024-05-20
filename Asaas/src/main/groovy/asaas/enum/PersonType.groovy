@@ -2,8 +2,8 @@ package asaas
 import grails.util.Holders
 
 enum PersonType {
-   NATURAL,
-   LEGAL
+   LEGAL,
+   NATURAL
 
    public static PersonType convert(String personType) {
        try {

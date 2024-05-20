@@ -3,9 +3,9 @@ import grails.util.Holders
 
 enum PaymentStatus {
   WAITING,
-  APPROVED,
   CANCELED,
-  EXPIRED
+  EXPIRED,
+  APPROVED
   
   public static PaymentStatus convert(String paymentStatus) {
        try {
