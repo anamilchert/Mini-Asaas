@@ -13,6 +13,7 @@ class PayerController {
     try {
       List<Customer> customers = Customer.list()
       [customers: customers]
+      
     }catch (Exception e){
       println e
     }
