@@ -2,52 +2,69 @@ package asaas
 
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
-import asaas.Customer
 import asaas.Address
+import asaas.Customer
 import asaas.Payer
 import asaas.PersonType
 
 @Transactional
 class PayerService {
-  def save(Map params){
 
-    Payer payerValidation = validation(params)
+  public Payer save(Map params){
+    Map parsedParams = parseSaveParams(params)
+    Payer validatedPayer = validationSave(params)
 
-    if(payerValidation.hasErrors()){
-      throw new ValidationException("Erro ao criar um pagador", payerValidation.errors)
+    if(validatedPayer.hasErrors()){
+      throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
     }
     
-    Address address = new Address(
-      street: params.street,
-      number: params.number,
-      neighborhood: params.neighborhood,
-      city: params.city,
-      state: params.state,
-      complement: params.complement,
-      CEP: params.CEP
-    )
+    Address address = new Address()
+    address.street = parsedParams.street
+    address.number = parsedParams.number
+    address.neighborhood = parsedParams.neighborhood
+    address.city = parsedParams.city
+    address.state = parsedParams.state
+    address.complement = parsedParams.complement
+    address.CEP = parsedParams.CEP
 
-    Customer customer = Customer.load(params.customerId)
+    Customer customer = Customer.load(parsedParams.customerId)
 
-    Payer payer = new Payer(
-      name: params.name,
-      email: params.email,
-      cpfCnpj: params.cpfCnpj,
-      phone: params.phone,
-      personType: PersonType.convert(params.personType)
-    )
-
+    Payer payer = new Payer()
+    payer.name = parsedParams.name
+    payer.email = parsedParams.email
+    payer.cpfCnpj = parsedParams.cpfCnpj
+    payer.phone = parsedParams.phone
+    payer.personType = parsedParams.personType
     payer.address = address
     payer.customer = customer
     
-    payer.save(flush: true, failOnError: true)
+    payer.save(failOnError: true)
 
     return payer
   }
 
+   private Map parseSaveParams(Map params) {
+      Map parsedParams = [:]
+
+      parsedParams.name = params.name
+      parsedParams.email = params.email
+      parsedParams.cpfCnpj = params.cpfCnpj
+      parsedParams.phone = params.phone
+      parsedParams.personType = params.personType instanceof String ? PersonType.convert(params.personType) : params.personType
+      parsedParams.street = params.street
+      parsedParams.number = params.number ? (params.number as Integer): null
+      parsedParams.neighborhood = params.neighborhood 
+      parsedParams.city = params.city
+      parsedParams.state = params.state
+      parsedParams.complement = params.complement
+      parsedParams.CEP = params.CEP
+      parsedParams.customerId = params.customerId ? (params.customerId as Long) : null
+
+      return parsedParams
+    }
 
 
-  private Payer validation(Map params){
+  private Payer validationSave(Map params){
     Payer payer = new Payer()
     
     if(!params.name){
