@@ -19,8 +19,8 @@
 
         <label for="personType">Tipo de Pessoa:</label>
         <select name="personType" id="personType" required>
-            <option value="FISICA">Física</option>
-            <option value="JURIDICA">Jurídica</option>
+            <option value="NATURAL">Física</option>
+            <option value="LEGAL">Jurídica</option>
         </select><br/>
 
         <label for="street">Rua:</label>
