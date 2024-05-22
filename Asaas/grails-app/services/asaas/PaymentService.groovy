@@ -8,23 +8,22 @@ import asaas.Payer
 import asaas.Payment
 import asaas.PaymentType
 import asaas.PaymentStatus
-import asaas.utils.CustomDateUtils
+import asaas.adapter.PaymentSaveAdapter
 
 @Transactional
 class PaymentService {
   
-  public Payment save(Map params, Long customerId, Long payerId){
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd")
+  public Payment save(PaymentSaveAdapter data){
+    
+    Customer customer = Customer.load(data.customerId)
 
-    Customer customer = Customer.load(customerId)
-
-    Payer payer = Payer.load(payerId)
+    Payer payer = Payer.load(data.payerId)
 
     Payment payment = new Payment()
-    payment.value = params.value.replaceAll("[.,]", "").toInteger()
-    payment.maturityDate = sdf.parse(params.maturityDate)
-    payment.method = PaymentType.convert(params.paymentType)
-    payment.status = PaymentStatus.WAITING
+    payment.value = data.value
+    payment.maturityDate = data.maturityDate
+    payment.method = data.method
+    payment.status = data.status
     payment.customer = customer
     payment.payer = payer
     

@@ -1,6 +1,7 @@
 package asaas 
 
 import asaas.PaymentService
+import asaas.adapter.PaymentSaveAdapter
 import asaas.Payment
 
 class PaymentController {
@@ -15,7 +16,8 @@ class PaymentController {
     try{
       Long customerId = 1
       Long payerId = 1
-      Payment payment = paymentService.save(params, customerId, payerId)
+      PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params, customerId, payerId)
+      Payment payment = paymentService.save(paymentSaveAdapter)
       redirect(action:"show", id:payment.id)
 
     }catch (Exception e){

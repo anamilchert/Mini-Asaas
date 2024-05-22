@@ -22,9 +22,9 @@
     </div>
 
     <div>
-      <label for="paymentType">
+      <label for="method">
         Forma de pagamento:
-        <select name="paymentType" id="">
+        <select name="method" id="">
           <option value="BOLETO">Boleto</option>
           <option value="CREDIT_CARD">Cartão de Crédito</option>
           <option value="DEBIT_CARD">Cartão de Débito</option>
