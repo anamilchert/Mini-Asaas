@@ -1,5 +1,6 @@
 package asaas
 
+import grails.validation.ValidationException
 import asaas.Payer
 import asaas.Customer
 import asaas.PayerService
@@ -24,15 +25,17 @@ class PayerController {
       Payer payer = payerService.save(params)
       redirect(action:"show", id:payer.id)
 
-    }catch (Exception e){
-      return "Error when creating payer"
+    }catch (ValidationException e){
+      String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+      flash.error = "Não foi possível salvar um pagador: $errorsMessage"
+      render(view: 'show', params: params)
     }
   }
 
   def show(Long id){
     Payer payer = Payer.read(id)
 
-    if(payer){
+    if (payer) {
       return [payer: payer]
     }
 
@@ -40,8 +43,7 @@ class PayerController {
   }
 
   def list(){
-    Long customerId = params.customerId as Long
-    List<Payer> payerList = payerService.list(customerId)
+    List<Payer> payerList = payerService.list(params.customerId.toLong())
     return [payerList: payerList]
   }
 

@@ -12,7 +12,7 @@ class PayerService {
 
   public Payer save(Map params){
     Map parsedParams = parseSaveParams(params)
-    Payer validatedPayer = validationSave(params)
+    Payer validatedPayer = validationSave(parsedParams)
 
     if(validatedPayer.hasErrors()){
       throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
@@ -55,7 +55,7 @@ class PayerService {
     parsedParams.email = params.email
     parsedParams.cpfCnpj = params.cpfCnpj
     parsedParams.phone = params.phone
-    parsedParams.personType = params.personType instanceof String ? PersonType.convert(params.personType) : params.personType
+    parsedParams.personType = params.personType instanceof String ? PersonType.convert(params.personType) : null
     parsedParams.street = params.street
     parsedParams.number = params.number ? (params.number as Integer): null
     parsedParams.neighborhood = params.neighborhood 
@@ -85,6 +85,10 @@ class PayerService {
 
     if(!params.cpfCnpj){
       payer.errors.reject("cpfCnpj", null, "CPF/CNPJ é obrigatório")
+    }
+
+    if(!params.personType){
+      payer.errors.reject("personType", null, "Informe um tipo de pessoa válido")
     }
 
     if (!params.street || !params.number || 
