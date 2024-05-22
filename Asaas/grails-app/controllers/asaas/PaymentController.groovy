@@ -2,26 +2,29 @@ package asaas
 
 import grails.validation.ValidationException
 import asaas.PaymentService
+import asaas.PayerService
 import asaas.adapter.PaymentSaveAdapter
 import asaas.Payment
+import asaas.Payer
 
 class PaymentController {
 
   def paymentService
 
+  def payerService
+
   def index() {
-    
+    List<Payer> payerList = payerService.list(params.customerId.toLong())
+    return [payerList: payerList, customerId:params.customerId]
   }
 
   def save() {
     try{
-      Long customerId = 1
-      Long payerId = 1
-      PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params, customerId, payerId)
+      PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params)
       Payment payment = paymentService.save(paymentSaveAdapter)
       redirect(action:"show", id:payment.id)
 
-    }catch (ValidationException e){
+    } catch (ValidationException e){
       String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
       flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
       println flash.error

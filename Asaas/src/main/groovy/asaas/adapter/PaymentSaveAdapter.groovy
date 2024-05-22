@@ -18,12 +18,12 @@ class PaymentSaveAdapter {
 
   Long payerId
 
-  PaymentSaveAdapter(Map params, Long customerId, Long payerId){
+  PaymentSaveAdapter(Map params){
     this.value = CurrencyUtils.fromStringToInteger(params.value)
     this.maturityDate = CustomDateUtils.setTimeToEndOfDay(params.maturityDate)
     this.method = PaymentType.convert(params.method)
     this.status = PaymentStatus.WAITING
-    this.customerId = customerId
-    this.payerId = payerId
+    this.customerId = params.customerId.toLong()
+    this.payerId = params.payerId.toLong()
   }
 }

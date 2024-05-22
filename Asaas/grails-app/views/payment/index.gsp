@@ -8,6 +8,14 @@
 <body>
   <form action="${createLink(controller:"payment", action:"save")}" method="post">
     <div>
+      <label for="customerId"> Customer Id: 
+        <input type="text" name="customerId" value="${customerId}">
+      </label>
+    </div>
+    <g:select name="payerId" from="${payerList}" optionKey="id" optionValue="name"
+      noSelection="['':'Selecione um pagador']" 
+    />
+    <div>
       <label for="value">
         Preço: 
         <input type="text" name="value" placeholder="100,00">
