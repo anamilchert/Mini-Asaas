@@ -8,19 +8,21 @@ import grails.gorm.transactions.Transactional
 
 @Transactional
 class CustomerService {
+
         public Customer save(Map params) {
-        println params
+
         Customer customerValues = validateCustomerParams(params)
         if (customerValues.hasErrors()) {
             throw new ValidationException("Erro ao criar a conta", customerValues.errors)
         }
-        println PersonType.convert(params.personType)
+
         Customer customer = new Customer(
             name: params.name,
             email: params.email,
             cpfCnpj: params.cpfCnpj,
             personType: PersonType.convert(params.personType)
         )
+
         Address address = new Address(
             street: params.address.street,
             number: (params.address.number as Integer),
@@ -30,11 +32,16 @@ class CustomerService {
             complement: params.address.complement,
             CEP: params.address.CEP
         )
+
         customer.address = address
+
         customer.save(failOnError: true)
+
         return customer
     }
+
     private Customer validateCustomerParams(Map params) {
+        
         Customer customer = new Customer()
         if (!params.name) {
             customer.errors.reject("name", null, "Nome é obrigatório")
@@ -50,6 +57,7 @@ class CustomerService {
             !params.address.CEP) {
             customer.errors.reject("address", null, "Endereço incompleto")
         }
+
         return customer
     }
 }
