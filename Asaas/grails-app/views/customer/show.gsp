@@ -23,5 +23,6 @@
         <strong>CEP:</strong> ${customer.address.CEP}<br/>
      </g:if>
     </div>
+     <g:link action="edit" id="${customer?.id}" class="btn btn-primary">Editar Cliente</g:link>
 </body>
 </html>
