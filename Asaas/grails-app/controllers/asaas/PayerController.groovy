@@ -30,7 +30,7 @@ class PayerController {
   }
 
   def show(Long id){
-    Payer payer = payerService.getPayer(id)
+    Payer payer = Payer.read(id)
 
     if(payer){
       return [payer: payer]
