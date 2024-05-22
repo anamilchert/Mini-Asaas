@@ -3,7 +3,7 @@ package asaas.utils
 import java.text.SimpleDateFormat
 
 class CustomDateUtils {
-  static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd")
+  static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
 
   public static Date fromString(String dateStr) {
 		try {

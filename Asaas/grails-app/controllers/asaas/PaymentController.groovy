@@ -1,5 +1,6 @@
 package asaas 
 
+import grails.validation.ValidationException
 import asaas.PaymentService
 import asaas.adapter.PaymentSaveAdapter
 import asaas.Payment
@@ -20,9 +21,11 @@ class PaymentController {
       Payment payment = paymentService.save(paymentSaveAdapter)
       redirect(action:"show", id:payment.id)
 
-    }catch (Exception e){
-      println e
-      return "Error when creating payment"
+    }catch (ValidationException e){
+      String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+      flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
+      println flash.error
+      render(view: 'show', params: params)
     }
   }
 
