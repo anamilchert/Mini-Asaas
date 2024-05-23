@@ -7,13 +7,14 @@ import asaas.Customer
 import asaas.Payer
 
 class Payment extends BaseEntity {
+  
   Integer value
 
-  Date maturityDate
+  Date dueDate
 
   PaymentStatus status
 
-  PaymentType method
+  PaymentType type
 
   Customer customer
 
@@ -21,15 +22,11 @@ class Payment extends BaseEntity {
 
   static constraints = {
     value  min: 0
-    status validator: { val, obj ->
-            return val in PaymentStatus.values()
-        }
-    method validator: { val, obj ->
-            return val in PaymentType.values()
-        }
+    status validator: { val, obj -> return val in PaymentStatus.values() }
+    method validator: { val, obj -> return val in PaymentType.values() }
   }
 
-   static namedQueries = {
+  static namedQueries = {
     query { search ->
       if (!Boolean.valueOf(search.includeDeleted)) {
         eq('deleted', false)

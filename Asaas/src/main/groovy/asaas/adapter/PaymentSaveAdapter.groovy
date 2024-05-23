@@ -6,11 +6,12 @@ import asaas.PaymentStatus
 import asaas.PaymentType
 
 class PaymentSaveAdapter {
+
   Integer value
 
-  Date maturityDate
+  Date dueDate
 
-  PaymentType method
+  PaymentType type
 
   PaymentStatus status
 
@@ -18,11 +19,11 @@ class PaymentSaveAdapter {
 
   Long payerId
 
-  PaymentSaveAdapter(Map params) {
+  public PaymentSaveAdapter(Map params) {
     this.value = CurrencyUtils.fromStringToInteger(params.value)
-    this.maturityDate = CustomDateUtils.setTimeToEndOfDay(params.maturityDate)
-    this.method = PaymentType.convert(params.method)
-    this.status = PaymentStatus.WAITING
+    this.dueDate = CustomDateUtils.setTimeToEndOfDay(params.dueDate)
+    this.type = PaymentType.convert(params.type)
+    this.status = PaymentStatus.PENDING
     this.customerId = params.customerId.toLong()
     this.payerId = params.payerId.toLong()
   }

@@ -23,16 +23,16 @@
     </div>
 
     <div>
-      <label for="maturityDate">
+      <label for="dueDate">
         Data de vencimento: 
-        <input type="date" name="maturityDate" id="">
+        <input type="date" name="dueDate" id="">
       </label>
     </div>
 
     <div>
-      <label for="method">
+      <label for="type">
         Forma de pagamento:
-        <select name="method" id="">
+        <select name="type" id="">
           <option value="BOLETO">Boleto</option>
           <option value="CREDIT_CARD">Cartão de Crédito</option>
           <option value="DEBIT_CARD">Cartão de Débito</option>

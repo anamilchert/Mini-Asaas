@@ -20,8 +20,8 @@ class PaymentService {
 
     Payment payment = new Payment()
     payment.value = paymentSaveAdapter.value
-    payment.maturityDate = paymentSaveAdapter.maturityDate
-    payment.method = paymentSaveAdapter.method
+    payment.dueDate = paymentSaveAdapter.dueDate
+    payment.type = paymentSaveAdapter.type
     payment.status = paymentSaveAdapter.status
     payment.customer = Customer.load(paymentSaveAdapter.customerId)
     payment.payer = Payer.load(paymentSaveAdapter.payerId)
@@ -39,14 +39,14 @@ class PaymentService {
       payment.errors.reject("value", null, "Informe um valor válido")
     }
 
-    if (!paymentSaveAdapter.maturityDate) {
-      payment.errors.reject("maturityDate", null, "Informe uma data válida")
-    } else if (paymentSaveAdapter.maturityDate < currentDate) {
-      payment.errors.reject("maturityDate", null, "Informe uma data superior à atual")
+    if (!paymentSaveAdapter.dueDate) {
+      payment.errors.reject("dueDate", null, "Informe uma data válida")
+    } else if (paymentSaveAdapter.dueDate < currentDate) {
+      payment.errors.reject("dueDate", null, "Informe uma data superior à atual")
     }
 
-    if (!paymentSaveAdapter.method) {
-      payment.errors.reject("method", null, "Informe uma forma de pagamento válida")
+    if (!paymentSaveAdapter.type) {
+      payment.errors.reject("type", null, "Informe uma forma de pagamento válida")
     }
 
     if (!paymentSaveAdapter.status) {
