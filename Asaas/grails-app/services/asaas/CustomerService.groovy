@@ -9,8 +9,7 @@ import grails.gorm.transactions.Transactional
 @Transactional
 class CustomerService {
 
-        public Customer save(Map params) {
-
+    public Customer save(Map params) {
         Customer customerValues = validateCustomerParams(params)
         if (customerValues.hasErrors()) {
             throw new ValidationException("Erro ao criar a conta", customerValues.errors)
@@ -40,22 +39,51 @@ class CustomerService {
         return customer
     }
 
+    def update(Long id, Map params) {
+        Customer customer = Customer.get(id)
+        if (!customer) {
+            throw new ValidationException("Conta não encontrada")
+        }
+
+        customer.name = params.name ?: customer.name
+        customer.email = params.email ?: customer.email
+        customer.cpfCnpj = params.cpfCnpj ?: customer.cpfCnpj
+        customer.personType = params.personType ? PersonType.convert(params.personType) : customer.personType
+
+        if (params.address) {
+            customer.address.street = params.address.street ?: customer.address.street
+            customer.address.number = params.address.number ? (params.address.number as Integer) : customer.address.number
+            customer.address.neighborhood = params.address.neighborhood ?: customer.address.neighborhood
+            customer.address.city = params.address.city ?: customer.address.city
+            customer.address.state = params.address.state ?: customer.address.state
+            customer.address.complement = params.address.complement ?: customer.address.complement
+            customer.address.CEP = params.address.CEP ?: customer.address.CEP
+        }
+
+        try {
+            customer.save(failOnError: true)
+        } catch (ValidationException e) {
+            throw new ValidationException("Não foi possível atualizar a conta", customer.errors)
+        }
+
+        return customer
+    }
+
     private Customer validateCustomerParams(Map params) {
-        
         Customer customer = new Customer()
         if (!params.name) {
-            customer.errors.reject("name", null, "Nome é obrigatório")
+            customer.errors.rejectValue("name", "Nome é obrigatório")
         }
         if (!params.email) {
-            customer.errors.reject("email", null, "Email é obrigatório")
+            customer.errors.rejectValue("email", "Email é obrigatório")
         }
         if (!params.cpfCnpj) {
-            customer.errors.reject("cpfCnpj", null, "CPF/CNPJ é obrigatório")
+            customer.errors.rejectValue("cpfCnpj", "CPF/CNPJ é obrigatório")
         }
         if (!params.address || !params.address.street || !params.address.number ||
             !params.address.neighborhood || !params.address.city || !params.address.state ||
             !params.address.CEP) {
-            customer.errors.reject("address", null, "Endereço incompleto")
+            customer.errors.rejectValue("address", "Endereço incompleto")
         }
 
         return customer
