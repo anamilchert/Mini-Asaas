@@ -1,11 +1,12 @@
-package asaas 
+package asaas
+
+import asaas.adapter.PaymentSaveAdapter
+import asaas.Payer
+import asaas.Payment
+import asaas.PayerService
+import asaas.PaymentService
 
 import grails.validation.ValidationException
-import asaas.PaymentService
-import asaas.PayerService
-import asaas.adapter.PaymentSaveAdapter
-import asaas.Payment
-import asaas.Payer
 
 class PaymentController {
 
@@ -19,27 +20,26 @@ class PaymentController {
   }
 
   def save() {
-    try{
+    try {
       PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params)
       Payment payment = paymentService.save(paymentSaveAdapter)
       redirect(action:"show", id:payment.id)
 
-    } catch (ValidationException e){
+    } catch (ValidationException e) {
       String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
       flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
-      println flash.error
-      render(view: 'show', params: params)
+      render(view: "show", params: params)
     }
   }
 
-  def show(Long id) {
-    Payment payment = Payment.read(id)
+  def show() {
+    Payment payment = Payment.read(params.id.toLong())
 
     if (payment) {
       return [payment: payment]
     }
 
-    render "Cobrança não encontrado"
+    render "Cobrança não encontrada"
   }
 
 }

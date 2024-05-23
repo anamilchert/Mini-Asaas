@@ -2,10 +2,11 @@ package asaas.utils
 
 class CurrencyUtils {
 
-  public static Integer fromStringToInteger(String currency){
-    try{
+  public static Integer fromStringToInteger(String currency) {
+    try {
       return currency.replaceAll("[.,]","").toInteger()
-    } catch(Exception e){
+
+    } catch (Exception e) {
       return null
     }
   }
