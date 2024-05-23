@@ -13,61 +13,54 @@ import asaas.adapter.PaymentSaveAdapter
 @Transactional
 class PaymentService {
   
-  public Payment save(PaymentSaveAdapter data){
-    Payment validatedPayment = validateSave(data)
+  public Payment save(PaymentSaveAdapter paymentSaveAdapter) {
+    Payment validatedPayment = validateSave(paymentSaveAdapter)
 
-    if (validatedPayment.hasErrors()){
-      throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
-    }
-
-    Customer customer = Customer.load(data.customerId)
-
-    Payer payer = Payer.load(data.payerId)
+    if (validatedPayment.hasErrors()) throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
 
     Payment payment = new Payment()
-    payment.value = data.value
-    payment.maturityDate = data.maturityDate
-    payment.method = data.method
-    payment.status = data.status
-    payment.customer = customer
-    payment.payer = payer
+    payment.value = paymentSaveAdapter.value
+    payment.maturityDate = paymentSaveAdapter.maturityDate
+    payment.method = paymentSaveAdapter.method
+    payment.status = paymentSaveAdapter.status
+    payment.customer = Customer.load(paymentSaveAdapter.customerId)
+    payment.payer = Payer.load(paymentSaveAdapter.payerId)
     
     payment.save(failOnError: true)
 
     return payment
   }
 
-  private Payment validateSave(PaymentSaveAdapter data){
+  private Payment validateSave(PaymentSaveAdapter paymentSaveAdapter) {
     Payment payment = new Payment()
+    Date currentDate = new Date()
 
-    if (!data.value) {
+    if (!paymentSaveAdapter.value) {
       payment.errors.reject("value", null, "Informe um valor válido")
     }
 
-    if (!data.maturityDate) {
+    if (!paymentSaveAdapter.maturityDate) {
       payment.errors.reject("maturityDate", null, "Informe uma data válida")
-    } else if (data.maturityDate < new Date()){
+    } else if (paymentSaveAdapter.maturityDate < currentDate) {
       payment.errors.reject("maturityDate", null, "Informe uma data superior à atual")
     }
 
-    if (!data.method) {
+    if (!paymentSaveAdapter.method) {
       payment.errors.reject("method", null, "Informe uma forma de pagamento válida")
     }
 
-    if (!data.status) {
+    if (!paymentSaveAdapter.status) {
       payment.errors.reject("status", null, "Informe um status de pagamento válido")
     }
 
-    if (!data.customerId) {
+    if (!paymentSaveAdapter.customerId) {
       payment.errors.reject("customer", null, "Informe um cliente válido")
     }
 
-    if (!data.payerId) {
+    if (!paymentSaveAdapter.payerId) {
       payment.errors.reject("payer", null, "Informe um pagador válido")
     }
 
     return payment
-
   }
-
 }

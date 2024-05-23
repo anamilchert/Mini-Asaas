@@ -10,14 +10,12 @@ import asaas.PersonType
 @Transactional
 class PayerService {
 
-  public Payer save(Map params){
+  public Payer save(Map params) {
     Map parsedParams = parseSaveParams(params)
     Payer validatedPayer = validationSave(parsedParams)
 
-    if(validatedPayer.hasErrors()){
-      throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
-    }
-    
+    if(validatedPayer.hasErrors()) throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
+
     Address address = new Address()
     address.street = parsedParams.street
     address.number = parsedParams.number
@@ -27,8 +25,6 @@ class PayerService {
     address.complement = parsedParams.complement
     address.CEP = parsedParams.CEP
 
-    Customer customer = Customer.load(parsedParams.customerId)
-
     Payer payer = new Payer()
     payer.name = parsedParams.name
     payer.email = parsedParams.email
@@ -36,14 +32,14 @@ class PayerService {
     payer.phone = parsedParams.phone
     payer.personType = parsedParams.personType
     payer.address = address
-    payer.customer = customer
+    payer.customer = Customer.load(parsedParams.customerId)
     
     payer.save(failOnError: true)
 
     return payer
   }
 
-  public List<Payer> list(Long customerId){
+  public List<Payer> list(Long customerId) {
     List<Payer> payerList = Payer.query(customerId: customerId).list()
     return payerList
   }
@@ -68,35 +64,35 @@ class PayerService {
     return parsedParams
   }
 
-  private Payer validationSave(Map params){
+  private Payer validationSave(Map params) {
     Payer payer = new Payer()
     
-    if(!params.name){
+    if (!params.name) {
       payer.errors.reject("name", null, "Nome é obrigatório")
     }
 
-    if(!params.email){
+    if (!params.email) {
       payer.errors.reject("email", null, "Email é obrigatório")
     }
 
-    if(!params.phone){
+    if (!params.phone) {
       payer.errors.reject("phone", null, "Phone é obrigatório")
     }
 
-    if(!params.cpfCnpj){
+    if (!params.cpfCnpj) {
       payer.errors.reject("cpfCnpj", null, "CPF/CNPJ é obrigatório")
     }
 
-    if(!params.personType){
-      payer.errors.reject("personType", null, "Informe um tipo de pessoa válido")
+    if (!params.personType) {
+      payer.errors.reject("personType", null, "Informe um tipo de pessoa válida")
     }
 
     if (!params.street || !params.number || 
             !params.neighborhood || !params.city || !params.state || 
             !params.CEP) 
-      {
-        payer.errors.reject("address", null, "Endereço incompleto")
-      }
+    {
+      payer.errors.reject("address", null, "Endereço incompleto")
+    }
 
     return payer
   }
