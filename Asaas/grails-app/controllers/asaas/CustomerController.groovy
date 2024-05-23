@@ -45,29 +45,17 @@ import grails.validation.ValidationException
         }
         
         render(view: 'edit', model: [customer: customer])
-        }
+        }  
 
         def update(Long id) {
-            Customer customer = Customer.get(id)
-            if (!customer) {
-                flash.error = "Conta não encontrada"
-                redirect(action: 'index')
-
-                return
-            }
-
-            customer.properties = params
-
-            try {
-                customerService.save(customer)
-                flash.message = "Conta atualizada com sucesso"
-                redirect(action: "show", id: customer.id)
-
-            } catch (ValidationException e) {
-                String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(", ")
-                flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
-
-                render(view: 'show', model: [customer: customer])
-            }
-        }   
+        try {
+            Customer customer = customerService.update(id, params)
+            flash.message = "Conta atualizada com sucesso"
+            redirect(action: "show", id: customer.id)
+        } catch (ValidationException e) {
+            String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(", ")
+            flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
+            render(view: 'edit', model: [customer: Customer.get(id)])
+        }
+    }
 }
