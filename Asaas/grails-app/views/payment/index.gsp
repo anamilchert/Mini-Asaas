@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Registrar pagamento</title>
 </head>
 <body>
   <form action="${createLink(controller:"payment", action:"save")}" method="post">
     <div>
-      <label for="customerId"> Customer Id: 
+      <label for="customerId">Id: 
         <input type="text" name="customerId" value="${customerId}">
       </label>
     </div>
@@ -17,7 +17,7 @@
     />
     <div>
       <label for="value">
-        Preço: 
+        Valor: 
         <input type="text" name="value" placeholder="100,00">
       </label>
     </div>
@@ -33,10 +33,9 @@
       <label for="type">
         Forma de pagamento:
         <select name="type" id="">
-          <option value="BOLETO">Boleto</option>
-          <option value="CREDIT_CARD">Cartão de Crédito</option>
-          <option value="DEBIT_CARD">Cartão de Débito</option>
-          <option value="PIX">PIX</option>
+        <g:each var="type" in="${ paymentTypes }">
+          <option value="${type}">${type.getLabel()}</option>
+        </g:each>
         </select>
       </label>
     </div>

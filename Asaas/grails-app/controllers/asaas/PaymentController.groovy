@@ -2,9 +2,10 @@ package asaas
 
 import asaas.adapter.PaymentSaveAdapter
 import asaas.Payer
-import asaas.Payment
 import asaas.PayerService
+import asaas.Payment
 import asaas.PaymentService
+import asaas.PaymentType
 
 import grails.validation.ValidationException
 
@@ -16,7 +17,8 @@ class PaymentController {
 
     def index() {
         List<Payer> payerList = payerService.list(params.customerId.toLong())
-        return [payerList: payerList, customerId:params.customerId]
+        List<PaymentType> paymentTypes = PaymentType.values()
+        return [payerList: payerList, customerId:params.customerId, paymentTypes: paymentTypes]
     }
 
     def save() {
