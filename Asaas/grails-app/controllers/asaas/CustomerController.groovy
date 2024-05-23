@@ -25,8 +25,8 @@ import grails.validation.ValidationException
             }
         }
 
-        def show(Long id) {
-                Customer customer = Customer.read(id)
+        def show() {
+                Customer customer = Customer.read(params.id as Long)
                     if (!customer) {
                     flash.error = "Conta não encontrada"
                     redirect(action: 'index')
@@ -37,8 +37,8 @@ import grails.validation.ValidationException
                 render(view: 'show', model: [customer: customer])
         }
 
-        def edit(Long id) {
-        Customer customer = Customer.get(id)
+        def edit() {
+        Customer customer = Customer.get(params.id as Long)
         if (!customer) {
             flash.error = "Conta não encontrada"
             redirect(action: 'index')
@@ -48,7 +48,14 @@ import grails.validation.ValidationException
         render(view: 'edit', model: [customer: customer])
         }  
 
-        def update(Long id) {
+        def update() {
+        Customer customer = Customer.get(params.id as Long)
+        if (!id) {
+            flash.error = "ID do cliente não fornecido"
+            redirect(action: 'index')
+            return
+        }
+
         try {
             Customer customer = customerService.update(id, params)
             flash.message = "Conta atualizada com sucesso"
