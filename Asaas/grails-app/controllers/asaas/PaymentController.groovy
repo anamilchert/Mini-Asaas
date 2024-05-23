@@ -43,5 +43,4 @@ class PaymentController {
 
         render "Cobrança não encontrada"
     }
-
 }

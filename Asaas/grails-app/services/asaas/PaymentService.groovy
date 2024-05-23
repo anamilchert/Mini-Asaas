@@ -6,6 +6,7 @@ import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
 import asaas.PaymentType
+import asaas.utils.DomainUtils
 
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.transactions.Transactional
@@ -40,29 +41,29 @@ class PaymentService {
         Date currentDate = new Date()
 
         if (!paymentSaveAdapter.value) {
-            payment.errors.reject("value", null, "Informe um valor válido")
+            DomainUtils.addFieldError(payment, "value", "Informe um valor válido")
         }
 
         if (!paymentSaveAdapter.dueDate) {
-            payment.errors.reject("dueDate", null, "Informe uma data válida")
+            DomainUtils.addFieldError(payment, "dueDate", "Informe um valor válido")
         } else if (paymentSaveAdapter.dueDate < currentDate) {
             payment.errors.reject("dueDate", null, "Informe uma data superior à atual")
         }
 
         if (!paymentSaveAdapter.type) {
-            payment.errors.reject("type", null, "Informe uma forma de pagamento válida")
+            DomainUtils.addFieldError(payment, "type", "Tipo de pagamento inválido")
         }
 
         if (!paymentSaveAdapter.status) {
-            payment.errors.reject("status", null, "Informe um status de pagamento válido")
+            DomainUtils.addFieldError(payment, "status", "Status de pagamento inválido")
         }
 
         if (!paymentSaveAdapter.customerId) {
-            payment.errors.reject("customer", null, "Informe um cliente válido")
+            DomainUtils.addFieldError(payment, "customer", "Informe um cliente válido")
         }
 
         if (!paymentSaveAdapter.payerId) {
-            payment.errors.reject("payer", null, "Informe um pagador válido")
+            DomainUtils.addFieldError(payment, "payer", "Informe um pagador válido")
         }
 
         return payment
