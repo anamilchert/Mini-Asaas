@@ -1,10 +1,10 @@
 package asaas
 
-import asaas.Customer
 import asaas.Address
+import asaas.Customer
 import asaas.PersonType
-import grails.validation.ValidationException
 import grails.gorm.transactions.Transactional
+import grails.validation.ValidationException
 
 @Transactional
 class CustomerService {
