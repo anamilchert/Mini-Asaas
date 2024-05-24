@@ -7,10 +7,4 @@ class DomainUtils {
 
         return entity
     }
-
-    public static Object addFieldError(Object entity, String field, String message) {
-        entity.errors.rejectValue(field, message)
-
-        return entity
-    }
 }

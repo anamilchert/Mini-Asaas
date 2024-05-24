@@ -23,6 +23,7 @@ class PaymentService {
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
 
         Payment payment = new Payment()
+        
         payment.value = paymentSaveAdapter.value
         payment.dueDate = paymentSaveAdapter.dueDate
         payment.type = paymentSaveAdapter.type
@@ -41,29 +42,29 @@ class PaymentService {
         Date currentDate = new Date()
 
         if (!paymentSaveAdapter.value) {
-            DomainUtils.addFieldError(payment, "value", "Informe um valor válido")
+            DomainUtils.addError(payment, "Informe um valor válido")
         }
 
         if (!paymentSaveAdapter.dueDate) {
-            DomainUtils.addFieldError(payment, "dueDate", "Informe um valor válido")
+            DomainUtils.addError(payment, "Informe um valor válido")
         } else if (paymentSaveAdapter.dueDate < currentDate) {
             payment.errors.reject("dueDate", null, "Informe uma data superior à atual")
         }
 
         if (!paymentSaveAdapter.type) {
-            DomainUtils.addFieldError(payment, "type", "Tipo de pagamento inválido")
+            DomainUtils.addError(payment, "Tipo de pagamento inválido")
         }
 
         if (!paymentSaveAdapter.status) {
-            DomainUtils.addFieldError(payment, "status", "Status de pagamento inválido")
+            DomainUtils.addError(payment, "Status de pagamento inválido")
         }
 
         if (!paymentSaveAdapter.customerId) {
-            DomainUtils.addFieldError(payment, "customer", "Informe um cliente válido")
+            DomainUtils.addError(payment, "Informe um cliente válido")
         }
 
         if (!paymentSaveAdapter.payerId) {
-            DomainUtils.addFieldError(payment, "payer", "Informe um pagador válido")
+            DomainUtils.addError(payment, "Informe um pagador válido")
         }
 
         return payment
