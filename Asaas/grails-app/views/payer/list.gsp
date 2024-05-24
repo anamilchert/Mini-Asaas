@@ -14,7 +14,7 @@
   </g:if>
   <g:else>
      <div>
-      <p>Nenhum payer registrado</p>
+      <p>Nenhum pagador registrado</p>
      </div>
   </g:else>
 </body>
