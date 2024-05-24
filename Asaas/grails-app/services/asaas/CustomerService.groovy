@@ -39,7 +39,7 @@ class CustomerService {
         return customer
     }
 
-    def update(Long id, Map params) {
+    public Customer update(Long id, Map params) {
         Customer customer = Customer.get(id)
         if (!customer) {
             throw new ValidationException("Conta não encontrada")
@@ -67,6 +67,16 @@ class CustomerService {
         }
 
         return customer
+    }
+
+     public void delete(Long id) {
+        Customer customer = Customer.get(id)
+        if (!customer) {
+            throw new ValidationException("Conta não encontrada")
+        }
+
+        customer.deleted = true
+        customer.save(failOnError: true)
     }
 
     private Customer validateCustomerParams(Map params) {
