@@ -5,13 +5,13 @@ import asaas.Address
 import asaas.Customer
 import asaas.Payer
 import asaas.PersonType
+import asaas.utils.DomainUtils
 
+import grails.compiler.GrailsCompileStatic
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
 
-import grails.gorm.transactions.Transactional
-import grails.validation.ValidationException
-
+@GrailsCompileStatic
 @Transactional
 class PayerService {
 
@@ -43,35 +43,45 @@ class PayerService {
         return payer
     }
 
+    public List<Payer> list(Long customerId) {
+        List<Payer> payerList = Payer.query(customerId: customerId).list() as List<Payer>
+        return payerList
+    }
+
     private Payer validationSave(PayerSaveAdapter payerSaveAdapter) {
         Payer payer = new Payer()
 
         if (!payerSaveAdapter.name) {
-            payer.errors.reject("name", null, "Nome é obrigatório")
+            DomainUtils.addError(payer, "Nome é obrigatório")
         }
 
         if (!payerSaveAdapter.email) {
-            payer.errors.reject("email", null, "Email é obrigatório")
+            DomainUtils.addError(payer, "Email é obrigatório")
         }
 
         if (!payerSaveAdapter.phone) {
-            payer.errors.reject("phone", null, "Phone é obrigatório")
+            DomainUtils.addError(payer, "Phone é obrigatório")
         }
 
         if (!payerSaveAdapter.cpfCnpj) {
-            payer.errors.reject("cpfCnpj", null, "CPF/CNPJ é obrigatório")
+            DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
+        }
+
+        if (!payerSaveAdapter.personType) {
+            DomainUtils.addError(payer, "Tipo de pessoa inválido")
+        }
+
+        if (!payerSaveAdapter.customerId) {
+            DomainUtils.addError(payer, "Id do cliente é obrigatório")
         }
 
         if (!payerSaveAdapter.street || !payerSaveAdapter.number || 
             !payerSaveAdapter.neighborhood || !payerSaveAdapter.city || !payerSaveAdapter.state || 
             !payerSaveAdapter.CEP) 
         {
-            payer.errors.reject("address", null, "Endereço incompleto")
+            DomainUtils.addError(payer, "Endereço incompleto")
         }
 
         return payer
     }
-        return payer
-    }
-
 }
