@@ -9,6 +9,9 @@ import asaas.PersonType
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
 
+import grails.gorm.transactions.Transactional
+import grails.validation.ValidationException
+
 @Transactional
 class PayerService {
 
@@ -66,6 +69,8 @@ class PayerService {
             payer.errors.reject("address", null, "Endereço incompleto")
         }
 
+        return payer
+    }
         return payer
     }
 
