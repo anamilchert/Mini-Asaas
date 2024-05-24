@@ -1,4 +1,5 @@
 package asaas
+
 import grails.util.Holders
 
 enum PaymentType {
@@ -11,6 +12,7 @@ enum PaymentType {
        try {
            if (paymentType instanceof String) paymentType = paymentType.toUpperCase()
            return paymentType as PaymentType
+           
        } catch(Exception e) {
            return null
        }
