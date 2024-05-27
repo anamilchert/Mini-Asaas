@@ -34,13 +34,23 @@ class PayerController {
     def show() {
         Payer payer = Payer.read(params.id.toLong())
 
-        if (payer) return [payer: payer]
+        if (!payer || payer.deleted) redirect(action: "index")
 
-        render "Pagador não encontrado"
+        return [payer: payer]
     }
 
     def list() {
         List<Payer> payerList = payerService.list(params.customerId.toLong())
         return [payerList: payerList]
+    }
+
+    def delete() {
+        try {
+            payerService.delete(params.id.toLong())
+            flash.sentForm = true
+            redirect(action: "index")
+        } catch (Exception e) {
+            redirect(action: "index")
+        }
     }
 }

@@ -6,8 +6,11 @@
   <title>Document</title>
 </head>
 <body>
+    <g:if test="${ flash.sentForm }">
+       <p>Pagador deletedo</p>
+    </g:if>
+    
   <form action="${createLink(controller:"payer", action:"save")}" method="post">
-
     <label for="">
       Cliente
       <g:select name="customerId" from="${customers}" optionKey="id" optionValue="name"
