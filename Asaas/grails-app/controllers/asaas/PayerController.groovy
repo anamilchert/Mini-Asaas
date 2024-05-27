@@ -10,11 +10,11 @@ import grails.validation.ValidationException
 
 class PayerController {
 
-    def payerService
+    PayerService payerService
 
     def index() {
         List<Customer> customers = Customer.list()
-        [customers: customers]
+        return [customers: customers]
     }
 
     def save() {
@@ -22,7 +22,6 @@ class PayerController {
             PayerSaveAdapter payerSaveAdapter = new PayerSaveAdapter(params)
             Payer payer = payerService.save(payerSaveAdapter)
             redirect(action:"show", id:payer.id)
-
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
@@ -33,9 +32,7 @@ class PayerController {
     def show() {
         Payer payer = Payer.read(params.id.toLong())
 
-        if (payer) {
-            return [payer: payer]
-        }
+        if (payer) return [payer: payer]
 
         render "Pagador não encontrado"
     }
