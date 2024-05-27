@@ -26,6 +26,8 @@ class PayerController {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
             render(view: "show", params: params)
+        } catch (RuntimeException e) {
+            render(view: "show", params: params)
         }
     }
 

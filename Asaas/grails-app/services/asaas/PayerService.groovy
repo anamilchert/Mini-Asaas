@@ -51,37 +51,36 @@ class PayerService {
     private Payer validationSave(PayerSaveAdapter payerSaveAdapter) {
         Payer payer = new Payer()
 
-        if (!payerSaveAdapter.name) {
-            DomainUtils.addError(payer, "Nome é obrigatório")
-        }
+        if (!payerSaveAdapter.customerId) throw new RuntimeException("Customer id não informado")
 
-        if (!payerSaveAdapter.email) {
-            DomainUtils.addError(payer, "Email é obrigatório")
-        }
+        if (!payerSaveAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
 
-        if (!payerSaveAdapter.phone) {
-            DomainUtils.addError(payer, "Phone é obrigatório")
-        }
+        if (!payerSaveAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
 
-        if (!payerSaveAdapter.cpfCnpj) {
-            DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
-        }
+        if (!payerSaveAdapter.phone) DomainUtils.addError(payer, "Phone é obrigatório")
 
-        if (!payerSaveAdapter.personType) {
-            DomainUtils.addError(payer, "Tipo de pessoa inválido")
-        }
+        if (!payerSaveAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!payerSaveAdapter.customerId) {
-            DomainUtils.addError(payer, "Id do cliente é obrigatório")
-        }
+        if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
-        if (!payerSaveAdapter.street || !payerSaveAdapter.number || 
-            !payerSaveAdapter.neighborhood || !payerSaveAdapter.city || !payerSaveAdapter.state || 
-            !payerSaveAdapter.CEP) 
-        {
-            DomainUtils.addError(payer, "Endereço incompleto")
-        }
+        if (hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
+    }
+
+    private static Boolean hasIncompleteAddress(PayerSaveAdapter payerSaveAdapter) {
+        if (!payerSaveAdapter.street) return true
+
+        if (!payerSaveAdapter.number) return true
+
+        if (!payerSaveAdapter.neighborhood) return true
+
+        if (!payerSaveAdapter.city) return true
+
+        if (!payerSaveAdapter.state) return true
+
+        if (!payerSaveAdapter.CEP) return true
+
+        return false
     }
 }
