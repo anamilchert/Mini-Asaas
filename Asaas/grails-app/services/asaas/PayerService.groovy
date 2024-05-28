@@ -50,6 +50,10 @@ class PayerService {
 
         if(!payer || payer.deleted) throw new RuntimeException("Pagador não encontrado")
 
+        Payer validatedPayer = validationUpdate(payerUpdateAdapter)
+
+        if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao atualizar um pagador", validatedPayer.errors)
+
         payer.name = payerUpdateAdapter.name
         payer.email = payerUpdateAdapter.email
         payer.phone = payerUpdateAdapter.phone
@@ -87,6 +91,20 @@ class PayerService {
         if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
         if (DomainUtils.hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+
+        return payer
+    }
+
+    private Payer validationUpdate(PayerUpdateAdapter payerUpdateAdapter) {
+        Payer payer = new Payer()
+
+        if (!payerUpdateAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
+
+        if (!payerUpdateAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
+
+        if (!payerUpdateAdapter.phone) DomainUtils.addError(payer, "Phone é obrigatório")
+
+        if (DomainUtils.hasIncompleteAddress(payerUpdateAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
     }
