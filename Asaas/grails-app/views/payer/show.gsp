@@ -7,53 +7,68 @@
 </head>
 <body>
   <g:if test="${ payer }">
-    <div>
-        <input type="text" value="${payer.name}">
-    </div>
+    <h1>Detalhes do Pagador</h1>
+    <g:form controller="payer" action="update" id="${payer.id}">
+        <div>
+            <label for="name">Nome:</label>
+            <g:textField id="nameField" name="name" value="${payer.name}" />
+        </div>
 
-    <div>
-      <input type="text" value="${payer.email}">
-    </div>
+        <div>
+            <label for="email">Email:</label>
+            <g:textField id="emailField" name="email" value="${payer.email}"  />
+        </div>
 
-    <div>
-      <input type="text"  value="${payer.phone}">
-    </div>
+        <div>
+            <label for="phone">Telefone:</label>
+            <g:textField id="phoneField" name="phone" value="${payer.phone}"  />
+        </div>
 
-    <div>
-      <input type="text"  value="${payer.personType}">
-    </div>
+        <div>
+            <label for="personType">Tipo de Pessoa:</label>
+            <g:textField id="personTypeField" name="personType" value="${payer.personType}" disabled="${true}" />
+        </div>
 
-    <div>
-      <input type="text" value="${payer.cpfCnpj}">
-    </div>
+        <div>
+            <label for="cpfCnpj">CPF/CNPJ:</label>
+            <g:textField id="cpfCnpjField" name="cpfCnpj" value="${payer.cpfCnpj}" disabled="${true}" />
+        </div>
 
-    <div>
-      <input type="text"  value="${payer.address.street}">
-    </div>
+        <div>
+            <h2>Endereço:</h2>      
+            <div>
+                <label for="street">Rua:</label>
+                <g:textField id="streetField" name="street" value="${payer.address.street}"  />
+            </div>
+            <div>
+                <label for="number">Número:</label>
+                <g:textField id="numberField" name="number" value="${payer.address.number}"  />
+            </div>
+            <div>
+                <label for="state">Estado:</label>
+                <g:textField id="stateField" name="state" value="${payer.address.state}"  />
+            </div>
+            <div>
+                <label for="neighborhood">Bairro:</label>
+                <g:textField id="neighborhoodField" name="neighborhood" value="${payer.address.neighborhood}"  />
+            </div>
+            <div>
+                <label for="city">Cidade:</label>
+                <g:textField id="cityField" name="city" value="${payer.address.city}"  />
+            </div>
+            <div>
+                <label for="CEP">CEP:</label>
+                <g:textField id="CEPField" name="CEP" value="${payer.address.CEP}"  />
+            </div>
+            <div>
+                <label for="complement">Complemento:</label>
+                <g:textField id="complementField" name="complement" value="${payer.address.complement}"  />
+            </div>
+        </div>  
 
-    <div>
-      <input type="text"  value="${payer.address.number}">
-    </div>
-
-    <div>
-      <input type="text" value="${payer.address.state}">
-    </div>
-
-    <div>
-      <input type="text" value="${payer.address.neighborhood}">
-    </div>
-
-    <div>
-      <input type="text"  value="${payer.address.city}">
-    </div>
-
-    <div>
-      <input type="text" value="${payer.address.CEP}">
-    </div>
-
-    <div>
-      <input type="text" value="${payer.address.complement}">
-    </div>
+        <g:link action="index">Voltar</g:link>
+        <input type="submit" value="Salvar" />
+    </g:form>
   </g:if>
   <g:else>
      <p>Não foi possível registrar o pagador</p>
