@@ -6,6 +6,7 @@ import asaas.PersonType
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
 
+@GrailsCompileStatic
 @Transactional
 class CustomerService {
 
