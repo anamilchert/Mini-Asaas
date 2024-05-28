@@ -1,6 +1,7 @@
 package asaas
 
 import asaas.adapter.PayerSaveAdapter
+import asaas.adapter.PayerUpdateAdapter
 import asaas.Address
 import asaas.Customer
 import asaas.Payer
@@ -37,6 +38,26 @@ class PayerService {
         payer.personType = payerSaveAdapter.personType
         payer.address = address
         payer.customer = Customer.load(payerSaveAdapter.customerId)
+
+        payer.save(failOnError: true)
+
+        return payer
+    }
+
+    public Payer update(PayerUpdateAdapter payerUpdateAdapter, Long payerId) {
+        Payer payer = Payer.get(payerId)
+
+        if(!payer || payer.deleted) throw new RuntimeException("Pagador não encontrado")
+
+        payer.email = payerUpdateAdapter.email
+        payer.phone = payerUpdateAdapter.phone
+        payer.address.street = payerUpdateAdapter.street
+        payer.address.number = payerUpdateAdapter.number
+        payer.address.neighborhood = payerUpdateAdapter.neighborhood
+        payer.address.city = payerUpdateAdapter.city
+        payer.address.state = payerUpdateAdapter.state
+        payer.address.complement = payerUpdateAdapter.complement
+        payer.address.CEP = payerUpdateAdapter.CEP
 
         payer.save(failOnError: true)
 
