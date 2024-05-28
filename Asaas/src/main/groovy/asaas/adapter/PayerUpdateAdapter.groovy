@@ -23,7 +23,7 @@ class PayerUpdateAdapter {
 
     String CEP
 
-    public PayerSaveAdapter(Map params) {
+    public PayerUpdateAdapter(Map params) {
         this.email = params.email
         this.phone = params.phone
         this.street = params.street
