@@ -69,11 +69,6 @@ import grails.validation.ValidationException
 
      def delete() {
         Customer customer = Customer.get(params.id.toLong())
-        if (!id) {
-            flash.error = "ID do cliente não fornecido"
-            redirect(action: 'index')
-            return
-        }
         try {
             customerService.delete(id)
             flash.message = "Conta excluída com sucesso"
