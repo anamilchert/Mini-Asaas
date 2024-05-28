@@ -61,12 +61,7 @@ class CustomerService {
             customer.address.CEP = params.address.CEP ?: customer.address.CEP
         }
 
-        try {
-            customer.save(failOnError: true)
-        } catch (ValidationException e) {
-            throw new ValidationException("Não foi possível atualizar a conta", customer.errors)
-        }
-
+        customer.save(failOnError: true)
         return customer
     }
 
