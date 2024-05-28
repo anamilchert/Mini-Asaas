@@ -5,7 +5,7 @@ import asaas.PersonType
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class PayerSaveAdapter {
+class PayerSaveAdapter implements AddressAdapter{
 
     String name
 

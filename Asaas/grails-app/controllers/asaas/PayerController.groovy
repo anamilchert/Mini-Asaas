@@ -1,6 +1,7 @@
 package asaas
 
 import asaas.adapter.PayerSaveAdapter
+import asaas.adapter.PayerUpdateAdapter
 import asaas.Customer
 import asaas.Payer
 import asaas.Payer
@@ -16,6 +17,7 @@ class PayerController {
         List<Customer> customers = Customer.list()
         return [customers: customers]
     }
+
 
     def save() {
         try {
@@ -42,5 +44,16 @@ class PayerController {
     def list() {
         List<Payer> payerList = payerService.list(params.customerId.toLong())
         return [payerList: payerList]
+    }
+
+    def update() {
+        try {
+            println params
+            PayerUpdateAdapter payerUpdateAdapter = new PayerUpdateAdapter(params)
+            Payer payer = payerService.update(payerUpdateAdapter, params.id.toLong())
+            redirect(action:"show", id:payer.id)
+        } catch (RuntimeException e) {
+            println e
+        }
     }
 }

@@ -3,7 +3,7 @@ package asaas.adapter
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class PayerUpdateAdapter {
+class PayerUpdateAdapter implements AddressAdapter{
     
     String name
 

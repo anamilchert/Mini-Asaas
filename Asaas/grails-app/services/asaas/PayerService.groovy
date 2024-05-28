@@ -1,5 +1,6 @@
 package asaas
 
+import asaas.adapter.AddressAdapter
 import asaas.adapter.PayerSaveAdapter
 import asaas.adapter.PayerUpdateAdapter
 import asaas.Address
@@ -49,6 +50,7 @@ class PayerService {
 
         if(!payer || payer.deleted) throw new RuntimeException("Pagador não encontrado")
 
+        payer.name = payerUpdateAdapter.name
         payer.email = payerUpdateAdapter.email
         payer.phone = payerUpdateAdapter.phone
         payer.address.street = payerUpdateAdapter.street
@@ -84,24 +86,8 @@ class PayerService {
 
         if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
-        if (hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+        if (DomainUtils.hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
-    }
-
-    private static Boolean hasIncompleteAddress(PayerSaveAdapter payerSaveAdapter) {
-        if (!payerSaveAdapter.street) return true
-
-        if (!payerSaveAdapter.number) return true
-
-        if (!payerSaveAdapter.neighborhood) return true
-
-        if (!payerSaveAdapter.city) return true
-
-        if (!payerSaveAdapter.state) return true
-
-        if (!payerSaveAdapter.CEP) return true
-
-        return false
     }
 }
