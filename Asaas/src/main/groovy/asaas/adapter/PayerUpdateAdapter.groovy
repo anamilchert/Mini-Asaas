@@ -4,6 +4,8 @@ import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
 class PayerUpdateAdapter {
+    
+    String name
 
     String email
 
@@ -24,6 +26,7 @@ class PayerUpdateAdapter {
     String CEP
 
     public PayerUpdateAdapter(Map params) {
+        this.name = params.name
         this.email = params.email
         this.phone = params.phone
         this.street = params.street
