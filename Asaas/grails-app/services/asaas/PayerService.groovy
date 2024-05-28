@@ -50,11 +50,9 @@ class PayerService {
 
     public void delete(Long payerId) {
         Payer payer = Payer.get(payerId)
-
         if (!payer) throw new RuntimeException("Pagador não encontrado")
 
         payer.deleted = true
-
         payer.save(failOnError: true)
     }
 
