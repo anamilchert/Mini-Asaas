@@ -34,7 +34,10 @@ class PayerController {
     def show() {
         Payer payer = Payer.read(params.id.toLong())
 
-        if (!payer || payer.deleted) redirect(action: "index")
+        if (!payer || payer.deleted) {
+            flash.message = "Pagador não encontrado"
+            redirect(action: "index")
+        }
 
         return [payer: payer]
     }
@@ -47,9 +50,10 @@ class PayerController {
     def delete() {
         try {
             payerService.delete(params.id.toLong())
-            flash.sentForm = true
+            flash.message = "Pagador excluído com sucesso"
             redirect(action: "index")
         } catch (Exception e) {
+            flash.message = "Não foi possível excluir pagador"
             redirect(action: "index")
         }
     }
