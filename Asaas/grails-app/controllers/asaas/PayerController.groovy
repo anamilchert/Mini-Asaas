@@ -48,12 +48,13 @@ class PayerController {
 
     def update() {
         try {
-            println params
             PayerUpdateAdapter payerUpdateAdapter = new PayerUpdateAdapter(params)
             Payer payer = payerService.update(payerUpdateAdapter, params.id.toLong())
+            flash.message = "Os dados foram atualizados com sucesso!"
             redirect(action:"show", id:payer.id)
         } catch (RuntimeException e) {
-            println e
+            flash.message = "Não foi possível atualizar os dados. Por favor, tente novamente."
+            redirect(action:"show", id:params.id)
         }
     }
 }

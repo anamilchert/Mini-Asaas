@@ -8,6 +8,9 @@
 <body>
   <g:if test="${ payer }">
     <h1>Detalhes do Pagador</h1>
+    <g:if test="${ flash.message }">
+       <p>${flash.message}</p>
+    </g:if>
     <g:form controller="payer" action="update" id="${payer.id}">
         <div>
             <label for="name">Nome:</label>
