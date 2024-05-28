@@ -42,6 +42,7 @@ class CustomerService {
 
     def update(Long id, Map params) {
         Customer customer = Customer.get(id)
+        
         if (!customer) {
             throw new ValidationException("Conta não encontrada")
         }
