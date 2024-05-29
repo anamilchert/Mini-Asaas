@@ -37,7 +37,12 @@ class Payer extends BaseEntity {
       if (search.containsKey('id')) {
         eq('id', search.id)
       }
+
+      if (search.containsKey('customerId')) {
+        eq('customer.id', search.customerId.toLong())
+      }
     }
+
   }
 }
 
