@@ -3,10 +3,11 @@ package asaas
 import asaas.Address
 import asaas.Customer
 import asaas.PersonType
+import asaas.utils.DomainUtils
+
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
 
-@GrailsCompileStatic
 @Transactional
 class CustomerService {
 
@@ -69,18 +70,18 @@ class CustomerService {
     private Customer validateCustomerParams(Map params) {
         Customer customer = new Customer()
         if (!params.name) {
-            customer.errors.rejectValue("name", "Nome é obrigatório")
+            DomainUtils.addError(customer, "Nome é obrigatório")
         }
         if (!params.email) {
-            customer.errors.rejectValue("email", "Email é obrigatório")
+            DomainUtils.addError(customer, "Email é obrigatório")
         }
         if (!params.cpfCnpj) {
-            customer.errors.rejectValue("cpfCnpj", "CPF/CNPJ é obrigatório")
+            DomainUtils.addError(customer, "CPF/CNPJ é obrigatório")
         }
         if (!params.address || !params.address.street || !params.address.number ||
             !params.address.neighborhood || !params.address.city || !params.address.state ||
             !params.address.CEP) {
-            customer.errors.rejectValue("address", "Endereço incompleto")
+            DomainUtils.addError(customer, "Endereço incompleto")
         }
 
         return customer
