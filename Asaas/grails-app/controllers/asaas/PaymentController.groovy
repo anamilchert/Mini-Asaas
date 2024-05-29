@@ -11,9 +11,9 @@ import grails.validation.ValidationException
 
 class PaymentController {
 
-    def paymentService
+    PaymentService paymentService
 
-    def payerService
+    PayerService payerService
 
     def index() {
         List<Payer> payerList = payerService.list(params.customerId.toLong())
@@ -26,7 +26,6 @@ class PaymentController {
             PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params)
             Payment payment = paymentService.save(paymentSaveAdapter)
             redirect(action:"show", id:payment.id)
-
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
@@ -35,12 +34,22 @@ class PaymentController {
     }
 
     def show() {
-        Payment payment = Payment.read(params.id.toLong())
+        Payment payment = paymentService.getPayment(params.id.toLong())
 
         if (payment) {
             return [payment: payment]
         }
 
         render "Cobrança não encontrada"
+    }
+
+    def list() {
+        List<Payment> paymentList = paymentService.listCustomerPayments(params.customerId.toLong())
+        return [paymentList: paymentList]
+    }
+
+    def fetchAllCustomerAndPayerPayment() {
+        List<Payment> paymentList = paymentService.listCustomerAndPayerPayments(params.customerId.toLong(), params.payerId.toLong())
+        return [paymentList: paymentList]
     }
 }
