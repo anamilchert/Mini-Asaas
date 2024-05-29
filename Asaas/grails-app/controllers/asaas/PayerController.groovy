@@ -1,7 +1,6 @@
 package asaas
 
-import asaas.adapter.PayerSaveAdapter
-import asaas.adapter.PayerUpdateAdapter
+import asaas.adapter.PayerAdapter
 import asaas.Customer
 import asaas.Payer
 import asaas.Payer
@@ -21,15 +20,19 @@ class PayerController {
 
     def save() {
         try {
-            PayerSaveAdapter payerSaveAdapter = new PayerSaveAdapter(params)
-            Payer payer = payerService.save(payerSaveAdapter)
+            PayerAdapter payerAdapter = new PayerAdapter(params)
+            Payer payer = payerService.save(payerAdapter)
             redirect(action:"show", id:payer.id)
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
-            render(view: "show", params: params)
+            render(view: "index")
         } catch (RuntimeException e) {
-            render(view: "show", params: params)
+            flash.message = "Não foi possível salvar um pagador. Por favor, tente novamente."
+            render(view: "index")
+        } catch (Exception e) {
+            flash.message = "Ocorreu um error inesperado. Por favor, tente novamente."
+            render(view: "index")
         }
     }
 
@@ -48,12 +51,19 @@ class PayerController {
 
     def update() {
         try {
-            PayerUpdateAdapter payerUpdateAdapter = new PayerUpdateAdapter(params)
-            Payer payer = payerService.update(payerUpdateAdapter, params.id.toLong())
+            PayerAdapter payerAdapter = new PayerAdapter(params)
+            Payer payer = payerService.update(payerAdapter, params.id.toLong())
             flash.message = "Os dados foram atualizados com sucesso!"
             redirect(action:"show", id:payer.id)
+        } catch (ValidationException e) {
+            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+            flash.error = "Não foi possível atualizar os dados: $errorsMessage"
+            redirect(action: "show", id: params.id)
         } catch (RuntimeException e) {
             flash.message = "Não foi possível atualizar os dados. Por favor, tente novamente."
+            redirect(action:"show", id:params.id)
+        } catch (Exception e) {
+            flash.message = "Ocorreu um error inesperado. Por favor, tente novamente."
             redirect(action:"show", id:params.id)
         }
     }

@@ -1,8 +1,6 @@
 package asaas
 
-import asaas.adapter.AddressAdapter
-import asaas.adapter.PayerSaveAdapter
-import asaas.adapter.PayerUpdateAdapter
+import asaas.adapter.PayerAdapter
 import asaas.Address
 import asaas.Customer
 import asaas.Payer
@@ -17,53 +15,51 @@ import grails.validation.ValidationException
 @Transactional
 class PayerService {
 
-    public Payer save(PayerSaveAdapter payerSaveAdapter) {
-        Payer validatedPayer = validationSave(payerSaveAdapter)
-        
+    public Payer save(PayerAdapter payerAdapter) {
+        Payer validatedPayer = validation(payerAdapter)
         if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
 
         Address address = new Address()
-        address.street = payerSaveAdapter.street
-        address.number = payerSaveAdapter.number
-        address.neighborhood = payerSaveAdapter.neighborhood
-        address.city = payerSaveAdapter.city
-        address.state = payerSaveAdapter.state
-        address.complement = payerSaveAdapter.complement
-        address.CEP = payerSaveAdapter.CEP
+        address.street = payerAdapter.street
+        address.number = payerAdapter.number
+        address.neighborhood = payerAdapter.neighborhood
+        address.city = payerAdapter.city
+        address.state = payerAdapter.state
+        address.complement = payerAdapter.complement
+        address.CEP = payerAdapter.CEP
 
         Payer payer = new Payer()
-        payer.name = payerSaveAdapter.name
-        payer.email = payerSaveAdapter.email
-        payer.cpfCnpj = payerSaveAdapter.cpfCnpj
-        payer.phone = payerSaveAdapter.phone
-        payer.personType = payerSaveAdapter.personType
+        payer.name = payerAdapter.name
+        payer.email = payerAdapter.email
+        payer.cpfCnpj = payerAdapter.cpfCnpj
+        payer.phone = payerAdapter.phone
+        payer.personType = payerAdapter.personType
         payer.address = address
-        payer.customer = Customer.load(payerSaveAdapter.customerId)
+        payer.customer = Customer.load(payerAdapter.customerId)
 
         payer.save(failOnError: true)
 
         return payer
     }
 
-    public Payer update(PayerUpdateAdapter payerUpdateAdapter, Long payerId) {
+    public Payer update(PayerAdapter payerAdapter, Long payerId) {
         Payer payer = Payer.get(payerId)
 
         if(!payer || payer.deleted) throw new RuntimeException("Pagador não encontrado")
 
-        Payer validatedPayer = validationUpdate(payerUpdateAdapter)
-
+        Payer validatedPayer = validation(payerAdapter, true)
         if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao atualizar um pagador", validatedPayer.errors)
 
-        payer.name = payerUpdateAdapter.name
-        payer.email = payerUpdateAdapter.email
-        payer.phone = payerUpdateAdapter.phone
-        payer.address.street = payerUpdateAdapter.street
-        payer.address.number = payerUpdateAdapter.number
-        payer.address.neighborhood = payerUpdateAdapter.neighborhood
-        payer.address.city = payerUpdateAdapter.city
-        payer.address.state = payerUpdateAdapter.state
-        payer.address.complement = payerUpdateAdapter.complement
-        payer.address.CEP = payerUpdateAdapter.CEP
+        payer.name = payerAdapter.name
+        payer.email = payerAdapter.email
+        payer.phone = payerAdapter.phone
+        payer.address.street = payerAdapter.street
+        payer.address.number = payerAdapter.number
+        payer.address.neighborhood = payerAdapter.neighborhood
+        payer.address.city = payerAdapter.city
+        payer.address.state = payerAdapter.state
+        payer.address.complement = payerAdapter.complement
+        payer.address.CEP = payerAdapter.CEP
 
         payer.save(failOnError: true)
 
@@ -75,37 +71,39 @@ class PayerService {
         return payerList
     }
 
-    private Payer validationSave(PayerSaveAdapter payerSaveAdapter) {
+    private Payer validation(PayerAdapter payerAdapter, Boolean update = false) {
         Payer payer = new Payer()
 
-        if (!payerSaveAdapter.customerId) throw new RuntimeException("Customer id não informado")
+        if (!update && !payerAdapter.customerId) throw new RuntimeException("Customer id não informado")
 
-        if (!payerSaveAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
+        if (!update && !payerAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!payerSaveAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
+        if (!update && !payerAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
-        if (!payerSaveAdapter.phone) DomainUtils.addError(payer, "Phone é obrigatório")
+        if (!payerAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
 
-        if (!payerSaveAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
+        if (!payerAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
 
-        if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+        if (!payerAdapter.phone) DomainUtils.addError(payer, "Phone é obrigatório")
 
-        if (DomainUtils.hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+        if (hasIncompleteAddress(payerAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
     }
 
-    private Payer validationUpdate(PayerUpdateAdapter payerUpdateAdapter) {
-        Payer payer = new Payer()
+    private Boolean hasIncompleteAddress(PayerAdapter payerAdapter) {
+        if (!payerAdapter.street) return true
 
-        if (!payerUpdateAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
+        if (!payerAdapter.number) return true
 
-        if (!payerUpdateAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
+        if (!payerAdapter.neighborhood) return true
 
-        if (!payerUpdateAdapter.phone) DomainUtils.addError(payer, "Phone é obrigatório")
+        if (!payerAdapter.city) return true
 
-        if (DomainUtils.hasIncompleteAddress(payerUpdateAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+        if (!payerAdapter.state) return true
 
-        return payer
+        if (!payerAdapter.CEP) return true
+
+        return false
     }
 }
