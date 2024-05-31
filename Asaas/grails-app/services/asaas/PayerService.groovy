@@ -43,7 +43,7 @@ class PayerService {
         return payer
     }
 
-    public List<Payer> list(Long customerId) {
+    public List<Payer> listByCustomer(Long customerId) {
         List<Payer> payerList = Payer.query(customerId: customerId).list() as List<Payer>
         return payerList
     }

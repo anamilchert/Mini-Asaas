@@ -13,8 +13,8 @@ class PayerController {
     PayerService payerService
 
     def index() {
-        List<Customer> customers = Customer.list()
-        return [customers: customers]
+        List<Customer> customerList = Customer.list()
+        return [customerList: customerList]
     }
 
     def save() {
@@ -40,7 +40,7 @@ class PayerController {
     }
 
     def list() {
-        List<Payer> payerList = payerService.list(params.customerId.toLong())
+        List<Payer> payerList = payerService.listByCustomer(params.customerId.toLong())
         return [payerList: payerList]
     }
 }
