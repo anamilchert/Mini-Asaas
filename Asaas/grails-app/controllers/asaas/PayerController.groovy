@@ -22,11 +22,11 @@ class PayerController {
             PayerSaveAdapter payerSaveAdapter = new PayerSaveAdapter(params)
             Payer payer = payerService.save(payerSaveAdapter)
             redirect(action:"show", id:payer.id)
-        } catch (ValidationException e) {
+        } catch (ValidationException validationException) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
             render(view: "show", params: params)
-        } catch (RuntimeException e) {
+        } catch (RuntimeException runtimeException) {
             render(view: "show", params: params)
         }
     }
@@ -52,7 +52,7 @@ class PayerController {
             payerService.delete(params.id.toLong())
             flash.message = "Pagador excluído com sucesso"
             redirect(action: "index")
-        } catch (Exception e) {
+        } catch (Exception exception) {
             flash.message = "Não foi possível excluir pagador"
             redirect(action: "index")
         }
