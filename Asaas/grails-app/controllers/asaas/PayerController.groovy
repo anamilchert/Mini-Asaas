@@ -22,12 +22,16 @@ class PayerController {
             PayerSaveAdapter payerSaveAdapter = new PayerSaveAdapter(params)
             Payer payer = payerService.save(payerSaveAdapter)
             redirect(action:"show", id:payer.id)
-        } catch (ValidationException e) {
+        } catch (ValidationException validationException) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
-            render(view: "show", params: params)
-        } catch (RuntimeException e) {
-            render(view: "show", params: params)
+            redirect(action: "index")
+        } catch (RuntimeException runtimeException) {
+            flash.message = "Ocorreu um erro ao tentar criar um pagador. Por favor, tente novamente"
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Ocorreu um erro inesperado ao tentar criar um pagador. Por favor, tente novamente"
+            redirect(action: "index")
         }
     }
 
