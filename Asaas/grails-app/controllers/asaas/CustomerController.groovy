@@ -19,7 +19,7 @@ class CustomerController {
             } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-            render(view: 'show', model: [params: params])
+            render(view: "show", model: [params: params])
         }
     }
 
