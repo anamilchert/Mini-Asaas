@@ -23,7 +23,7 @@ class Address extends BaseEntity {
         number blank: false, min: 1
         province blank: false
         city blank: false
-        state blank: false
+        state blank: false, size: 2..2
         zipCode blank: false, size: 8..8
     }
 
