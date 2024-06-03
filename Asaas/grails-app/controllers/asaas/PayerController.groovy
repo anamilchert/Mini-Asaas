@@ -23,7 +23,7 @@ class PayerController {
             Payer payer = payerService.save(payerSaveAdapter)
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+            String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
             render(view: "show", params: params)
         } catch (RuntimeException runtimeException) {
