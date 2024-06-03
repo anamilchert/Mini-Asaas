@@ -16,7 +16,7 @@ import grails.validation.ValidationException
 class PayerService {
 
     public Payer save(PayerAdapter payerAdapter) {
-        Payer validatedPayer = validate(payerAdapter)
+        Payer validatedPayer = validate(payerAdapter, false)
         if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
 
         Address address = new Address()
@@ -71,14 +71,14 @@ class PayerService {
         return payerList
     }
 
-    private Payer validate(PayerAdapter payerAdapter, Boolean update = false) {
+    private Payer validate(PayerAdapter payerAdapter, Boolean isUpdate) {
         Payer payer = new Payer()
 
-        if (!update && !payerAdapter.customerId) throw new RuntimeException("Customer id não informado")
+        if (!isUpdate && !payerAdapter.customerId) throw new RuntimeException("Customer id não informado")
 
-        if (!update && !payerAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
+        if (!isUpdate && !payerAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!update && !payerAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+        if (!isUpdate && !payerAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
         if (!payerAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
 
