@@ -17,7 +17,7 @@ class CpfCnpjUtils {
     }
     
     public static Boolean isValidCpfCnpj(String cpfCnpj) {
-        cpfCnpj = Utils.removeNonNumeric(cpfCnpj)
+        cpfCnpj = removeNonNumeric(cpfCnpj)
 
         if (cpfCnpj == null || (cpfCnpj.length() != CPF_LENGTH && cpfCnpj.length() != CNPJ_LENGTH)) return false
 
@@ -31,7 +31,7 @@ class CpfCnpjUtils {
     public static Boolean isCnpj(String cpfCnpj) {
         if (!cpfCnpj) return false
 
-        cpfCnpj = Utils.removeNonNumeric(cpfCnpj)
+        cpfCnpj = removeNonNumeric(cpfCnpj)
 
         return cpfCnpj.length() == CNPJ_LENGTH
     }
@@ -39,7 +39,7 @@ class CpfCnpjUtils {
     public static Boolean isCpf(String cpfCnpj) {
         if (!cpfCnpj) return false
 
-        cpfCnpj = Utils.removeNonNumeric(cpfCnpj)
+        cpfCnpj = removeNonNumeric(cpfCnpj)
 
         return cpfCnpj.length() == CPF_LENGTH
     }
@@ -160,5 +160,19 @@ class CpfCnpjUtils {
                 return false
             }
         } else return false
+
+         private static String removeNonNumeric(String input) {
+                if (input == null || input.isEmpty()) {
+                    return "";
+                }
+
+                StringBuilder builder = new StringBuilder();
+                for (char c : input.toCharArray()) {
+                    if (Character.isDigit(c)) {
+                        builder.append(c);
+                    }
+                }
+                return builder.toString();
+            }
+        }
     }
-}
