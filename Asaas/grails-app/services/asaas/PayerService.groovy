@@ -73,22 +73,20 @@ class PayerService {
 
         if (!isUpdate && !payerAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!isUpdate && !payerAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+        if (!isUpdate && !payerAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
+
+        if (!isUpdate && !(payerAdapter.personType in PersonType.values())) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
         if (!payerAdapter.name) DomainUtils.addError(payer, "Nome é obrigatório")
 
         if (!payerAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
-
-        if (!payerAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
-
-        if (!(payerAdapter.personType in PersonType.values())) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
         if (hasValidAddress(payerAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
     }
 
-    private static Boolean hasValidAddress(PayerAdapter payerAdapter) {
+    private Boolean hasValidAddress(PayerAdapter payerAdapter) {
         if (!payerAdapter.street) return true
 
         if (!payerAdapter.number) return true
