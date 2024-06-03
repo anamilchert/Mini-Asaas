@@ -31,7 +31,7 @@ class PaymentController {
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
             redirect(action: "show")
         } catch (Exception exception) {
-            flash.message = "Houve um error inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
+            flash.message = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
             redirect(action: "index")
         }
     }
