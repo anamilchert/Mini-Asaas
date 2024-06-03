@@ -41,8 +41,8 @@
         <label for="complement">Complemento:</label>
         <input type="text" name="address.complement" id="complement"/><br/>
 
-        <label for="CEP">CEP:</label>
-        <input type="text" name="address.CEP" id="CEP" required/><br/>
+        <label for="zipCode">CEP:</label>
+        <input type="text" name="address.zipCode" id="CEP" required/><br/>
 
         <input type="submit" value="Salvar"/>
     </g:form>

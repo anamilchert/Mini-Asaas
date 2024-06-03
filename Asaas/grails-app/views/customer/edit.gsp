@@ -60,8 +60,8 @@
         </div>
 
         <div class="form-group">
-            <label for="CEP">CEP:</label>
-            <g:textField name="address.CEP" value="${customer?.address?.CEP}" class="form-control" required=""/>
+            <label for="zipCode">zipCode:</label>
+            <g:textField name="address.zipCode" value="${customer?.address?.zipCode}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">

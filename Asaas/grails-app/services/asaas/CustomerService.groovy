@@ -31,7 +31,7 @@ class CustomerService {
             city: params.address.city,
             state: params.address.state,
             complement: params.address.complement,
-            CEP: params.address.CEP
+            zipCode: params.address.zipCode
         )
 
         customer.address = address
@@ -60,7 +60,7 @@ class CustomerService {
             customer.address.city = params.address.city ?: customer.address.city
             customer.address.state = params.address.state ?: customer.address.state
             customer.address.complement = params.address.complement ?: customer.address.complement
-            customer.address.CEP = params.address.CEP ?: customer.address.CEP
+            customer.address.zipCode = params.address.zipCode ?: customer.address.zipCode
         }
 
         customer.save(failOnError: true)
@@ -80,7 +80,7 @@ class CustomerService {
         }
         if (!params.address || !params.address.street || !params.address.number ||
             !params.address.neighborhood || !params.address.city || !params.address.state ||
-            !params.address.CEP) {
+            !params.address.zipCode) {
             DomainUtils.addError(customer, "Endereço incompleto")
         }
 

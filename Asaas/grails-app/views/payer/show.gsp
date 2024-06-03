@@ -48,7 +48,7 @@
     </div>
 
     <div>
-      <input type="text" value="${payer.address.CEP}">
+      <input type="text" value="${payer.address.zipCode}">
     </div>
 
     <div>

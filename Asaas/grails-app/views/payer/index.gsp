@@ -85,9 +85,9 @@
     </div>
 
     <div>
-      <label for="CEP">
+      <label for="zipCode">
         CEP
-        <input type="text" name="CEP">
+        <input type="text" name="zipCode">
       </label>
     </div>
 

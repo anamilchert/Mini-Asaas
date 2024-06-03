@@ -24,7 +24,7 @@ class PayerService {
         address.city = parsedParams.city
         address.state = parsedParams.state
         address.complement = parsedParams.complement
-        address.CEP = parsedParams.CEP
+        address.zipCode = parsedParams.zipCode
 
         Payer payer = new Payer()
         payer.name = parsedParams.name
@@ -59,7 +59,7 @@ class PayerService {
         parsedParams.city = params.city
         parsedParams.state = params.state
         parsedParams.complement = params.complement
-        parsedParams.CEP = params.CEP
+        parsedParams.zipCode = params.zipCode
         parsedParams.customerId = params.customerId ? (params.customerId as Long) : null
 
         return parsedParams
@@ -90,7 +90,7 @@ class PayerService {
 
         if (!params.street || !params.number || 
                 !params.neighborhood || !params.city || !params.state || 
-                !params.CEP) 
+                !params.zipCode) 
         {
             payer.errors.reject("address", null, "Endereço incompleto")
         }
