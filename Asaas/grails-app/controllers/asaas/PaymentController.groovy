@@ -1,6 +1,6 @@
 package asaas
 
-import asaas.adapter.PaymentSaveAdapter
+import asaas.adapter.PaymentAdapter
 import asaas.Payer
 import asaas.PayerService
 import asaas.Payment
@@ -23,8 +23,8 @@ class PaymentController {
 
     def save() {
         try {
-            PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params)
-            Payment payment = paymentService.save(paymentSaveAdapter)
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Payment payment = paymentService.save(paymentAdapter)
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
@@ -33,6 +33,18 @@ class PaymentController {
         } catch (Exception exception) {
             flash.message = "Houve um error inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
             redirect(action: "index")
+        }
+    }
+
+    def update() {
+        try {
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Payment payment = paymentService.save(paymentAdapter)
+            redirect(action:"show", id:payment.id)
+        } catch (ValidationException e) {
+            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+            flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
+            render(view: "show", id: params.id)
         }
     }
 

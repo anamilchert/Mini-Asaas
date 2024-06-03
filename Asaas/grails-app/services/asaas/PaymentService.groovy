@@ -1,6 +1,6 @@
 package asaas
 
-import asaas.adapter.PaymentSaveAdapter
+import asaas.adapter.PaymentAdapter
 import asaas.Customer
 import asaas.Payer
 import asaas.Payment
@@ -18,20 +18,42 @@ import java.text.SimpleDateFormat
 @Transactional
 class PaymentService {
   
-    public Payment save(PaymentSaveAdapter paymentSaveAdapter) {
-        Payment validatedPayment = validateSave(paymentSaveAdapter)
-
+    public Payment save(PaymentAdapter paymentAdapter) {
+        Payment validatedPayment = validate(paymentAdapter)
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
 
         Payment payment = new Payment()
         
-        payment.value = paymentSaveAdapter.value
-        payment.dueDate = paymentSaveAdapter.dueDate
-        payment.type = paymentSaveAdapter.type
-        payment.status = paymentSaveAdapter.status
-        payment.customer = Customer.load(paymentSaveAdapter.customerId)
-        payment.payer = Payer.load(paymentSaveAdapter.payerId)
+        payment.value = paymentAdapter.value
+        payment.dueDate = paymentAdapter.dueDate
+        payment.type = paymentAdapter.type
+        payment.status = paymentAdapter.status
+        payment.customer = Customer.load(paymentAdapter.customerId)
+        payment.payer = Payer.load(paymentAdapter.payerId)
         
+        payment.save(failOnError: true)
+
+        return payment
+    }
+
+    public Payment update(PaymentAdapter paymentAdapter) {
+        public payment = PaymentRepository.query([id: id]).get() as Payment
+
+        Payment validatedPayment = validate(paymentAdapter, true)
+        if (validatedPayment.hasErrors()) throw new ValidationException("Error ao editar uma cobrança", validatedPayment.errors)
+
+        if (!payment) {
+            throw new RuntimeException("Pagador não encontrado")
+        }
+
+        if (payment.status != PaymentStatus.PENDING) {
+            throw new RuntimeException("Não é possível atualizar a cobrança")
+        }
+
+        payment.value = paymentAdapter.value
+        payment.dueDate = paymentAdapter.dueDate
+        payment.type = paymentAdapter.type
+
         payment.save(failOnError: true)
 
         return payment
@@ -52,34 +74,34 @@ class PaymentService {
         return paymentList
     }
 
-    private Payment validateSave(PaymentSaveAdapter paymentSaveAdapter) {
+    private Payment validate(PaymentAdapter paymentAdapter, Boolean update = false) {
         Payment payment = new Payment()
         
         Date currentDate = new Date()
 
-        if (!paymentSaveAdapter.value) {
+        if (!paymentAdapter.value) {
             DomainUtils.addError(payment, "Informe um valor válido")
         }
 
-        if (!paymentSaveAdapter.dueDate) {
+        if (!paymentAdapter.dueDate) {
             DomainUtils.addError(payment, "Informe um valor válido")
-        } else if (paymentSaveAdapter.dueDate < currentDate) {
+        } else if (paymentAdapter.dueDate < currentDate) {
             payment.errors.reject("dueDate", null, "Informe uma data superior à atual")
         }
 
-        if (!paymentSaveAdapter.type) {
+        if (!paymentAdapter.type) {
             DomainUtils.addError(payment, "Tipo de pagamento inválido")
         }
 
-        if (!paymentSaveAdapter.status) {
+        if (!update && !paymentAdapter.status) {
             DomainUtils.addError(payment, "Status de pagamento inválido")
         }
 
-        if (!paymentSaveAdapter.customerId) {
+        if (!update && !paymentAdapter.customerId) {
             DomainUtils.addError(payment, "Informe um cliente válido")
         }
 
-        if (!paymentSaveAdapter.payerId) {
+        if (!update && !paymentAdapter.payerId) {
             DomainUtils.addError(payment, "Informe um pagador válido")
         }
 
