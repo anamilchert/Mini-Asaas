@@ -13,7 +13,7 @@
 
     <label for="">
       Cliente
-      <g:select name="customerId" from="${customers}" optionKey="id" optionValue="name"
+      <g:select name="customerId" from="${customerList}" optionKey="id" optionValue="name"
       noSelection="['':'Selecione um cliente']" />
     </label>
     <div>
