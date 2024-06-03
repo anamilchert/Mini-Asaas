@@ -13,8 +13,8 @@ class PayerController {
     PayerService payerService
 
     def index() {
-        List<Customer> customers = Customer.list()
-        return [customers: customers]
+        List<Customer> customerList = Customer.list()
+        return [customerList: customerList]
     }
 
     def save() {
@@ -27,7 +27,11 @@ class PayerController {
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
             render(view: "show", params: params)
         } catch (RuntimeException runtimeException) {
-            render(view: "show", params: params)
+            flash.message = "Ocorreu um erro ao tentar criar um pagador. Por favor, tente novamente"
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Ocorreu um erro inesperado ao tentar criar um pagador. Por favor, tente novamente"
+            redirect(action: "index")
         }
     }
 
@@ -43,7 +47,7 @@ class PayerController {
     }
 
     def list() {
-        List<Payer> payerList = payerService.list(params.customerId.toLong())
+        List<Payer> payerList = payerService.listByCustomer(params.customerId.toLong())
         return [payerList: payerList]
     }
 

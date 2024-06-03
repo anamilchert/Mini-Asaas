@@ -16,7 +16,7 @@ import grails.validation.ValidationException
 class PayerService {
 
     public Payer save(PayerSaveAdapter payerSaveAdapter) {
-        Payer validatedPayer = validationSave(payerSaveAdapter)
+        Payer validatedPayer = validateSave(payerSaveAdapter)
         
         if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
 
@@ -43,10 +43,11 @@ class PayerService {
         return payer
     }
 
-    public List<Payer> list(Long customerId) {
+    public List<Payer> listByCustomer(Long customerId) {
         List<Payer> payerList = Payer.query(customerId: customerId).list() as List<Payer>
         return payerList
     }
+
 
     public void delete(Long payerId) {
         Payer payer = Payer.get(payerId)
@@ -56,7 +57,7 @@ class PayerService {
         payer.save(failOnError: true)
     }
 
-    private Payer validationSave(PayerSaveAdapter payerSaveAdapter) {
+    private Payer validateSave(PayerSaveAdapter payerSaveAdapter) {
         Payer payer = new Payer()
 
         if (!payerSaveAdapter.customerId) throw new RuntimeException("Customer id não informado")
