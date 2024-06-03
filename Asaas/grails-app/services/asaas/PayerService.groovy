@@ -56,7 +56,9 @@ class PayerService {
 
         if (!payerSaveAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+        if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
+
+        if (!(payerSaveAdapter.personType in PersonType.values())) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
         if (hasValidAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
