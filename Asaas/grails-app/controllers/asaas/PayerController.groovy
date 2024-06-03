@@ -47,7 +47,7 @@ class PayerController {
     }
 
     def list() {
-        List<Payer> payerList = payerService.listByCustomer(params.customerId.toLong())
+        List<Payer> payerList = Payer.query(customerId: params.customerId.toLong()).list()
         return [payerList: payerList]
     }
 

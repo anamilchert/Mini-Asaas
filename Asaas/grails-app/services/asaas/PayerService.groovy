@@ -43,12 +43,6 @@ class PayerService {
         return payer
     }
 
-    public List<Payer> listByCustomer(Long customerId) {
-        List<Payer> payerList = Payer.query(customerId: customerId).list() as List<Payer>
-        return payerList
-    }
-
-
     public void delete(Long payerId) {
         Payer payer = Payer.get(payerId)
         if (!payer) throw new RuntimeException("Pagador não encontrado")
@@ -70,14 +64,16 @@ class PayerService {
 
         if (!payerSaveAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+        if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
 
-        if (hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+        if (!(payerSaveAdapter.personType in PersonType.values())) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+
+        if (hasValidAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
     }
 
-    private static Boolean hasIncompleteAddress(PayerSaveAdapter payerSaveAdapter) {
+    private static Boolean hasValidAddress(PayerSaveAdapter payerSaveAdapter) {
         if (!payerSaveAdapter.street) return true
 
         if (!payerSaveAdapter.number) return true
