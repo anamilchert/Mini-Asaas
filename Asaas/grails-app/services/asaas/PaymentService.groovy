@@ -19,7 +19,7 @@ import java.text.SimpleDateFormat
 class PaymentService {
   
     public Payment save(PaymentAdapter paymentAdapter) {
-        Payment validatedPayment = validate(paymentAdapter)
+        Payment validatedPayment = validate(paymentAdapter, false)
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
 
         Payment payment = new Payment()
@@ -74,7 +74,7 @@ class PaymentService {
         return paymentList
     }
 
-    private Payment validate(PaymentAdapter paymentAdapter, Boolean update = false) {
+    private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
         Payment payment = new Payment()
         
         Date currentDate = new Date()
