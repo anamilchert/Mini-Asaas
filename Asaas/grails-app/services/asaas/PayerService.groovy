@@ -66,11 +66,6 @@ class PayerService {
         return payer
     }
 
-    public List<Payer> listByCustomer(Long customerId) {
-        List<Payer> payerList = Payer.query(customerId: customerId).list() as List<Payer>
-        return payerList
-    }
-
     private Payer validate(PayerAdapter payerAdapter, Boolean isUpdate) {
         Payer payer = new Payer()
 
@@ -84,14 +79,16 @@ class PayerService {
 
         if (!payerAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
 
-        if (!payerAdapter.phone) DomainUtils.addError(payer, "Phone é obrigatório")
+        if (!payerAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
 
-        if (hasIncompleteAddress(payerAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+        if (!(payerAdapter.personType in PersonType.values())) DomainUtils.addError(payer, "Tipo de pessoa inválido")
+
+        if (hasValidAddress(payerAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
     }
 
-    private Boolean hasIncompleteAddress(PayerAdapter payerAdapter) {
+    private static Boolean hasValidAddress(PayerAdapter payerAdapter) {
         if (!payerAdapter.street) return true
 
         if (!payerAdapter.number) return true
