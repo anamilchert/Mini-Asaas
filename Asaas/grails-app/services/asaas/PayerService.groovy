@@ -43,11 +43,6 @@ class PayerService {
         return payer
     }
 
-    public List<Payer> listByCustomer(Long customerId) {
-        List<Payer> payerList = Payer.query(customerId: customerId).list() as List<Payer>
-        return payerList
-    }
-
     private Payer validateSave(PayerSaveAdapter payerSaveAdapter) {
         Payer payer = new Payer()
 
