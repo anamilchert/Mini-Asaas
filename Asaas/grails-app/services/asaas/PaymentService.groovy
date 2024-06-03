@@ -6,7 +6,6 @@ import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
 import asaas.PaymentType
-import asaas.repositories.PaymentRepository
 import asaas.utils.DomainUtils
 
 import grails.compiler.GrailsCompileStatic
@@ -57,21 +56,6 @@ class PaymentService {
         payment.save(failOnError: true)
 
         return payment
-    }
-
-    public Payment getPaymentById(Long id) {
-        Payment payment = PaymentRepository.query([id: id]).get() as Payment
-        return payment
-    }
-
-    public List<Payment> listCustomerPayments(Long customerId) {
-        List<Payment> paymentList = PaymentRepository.query([customerId: customerId]).list() as List<Payment>
-        return paymentList
-    }
-
-    public List<Payment> listCustomerAndPayerPayments(Long customerId, Long payerId) {
-        List<Payment> paymentList = PaymentRepository.query([customerId: customerId, payerId: payerId]).list() as List<Payment>
-        return paymentList
     }
 
     private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
