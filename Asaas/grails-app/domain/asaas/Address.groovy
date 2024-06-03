@@ -8,7 +8,7 @@ class Address extends BaseEntity {
 
     Integer number
 
-    String neighborhood
+    String province
 
     String city
 
@@ -21,7 +21,7 @@ class Address extends BaseEntity {
     static constraints = {
         street blank: false
         number blank: false, min: 1
-        neighborhood blank: false
+        province blank: false
         city blank: false
         state blank: false
         zipCode blank: false, size: 8..8

@@ -20,7 +20,7 @@ class PayerService {
         Address address = new Address()
         address.street = parsedParams.street
         address.number = parsedParams.number
-        address.neighborhood = parsedParams.neighborhood
+        address.province = parsedParams.province
         address.city = parsedParams.city
         address.state = parsedParams.state
         address.complement = parsedParams.complement
@@ -55,7 +55,7 @@ class PayerService {
         parsedParams.personType = params.personType instanceof String ? PersonType.convert(params.personType) : null
         parsedParams.street = params.street
         parsedParams.number = params.number ? (params.number as Integer): null
-        parsedParams.neighborhood = params.neighborhood 
+        parsedParams.province = params.province 
         parsedParams.city = params.city
         parsedParams.state = params.state
         parsedParams.complement = params.complement
@@ -89,7 +89,7 @@ class PayerService {
         }
 
         if (!params.street || !params.number || 
-                !params.neighborhood || !params.city || !params.state || 
+                !params.province || !params.city || !params.state || 
                 !params.zipCode) 
         {
             payer.errors.reject("address", null, "Endereço incompleto")

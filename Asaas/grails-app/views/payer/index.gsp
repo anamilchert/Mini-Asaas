@@ -72,9 +72,9 @@
     </div>
 
     <div>
-      <label for="neighborhood">
+      <label for="province">
         Bairro
-        <input type="text" name="neighborhood">
+        <input type="text" name="province">
       </label>
     </div>
     <div>

@@ -40,7 +40,7 @@
     </div>
 
     <div>
-      <input type="text" value="${payer.address.neighborhood}">
+      <input type="text" value="${payer.address.province}">
     </div>
 
     <div>

@@ -29,8 +29,8 @@
         <label for="number">Número:</label>
         <input type="text" name="address.number" id="number" required/><br/>
 
-        <label for="neighborhood">Bairro:</label>
-        <input type="text" name="address.neighborhood" id="neighborhood" required/><br/>
+        <label for="province">Bairro:</label>
+        <input type="text" name="address.province" id="province" required/><br/>
 
         <label for="city">Cidade:</label>
         <input type="text" name="address.city" id="city" required/><br/>

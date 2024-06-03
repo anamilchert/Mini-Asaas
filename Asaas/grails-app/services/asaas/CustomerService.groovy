@@ -27,7 +27,7 @@ class CustomerService {
         Address address = new Address(
             street: params.address.street,
             number: (params.address.number as Integer),
-            neighborhood: params.address.neighborhood,
+            province: params.address.province,
             city: params.address.city,
             state: params.address.state,
             complement: params.address.complement,
@@ -56,7 +56,7 @@ class CustomerService {
         if (params.address) {
             customer.address.street = params.address.street ?: customer.address.street
             customer.address.number = params.address.number ? (params.address.number as Integer) : customer.address.number
-            customer.address.neighborhood = params.address.neighborhood ?: customer.address.neighborhood
+            customer.address.province = params.address.province ?: customer.address.province
             customer.address.city = params.address.city ?: customer.address.city
             customer.address.state = params.address.state ?: customer.address.state
             customer.address.complement = params.address.complement ?: customer.address.complement
@@ -79,7 +79,7 @@ class CustomerService {
             DomainUtils.addError(customer, "CPF/CNPJ é obrigatório")
         }
         if (!params.address || !params.address.street || !params.address.number ||
-            !params.address.neighborhood || !params.address.city || !params.address.state ||
+            !params.address.province || !params.address.city || !params.address.state ||
             !params.address.zipCode) {
             DomainUtils.addError(customer, "Endereço incompleto")
         }
