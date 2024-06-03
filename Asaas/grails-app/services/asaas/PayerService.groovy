@@ -63,12 +63,12 @@ class PayerService {
 
         if (!payerSaveAdapter.personType) DomainUtils.addError(payer, "Tipo de pessoa inválido")
 
-        if (hasIncompleteAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+        if (hasValidAddress(payerSaveAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
         return payer
     }
 
-    private static Boolean hasIncompleteAddress(PayerSaveAdapter payerSaveAdapter) {
+    private static Boolean hasValidAddress(PayerSaveAdapter payerSaveAdapter) {
         if (!payerSaveAdapter.street) return true
 
         if (!payerSaveAdapter.number) return true
