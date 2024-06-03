@@ -37,7 +37,7 @@ class PaymentService {
         return payment
     }
 
-    public Payment getPayment(Long id) {
+    public Payment getPaymentById(Long id) {
         Payment payment = PaymentRepository.query([id: id]).get() as Payment
         return payment
     }
