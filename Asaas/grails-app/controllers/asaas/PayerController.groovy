@@ -24,7 +24,7 @@ class PayerController {
             Payer payer = payerService.save(payerAdapter)
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+            String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
             redirect(view: "index")
         } catch (RuntimeException runtimeException) {
@@ -56,7 +56,7 @@ class PayerController {
             flash.message = "Os dados foram atualizados com sucesso!"
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+            String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível atualizar os dados: $errorsMessage"
             redirect(action: "show", id: params.id)
         } catch (RuntimeException runtimeException) {
