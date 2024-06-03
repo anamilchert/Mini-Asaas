@@ -30,17 +30,17 @@ class PaymentController {
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
-            redirect(action: "show")
+            redirect(action: "index",  params: [customerId: params.customerId])
         } catch (Exception exception) {
             flash.message = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
-            redirect(action: "index")
+            redirect(action: "index",  params: [customerId: params.customerId])
         }
     }
 
     def update() {
         try {
             PaymentAdapter paymentAdapter = new PaymentAdapter(params)
-            Payment payment = paymentService.save(paymentAdapter)
+            Payment payment = paymentService.save(paymentAdapter, params.id.toLong())
             redirect(action:"show", id:payment.id)
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")

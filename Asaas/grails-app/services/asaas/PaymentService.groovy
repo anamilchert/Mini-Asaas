@@ -6,6 +6,7 @@ import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
 import asaas.PaymentType
+import asaas.repositories.PaymentRepository
 import asaas.utils.DomainUtils
 
 import grails.compiler.GrailsCompileStatic
@@ -35,8 +36,8 @@ class PaymentService {
         return payment
     }
 
-    public Payment update(PaymentAdapter paymentAdapter) {
-        public payment = PaymentRepository.query([id: id]).get() as Payment
+    public Payment update(PaymentAdapter paymentAdapter, Long paymentId) {
+        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
 
         Payment validatedPayment = validate(paymentAdapter, true)
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao editar uma cobrança", validatedPayment.errors)
@@ -63,31 +64,18 @@ class PaymentService {
         
         Date currentDate = new Date()
 
-        if (!paymentAdapter.value) {
-            DomainUtils.addError(payment, "Informe um valor válido")
-        }
+        if (!paymentAdapter.value) DomainUtils.addError(payment, "Informe um valor válido")
 
-        if (!paymentAdapter.dueDate) {
-            DomainUtils.addError(payment, "Informe um valor válido")
-        } else if (paymentAdapter.dueDate < currentDate) {
-            payment.errors.reject("dueDate", null, "Informe uma data superior à atual")
-        }
+        if (!paymentAdapter.dueDate) DomainUtils.addError(payment, "Informe um valor válido")
+        else if (paymentAdapter.dueDate < currentDate) DomainUtils.addError(payment, "Informe uma data superior à atual")
+        
+        if (!paymentAdapter.type) DomainUtils.addError(payment, "Tipo de pagamento inválido")
 
-        if (!paymentAdapter.type) {
-            DomainUtils.addError(payment, "Tipo de pagamento inválido")
-        }
+        if (!isUpdate && !paymentAdapter.status) DomainUtils.addError(payment, "Status de pagamento inválido")
 
-        if (!update && !paymentAdapter.status) {
-            DomainUtils.addError(payment, "Status de pagamento inválido")
-        }
+        if (!isUpdate && !paymentAdapter.customerId) DomainUtils.addError(payment, "Informe um cliente válido")
 
-        if (!update && !paymentAdapter.customerId) {
-            DomainUtils.addError(payment, "Informe um cliente válido")
-        }
-
-        if (!update && !paymentAdapter.payerId) {
-            DomainUtils.addError(payment, "Informe um pagador válido")
-        }
+        if (!isUpdate && !paymentAdapter.payerId) DomainUtils.addError(payment, "Informe um pagador válido")
 
         return payment
     }
