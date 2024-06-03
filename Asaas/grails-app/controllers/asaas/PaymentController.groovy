@@ -6,6 +6,7 @@ import asaas.PayerService
 import asaas.Payment
 import asaas.PaymentService
 import asaas.PaymentType
+import asaas.repositories.PaymentRepository
 
 import grails.validation.ValidationException
 
@@ -37,8 +38,8 @@ class PaymentController {
     }
 
     def show() {
-        Payment payment = paymentService.getPaymentById(params.id.toLong())
-
+        Payment payment = PaymentRepository.query([id: params.id.toLong()]).get()
+        
         if (payment) {
             return [payment: payment]
         }
@@ -47,12 +48,13 @@ class PaymentController {
     }
 
     def list() {
-        List<Payment> paymentList = paymentService.listCustomerPayments(params.customerId.toLong())
+        List<Payment> paymentList = PaymentRepository.query([customerId: params.customerId.toLong()]).list()
         return [paymentList: paymentList]
     }
 
     def fetchAllCustomerAndPayerPayment() {
-        List<Payment> paymentList = paymentService.listCustomerAndPayerPayments(params.customerId.toLong(), params.payerId.toLong())
+        List<Payment> paymentList = PaymentRepository
+            .query([customerId: params.customerId.toLong(), payerId: params.payerId.toLong()]).list()
         return [paymentList: paymentList]
     }
 }
