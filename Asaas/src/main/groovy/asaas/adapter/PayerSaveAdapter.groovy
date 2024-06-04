@@ -21,7 +21,7 @@ class PayerSaveAdapter {
 
     Integer number
 
-    String neighborhood
+    String province
 
     String city 
 
@@ -29,7 +29,7 @@ class PayerSaveAdapter {
 
     String complement
 
-    String CEP
+    String zipCode
 
     Long customerId
 
@@ -41,11 +41,11 @@ class PayerSaveAdapter {
         this.personType = PersonType.convert(params.personType as String)
         this.street = params.street
         this.number = params.number as Integer
-        this.neighborhood = params.neighborhood
+        this.province = params.province
         this.city = params.city
         this.state = params.state
         this.complement = params.complement
-        this.CEP = params.CEP
+        this.zipCode = params.zipCode
         this.customerId = params.customerId as Long
     }
 }

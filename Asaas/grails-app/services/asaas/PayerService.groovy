@@ -70,13 +70,13 @@ class PayerService {
 
         if (!payerSaveAdapter.number) return true
 
-        if (!payerSaveAdapter.neighborhood) return true
+        if (!payerSaveAdapter.province) return true
 
         if (!payerSaveAdapter.city) return true
 
         if (!payerSaveAdapter.state) return true
 
-        if (!payerSaveAdapter.CEP) return true
+        if (!payerSaveAdapter.zipCode) return true
 
         return false
     }
