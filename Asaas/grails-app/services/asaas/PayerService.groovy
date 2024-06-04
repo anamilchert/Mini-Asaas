@@ -23,11 +23,11 @@ class PayerService {
         Address address = new Address()
         address.street = payerSaveAdapter.street
         address.number = payerSaveAdapter.number
-        address.neighborhood = payerSaveAdapter.neighborhood
+        address.province = payerSaveAdapter.province
         address.city = payerSaveAdapter.city
         address.state = payerSaveAdapter.state
         address.complement = payerSaveAdapter.complement
-        address.CEP = payerSaveAdapter.CEP
+        address.zipCode = payerSaveAdapter.zipCode
 
         Payer payer = new Payer()
         payer.name = payerSaveAdapter.name
