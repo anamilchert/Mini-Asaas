@@ -8,7 +8,7 @@ class Address extends BaseEntity {
 
     Integer number
 
-    String neighborhood
+    String province
 
     String city
 
@@ -16,15 +16,15 @@ class Address extends BaseEntity {
 
     String complement
 
-    String CEP
+    String zipCode
 
     static constraints = {
         street blank: false
         number blank: false, min: 1
-        neighborhood blank: false
+        province blank: false
         city blank: false
         state blank: false
-        CEP blank: false, size: 8..8
+        zipCode blank: false, size: 8..8
     }
 
     static namedQueries = {

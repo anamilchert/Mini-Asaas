@@ -22,11 +22,11 @@ class PayerService {
         Address address = new Address()
         address.street = payerAdapter.street
         address.number = payerAdapter.number
-        address.neighborhood = payerAdapter.neighborhood
+        address.province = payerAdapter.province
         address.city = payerAdapter.city
         address.state = payerAdapter.state
         address.complement = payerAdapter.complement
-        address.CEP = payerAdapter.CEP
+        address.zipCode = payerAdapter.zipCode
 
         Payer payer = new Payer()
         payer.name = payerAdapter.name
@@ -91,13 +91,13 @@ class PayerService {
 
         if (!payerAdapter.number) return true
 
-        if (!payerAdapter.neighborhood) return true
+        if (!payerAdapter.province) return true
 
         if (!payerAdapter.city) return true
 
         if (!payerAdapter.state) return true
 
-        if (!payerAdapter.CEP) return true
+        if (!payerAdapter.zipCode) return true
 
         return false
     }

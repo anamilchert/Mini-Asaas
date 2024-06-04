@@ -53,7 +53,7 @@
             </div>
             <div>
                 <label for="neighborhood">Bairro:</label>
-                <g:textField id="neighborhoodField" name="neighborhood" value="${payer.address.neighborhood}"  />
+                <g:textField id="neighborhoodField" name="neighborhood" value="${payer.address.province}"  />
             </div>
             <div>
                 <label for="city">Cidade:</label>
@@ -61,7 +61,7 @@
             </div>
             <div>
                 <label for="CEP">CEP:</label>
-                <g:textField id="CEPField" name="CEP" value="${payer.address.CEP}"  />
+                <g:textField id="CEPField" name="CEP" value="${payer.address.zipCode}"  />
             </div>
             <div>
                 <label for="complement">Complemento:</label>
