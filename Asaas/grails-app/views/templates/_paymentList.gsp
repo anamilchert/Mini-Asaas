@@ -1,11 +1,12 @@
 <g:if test="${ paymentList }">
     <g:each var="payment" in="${ paymentList }">
-       <div>
-         <div>${payment.value}</div>
-         <div>${payment.status}</div>
-         <div>${payment.type}</div>
-         <div>-------------------------</div>
-       </div>
+        <div>   
+            <div>Pagador: ${payment.payer.name}</div>
+            <div>Valor: ${payment.value}</div>
+            <div>Status: ${payment.status}</div>
+            <div>Forma de Pagamento: ${payment.type}</div>
+        </div>
+        <br>
     </g:each>
  </g:if>
  <g:else>
