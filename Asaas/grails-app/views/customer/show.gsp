@@ -16,11 +16,11 @@
         <h2>Endereço</h2>
         <strong>Rua:</strong> ${customer.address.street}<br/>
         <strong>Número:</strong> ${customer.address.number}<br/>
-        <strong>Bairro:</strong> ${customer.address.neighborhood}<br/>
+        <strong>Bairro:</strong> ${customer.address.province}<br/>
         <strong>Cidade:</strong> ${customer.address.city}<br/>
         <strong>Estado:</strong> ${customer.address.state}<br/>
         <strong>Complemento:</strong> ${customer.address.complement}<br/>
-        <strong>CEP:</strong> ${customer.address.CEP}<br/>
+        <strong>CEP:</strong> ${customer.address.zipCode}<br/>
      </g:if>
     </div>
      <g:link action="edit" id="${customer?.id}" class="btn btn-primary">Editar Cliente</g:link>

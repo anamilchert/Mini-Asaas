@@ -40,8 +40,8 @@
         </div>
 
         <div class="form-group">
-            <label for="neighborhood">Bairro:</label>
-            <g:textField name="address.neighborhood" value="${customer?.address?.neighborhood}" class="form-control" required=""/>
+            <label for="province">Bairro:</label>
+            <g:textField name="address.province" value="${customer?.address?.province}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">
@@ -60,8 +60,8 @@
         </div>
 
         <div class="form-group">
-            <label for="CEP">CEP:</label>
-            <g:textField name="address.CEP" value="${customer?.address?.CEP}" class="form-control" required=""/>
+            <label for="zipCode">zipCode:</label>
+            <g:textField name="address.zipCode" value="${customer?.address?.zipCode}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">
