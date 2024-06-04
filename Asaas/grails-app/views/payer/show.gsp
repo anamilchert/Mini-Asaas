@@ -52,16 +52,16 @@
                 <g:textField id="stateField" name="state" value="${payer.address.state}"  />
             </div>
             <div>
-                <label for="neighborhood">Bairro:</label>
-                <g:textField id="neighborhoodField" name="neighborhood" value="${payer.address.province}"  />
+                <label for="province">Bairro:</label>
+                <g:textField id="provinceField" name="province" value="${payer.address.province}"  />
             </div>
             <div>
                 <label for="city">Cidade:</label>
                 <g:textField id="cityField" name="city" value="${payer.address.city}"  />
             </div>
             <div>
-                <label for="CEP">CEP:</label>
-                <g:textField id="CEPField" name="CEP" value="${payer.address.zipCode}"  />
+                <label for="zipCode">CEP:</label>
+                <g:textField id="zipCodeField" name="zipCode" value="${payer.address.zipCode}"  />
             </div>
             <div>
                 <label for="complement">Complemento:</label>

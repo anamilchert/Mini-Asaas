@@ -55,11 +55,11 @@ class PayerService {
         payer.phone = payerAdapter.phone
         payer.address.street = payerAdapter.street
         payer.address.number = payerAdapter.number
-        payer.address.neighborhood = payerAdapter.neighborhood
+        payer.address.province = payerAdapter.province
         payer.address.city = payerAdapter.city
         payer.address.state = payerAdapter.state
         payer.address.complement = payerAdapter.complement
-        payer.address.CEP = payerAdapter.CEP
+        payer.address.zipCode = payerAdapter.zipCode
 
         payer.save(failOnError: true)
 
