@@ -5,6 +5,9 @@ import asaas.utils.CustomDateUtils
 import asaas.PaymentStatus
 import asaas.PaymentType
 
+import grails.compiler.GrailsCompileStatic
+
+@GrailsCompileStatic
 class PaymentAdapter {
 
   Integer value
@@ -20,11 +23,11 @@ class PaymentAdapter {
   Long payerId
 
   public PaymentAdapter(Map params) {
-    this.value = CurrencyUtils.fromStringToInteger(params.value)
-    this.dueDate = CustomDateUtils.setTimeToEndOfDay(params.dueDate)
-    this.type = PaymentType.convert(params.type)
-    this.status = PaymentStatus.PENDING
-    this.customerId = params.customerId.toLong()
-    this.payerId = params.payerId.toLong()
+    this.value = CurrencyUtils.fromStringToInteger(params.value as String)
+    this.dueDate = CustomDateUtils.setTimeToEndOfDay(params.dueDate as String)
+    this.type = PaymentType.convert(params.type as String)
+    this.status = params.status ? PaymentStatus.convert(params.status as String) : PaymentStatus.PENDING
+    this.customerId = params.customerId as Long
+    this.payerId = params.payerId as Long
   }
 }
