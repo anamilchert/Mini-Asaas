@@ -31,8 +31,6 @@ class CustomerAdapter {
 
     String zipCode
 
-    Long customerId
-
     public CustomerAdapter(Map params) {
         this.name = params.name
         this.email = params.email
@@ -46,6 +44,5 @@ class CustomerAdapter {
         this.state = params.state
         this.complement = params.complement
         this.zipCode = params.zipCode
-        this.customerId = params.customerId as Long
     }
 }
