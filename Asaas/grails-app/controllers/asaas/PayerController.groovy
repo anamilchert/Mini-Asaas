@@ -25,7 +25,7 @@ class PayerController {
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar um pagador: $errorsMessage"
-            redirect(action: "index")
+            render(view: "show", params: params)
         } catch (RuntimeException runtimeException) {
             flash.message = "Ocorreu um erro ao tentar criar um pagador. Por favor, tente novamente"
             redirect(action: "index")
@@ -38,13 +38,27 @@ class PayerController {
     def show() {
         Payer payer = Payer.read(params.id.toLong())
 
-        if (payer) return [payer: payer]
+        if (!payer || payer.deleted) {
+            flash.message = "Pagador não encontrado"
+            redirect(action: "index")
+        }
 
-        render "Pagador não encontrado"
+        return [payer: payer]
     }
 
     def list() {
         List<Payer> payerList = Payer.query(customerId: params.customerId.toLong()).list()
         return [payerList: payerList]
+    }
+
+    def delete() {
+        try {
+            payerService.delete(params.id.toLong())
+            flash.message = "Pagador excluído com sucesso"
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Não foi possível excluir pagador"
+            redirect(action: "index")
+        }
     }
 }
