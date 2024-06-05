@@ -10,7 +10,7 @@ import grails.compiler.GrailsCompileStatic
 @GrailsCompileStatic
 class PaymentAdapter {
 
-  Integer value
+  BigDecimal value
 
   Date dueDate
 
