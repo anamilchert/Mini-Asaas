@@ -4,34 +4,37 @@ import asaas.Address
 import asaas.Customer
 import asaas.PersonType
 import asaas.utils.DomainUtils
+import asaas.adapter.CustomerAdapter
 
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
+import grails.compiler.GrailsCompileStatic
 
+@GrailsCompileStatic
 @Transactional
 class CustomerService {
 
-    public Customer save(Map params) {
-        Customer customerValues = validateCustomerParams(params)
+    public Customer save(CustomerAdapter customerAdapter) {
+        Customer customerValues = validateCustomerParams(customerAdapter)
         if (customerValues.hasErrors()) {
             throw new ValidationException("Erro ao criar a conta", customerValues.errors)
         }
 
         Customer customer = new Customer(
-            name: params.name,
-            email: params.email,
-            cpfCnpj: params.cpfCnpj,
-            personType: PersonType.convert(params.personType)
+            name: customerAdapter.name,
+            email: customerAdapter.email,
+            cpfCnpj: customerAdapter.cpfCnpj,
+            personType: customerAdapter.personType
         )
 
         Address address = new Address(
-            street: params.address.street,
-            number: (params.address.number as Integer),
-            province: params.address.province,
-            city: params.address.city,
-            state: params.address.state,
-            complement: params.address.complement,
-            zipCode: params.address.zipCode
+            street: customerAdapter.street,
+            number: customerAdapter.number,
+            province: customerAdapter.province,
+            city: customerAdapter.city,
+            state: customerAdapter.state,
+            complement: customerAdapter.complement,
+            zipCode: customerAdapter.zipCode
         )
 
         customer.address = address
@@ -41,46 +44,47 @@ class CustomerService {
         return customer
     }
 
-    def update(Long id, Map params) {
+    public Customer update(Long id, Map params) {
         Customer customer = Customer.get(id)
         
         if (!customer) {
-            throw new ValidationException("Conta não encontrada")
+            throw new RuntimeException("Conta não encontrada")
         }
 
-        customer.name = params.name ?: customer.name
-        customer.email = params.email ?: customer.email
-        customer.cpfCnpj = params.cpfCnpj ?: customer.cpfCnpj
-        customer.personType = params.personType ? PersonType.convert(params.personType) : customer.personType
+        CustomerAdapter adapter = new CustomerAdapter(params)
+
+        customer.name = adapter.name ?: customer.name
+        customer.email = adapter.email ?: customer.email
+        customer.cpfCnpj = adapter.cpfCnpj ?: customer.cpfCnpj
+        customer.personType = adapter.personType ?: customer.personType
 
         if (params.address) {
-            customer.address.street = params.address.street ?: customer.address.street
-            customer.address.number = params.address.number ? (params.address.number as Integer) : customer.address.number
-            customer.address.province = params.address.province ?: customer.address.province
-            customer.address.city = params.address.city ?: customer.address.city
-            customer.address.state = params.address.state ?: customer.address.state
-            customer.address.complement = params.address.complement ?: customer.address.complement
-            customer.address.zipCode = params.address.zipCode ?: customer.address.zipCode
+            customer.address.street = adapter.street ?: customer.address.street
+            customer.address.number = adapter.number ?: customer.address.number
+            customer.address.province = adapter.province ?: customer.address.province
+            customer.address.city = adapter.city ?: customer.address.city
+            customer.address.state = adapter.state ?: customer.address.state
+            customer.address.complement = adapter.complement ?: customer.address.complement
+            customer.address.zipCode = adapter.zipCode ?: customer.address.zipCode
         }
 
         customer.save(failOnError: true)
         return customer
     }
 
-    private Customer validateCustomerParams(Map params) {
+    private Customer validateCustomerParams(CustomerAdapter customerAdapter) {
         Customer customer = new Customer()
-        if (!params.name) {
+        if (!customerAdapter.name) {
             DomainUtils.addError(customer, "Nome é obrigatório")
         }
-        if (!params.email) {
+        if (!customerAdapter.email) {
             DomainUtils.addError(customer, "Email é obrigatório")
         }
-        if (!params.cpfCnpj) {
+        if (!customerAdapter.cpfCnpj) {
             DomainUtils.addError(customer, "CPF/CNPJ é obrigatório")
         }
-        if (!params.address || !params.address.street || !params.address.number ||
-            !params.address.province || !params.address.city || !params.address.state ||
-            !params.address.zipCode) {
+        if (!customerAdapter.street || !customerAdapter.number || !customerAdapter.province ||
+            !customerAdapter.city || !customerAdapter.state || !customerAdapter.zipCode) {
             DomainUtils.addError(customer, "Endereço incompleto")
         }
 

@@ -161,6 +161,8 @@ class CpfCnpjUtils {
             }
         } else return false
 
+    }
+    
          private static String removeNonNumeric(String input) {
                 if (input == null || input.isEmpty()) {
                     return "";
@@ -174,5 +176,4 @@ class CpfCnpjUtils {
                 }
                 return builder.toString();
             }
-        }
-    }
+        } 

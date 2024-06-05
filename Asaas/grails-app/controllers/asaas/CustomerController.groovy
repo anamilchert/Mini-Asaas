@@ -2,6 +2,7 @@ package asaas
 
 import asaas.Customer
 import asaas.CustomerService
+import asaas.adapter.CustomerAdapter
 
 import grails.validation.ValidationException
 
@@ -14,12 +15,14 @@ import grails.validation.ValidationException
 
         def save() {
             try {
-                Customer customer = customerService.save(params)
+                CustomerAdapter customerAdapter = new CustomerAdapter(params)
+                Customer customer = customerService.save(customerAdapter)
+
                 redirect(action: 'show', id: customer.id)
                 } catch (ValidationException e) {
                 String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
                 flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-                render(view: "edit", model: [customer: new Customer(params)])
+                render(view: "show", model: [customer: new Customer(params)])
             }
         }
 
@@ -38,6 +41,7 @@ import grails.validation.ValidationException
         def edit() {
             Long id = params.id?.toLong()
             Customer customer = Customer.get(id)
+            println("ID recebido: $id")
 
             if (!customer) {
                 flash.error = 'Conta não encontrada'
