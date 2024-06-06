@@ -40,7 +40,7 @@
     </div>
 
     <div>
-      <input type="text" value="${payer.address.neighborhood}">
+      <input type="text" value="${payer.address.province}">
     </div>
 
     <div>
@@ -48,12 +48,17 @@
     </div>
 
     <div>
-      <input type="text" value="${payer.address.CEP}">
+      <input type="text" value="${payer.address.zipCode}">
     </div>
 
     <div>
       <input type="text" value="${payer.address.complement}">
     </div>
+
+    <form action="${createLink(controller: "payer", action: "delete")}" method="post">
+        <input type="hidden" name="id" value="${payer.id}" />
+        <button type="submit">Excluir Pagador</button>
+    </form>
   </g:if>
   <g:else>
      <p>Não foi possível registrar o pagador</p>
