@@ -41,7 +41,6 @@ import grails.validation.ValidationException
         def edit() {
             Long id = params.id?.toLong()
             Customer customer = Customer.get(id)
-            println("ID recebido: $id")
 
             if (!customer) {
                 flash.error = 'Conta não encontrada'
