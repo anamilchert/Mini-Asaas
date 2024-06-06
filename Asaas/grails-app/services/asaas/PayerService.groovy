@@ -95,18 +95,18 @@ class PayerService {
     }
 
 
-    private static Boolean hasValidAddress(PayerSaveAdapter payerSaveAdapter) {
-        if (!payerSaveAdapter.street) return false
+    private static Boolean hasValidAddress(PayerAdapter payerAdapter) {
+        if (!payerAdapter.street) return false
 
-        if (!payerSaveAdapter.number) return false
+        if (!payerAdapter.number) return false
 
-        if (!payerSaveAdapter.province) return false
+        if (!payerAdapter.province) return false
 
-        if (!payerSaveAdapter.city) return false
+        if (!payerAdapter.city) return false
 
-        if (!payerSaveAdapter.state) return false
+        if (!payerAdapter.state) return false
 
-        if (!payerSaveAdapter.zipCode) return false
+        if (!payerAdapter.zipCode) return false
 
         return false
     }
