@@ -8,7 +8,7 @@ import asaas.Payer
 
 class Payment extends BaseEntity {
   
-  Integer value
+  BigDecimal value
 
   Date dueDate
 
