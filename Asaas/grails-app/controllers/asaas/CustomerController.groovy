@@ -22,7 +22,7 @@ import grails.validation.ValidationException
                 } catch (ValidationException e) {
                 String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
                 flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-                render(view: "show", model: [customer: new Customer(params)])
+                render(view: "index", model: [customer: new Customer(params)])
             }
         }
 
