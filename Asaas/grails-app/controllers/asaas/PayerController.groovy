@@ -5,6 +5,7 @@ import asaas.Customer
 import asaas.Payer
 import asaas.Payer
 import asaas.PayerService
+import asaas.repositories.PayerRepository
 
 import grails.validation.ValidationException
 
@@ -37,9 +38,9 @@ class PayerController {
     }
 
     def show() {
-        Payer payer = Payer.read(params.id.toLong())
+        Payer payer = PayerRepository.query([id: params.id.toLong()]).get()
 
-        if (!payer || payer.deleted) {
+        if (!payer) {
             flash.message = "Pagador não encontrado"
             redirect(action: "index")
         }
@@ -48,8 +49,8 @@ class PayerController {
     }
 
     def list() {
-        List<Payer> payerList = Payer.query(customerId: params.customerId.toLong()).list()
-        return [payerList: payerList]
+        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        return [payerList: payerList]   
     }
 
     def update() {

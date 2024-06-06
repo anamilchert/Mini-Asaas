@@ -5,6 +5,7 @@ import asaas.Address
 import asaas.Customer
 import asaas.Payer
 import asaas.PersonType
+import asaas.repositories.PayerRepository
 import asaas.utils.DomainUtils
 
 import grails.compiler.GrailsCompileStatic
@@ -43,9 +44,8 @@ class PayerService {
     }
 
     public Payer update(PayerAdapter payerAdapter, Long payerId) {
-        Payer payer = Payer.get(payerId)
-
-        if(!payer || payer.deleted) throw new RuntimeException("Pagador não encontrado")
+        Payer payer = PayerRepository.query([id: payerId]).get() as Payer
+        if(!payer) throw new RuntimeException("Pagador não encontrado")
 
         Payer validatedPayer = validate(payerAdapter, true)
         if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao atualizar um pagador", validatedPayer.errors)
@@ -67,7 +67,7 @@ class PayerService {
     }
 
     public void delete(Long payerId) {
-        Payer payer = Payer.get(payerId)
+        Payer payer = PayerRepository.query([id: payerId]).get() as Payer
         if (!payer) throw new RuntimeException("Pagador não encontrado")
 
         payer.deleted = true
