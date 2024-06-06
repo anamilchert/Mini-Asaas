@@ -31,11 +31,11 @@
         </div>
         <div>
             <label for="type"> Forma de pagamento: </label>
-            <g:select name="type" from="${paymentTypeList}" optionKey="${type}" optionValue="label" value="${payment?.type}" />
+            <g:select name="type" from="${paymentTypeList}" optionKey="${type}" optionValue="label" value="${payment.type}" />
         </div>
         <div>
             <label for="dueDate">Vencimento:</label>
-            <input type="date" id="dueDate" name="dueDate" value="${date.formatDate(date: payment?.dueDate)}">
+            <input type="date" id="dueDate" name="dueDate" value="${date.formatDate(date: payment.dueDate)}">
         </div>
         <div>
             <g:link action="index" params="[customerId:payment.customer.id]">Voltar</g:link>
