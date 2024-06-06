@@ -23,7 +23,7 @@ class PaymentAdapter {
   Long payerId
 
   public PaymentAdapter(Map params) {
-    this.value = CurrencyUtils.fromStringToInteger(params.value as String)
+    this.value = CurrencyUtils.fromStringToBigDecimal(params.value as String)
     this.dueDate = CustomDateUtils.setTimeToEndOfDay(params.dueDate as String)
     this.type = PaymentType.convert(params.type as String)
     this.status = params.status ? PaymentStatus.convert(params.status as String) : PaymentStatus.PENDING
