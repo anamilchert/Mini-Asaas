@@ -39,9 +39,12 @@ class PayerController {
     def show() {
         Payer payer = Payer.read(params.id.toLong())
 
-        if (payer) return [payer: payer]
+        if (!payer || payer.deleted) {
+            flash.message = "Pagador não encontrado"
+            redirect(action: "index")
+        }
 
-        render "Pagador não encontrado"
+        return [payer: payer]
     }
 
     def list() {

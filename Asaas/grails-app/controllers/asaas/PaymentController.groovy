@@ -6,14 +6,15 @@ import asaas.PayerService
 import asaas.Payment
 import asaas.PaymentService
 import asaas.PaymentType
+import asaas.repositories.PaymentRepository
 
 import grails.validation.ValidationException
 
 class PaymentController {
 
-    def paymentService
+    PaymentService paymentService
 
-    def payerService
+    PayerService payerService
 
     def index() {
         List<Payer> payerList = payerService.list(params.customerId.toLong())
@@ -26,21 +27,34 @@ class PaymentController {
             PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params)
             Payment payment = paymentService.save(paymentSaveAdapter)
             redirect(action:"show", id:payment.id)
-
-        } catch (ValidationException e) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+        } catch (ValidationException validationException) {
+            String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
-            render(view: "show", params: params)
+            redirect(action: "show")
+        } catch (Exception exception) {
+            flash.message = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
+            redirect(action: "index")
         }
     }
 
     def show() {
-        Payment payment = Payment.read(params.id.toLong())
-
+        Payment payment = PaymentRepository.query([id: params.id.toLong()]).get()
+        
         if (payment) {
             return [payment: payment]
         }
 
         render "Cobrança não encontrada"
+    }
+
+    def list() {
+        List<Payment> paymentList = PaymentRepository.query([customerId: params.customerId.toLong()]).list()
+        return [paymentList: paymentList]
+    }
+
+    def fetchAllCustomerAndPayerPayment() {
+        List<Payment> paymentList = PaymentRepository
+            .query([customerId: params.customerId.toLong(), payerId: params.payerId.toLong()]).list()
+        return [paymentList: paymentList]
     }
 }

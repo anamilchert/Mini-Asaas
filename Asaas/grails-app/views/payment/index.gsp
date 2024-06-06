@@ -6,6 +6,9 @@
   <title>Registrar pagamento</title>
 </head>
 <body>
+    <g:if test="${ flash.message }">
+       <p>${flash.message}</p>
+    </g:if>
   <form action="${createLink(controller:"payment", action:"save")}" method="post">
     <div>
       <label for="customerId">Id: 
