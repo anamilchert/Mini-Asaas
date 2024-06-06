@@ -58,7 +58,6 @@ class CustomerService {
         customer.cpfCnpj = adapter.cpfCnpj ?: customer.cpfCnpj
         customer.personType = adapter.personType ?: customer.personType
 
-        if (params.address) {
             customer.address.street = adapter.street ?: customer.address.street
             customer.address.number = adapter.number ?: customer.address.number
             customer.address.province = adapter.province ?: customer.address.province
@@ -66,7 +65,6 @@ class CustomerService {
             customer.address.state = adapter.state ?: customer.address.state
             customer.address.complement = adapter.complement ?: customer.address.complement
             customer.address.zipCode = adapter.zipCode ?: customer.address.zipCode
-        }
 
         customer.save(failOnError: true)
         return customer
