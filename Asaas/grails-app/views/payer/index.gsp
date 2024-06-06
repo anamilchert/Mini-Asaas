@@ -6,11 +6,14 @@
   <title>Document</title>
 </head>
 <body>
+    <g:if test="${ flash.message }">
+       <p>${flash.message}</p>
+    </g:if>
+  
   <form action="${createLink(controller:"payer", action:"save")}" method="post">
-
     <label for="">
       Cliente
-      <g:select name="customerId" from="${customers}" optionKey="id" optionValue="name"
+      <g:select name="customerId" from="${customerList}" optionKey="id" optionValue="name"
       noSelection="['':'Selecione um cliente']" />
     </label>
     <div>
