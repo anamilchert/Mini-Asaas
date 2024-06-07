@@ -160,20 +160,19 @@ class CpfCnpjUtils {
                 return false
             }
         } else return false
-
     }
-    
-         private static String removeNonNumeric(String input) {
-                if (input == null || input.isEmpty()) {
-                    return "";
-                }
 
-                StringBuilder builder = new StringBuilder();
-                for (char c : input.toCharArray()) {
-                    if (Character.isDigit(c)) {
-                        builder.append(c);
-                    }
-                }
-                return builder.toString();
+    private static String removeNonNumeric(String input) {
+        if (input == null || input.isEmpty()) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        for (char c : input.toCharArray()) {
+            if (Character.isDigit(c)) {
+                builder.append(c);
             }
-        } 
+        }
+        return builder.toString();
+    }
+}
