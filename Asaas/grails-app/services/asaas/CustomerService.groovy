@@ -81,11 +81,35 @@ class CustomerService {
         if (!customerAdapter.cpfCnpj) {
             DomainUtils.addError(customer, "CPF/CNPJ é obrigatório")
         }
-        if (!customerAdapter.street || !customerAdapter.number || !customerAdapter.province ||
-            !customerAdapter.city || !customerAdapter.state || !customerAdapter.zipCode) {
-            DomainUtils.addError(customer, "Endereço incompleto")
-        }
+        validateAddress(customerAdapter, customer)
 
         return customer
+    }
+
+    private void validateAddress(CustomerAdapter customerAdapter, Customer customer) {
+        if (!customerAdapter.street) {
+            DomainUtils.addError(customer, "Rua é obrigatória")
+            return
+        }
+        if (!customerAdapter.number) {
+            DomainUtils.addError(customer, "Número é obrigatório")
+            return
+        }
+        if (!customerAdapter.province) {
+            DomainUtils.addError(customer, "Bairro é obrigatório")
+            return
+        }
+        if (!customerAdapter.city) {
+            DomainUtils.addError(customer, "Cidade é obrigatória")
+            return
+        }
+        if (!customerAdapter.state) {
+            DomainUtils.addError(customer, "Estado é obrigatório")
+            return
+        }
+        if (!customerAdapter.zipCode) {
+            DomainUtils.addError(customer, "CEP é obrigatório")
+            return
+        }
     }
 }
