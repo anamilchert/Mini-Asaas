@@ -37,7 +37,7 @@ class CustomerService {
             zipCode: customerAdapter.zipCode
         )
 
-        customer.address = address
+customer.address = address
 
         customer.save(failOnError: true)
 
@@ -58,13 +58,13 @@ class CustomerService {
         customer.cpfCnpj = adapter.cpfCnpj ?: customer.cpfCnpj
         customer.personType = adapter.personType ?: customer.personType
 
-            customer.address.street = adapter.street ?: customer.address.street
-            customer.address.number = adapter.number ?: customer.address.number
-            customer.address.province = adapter.province ?: customer.address.province
-            customer.address.city = adapter.city ?: customer.address.city
-            customer.address.state = adapter.state ?: customer.address.state
-            customer.address.complement = adapter.complement ?: customer.address.complement
-            customer.address.zipCode = adapter.zipCode ?: customer.address.zipCode
+        customer.address.street = adapter.street ?customer.address.street
+        customer.address.number = adapter.number ?customer.address.number
+        customer.address.province = adapter.province ?customer.address.province
+        customer.address.city = adapter.city ?customer.address.city
+        customer.address.state = adapter.state ?customer.address.state
+        customer.address.complement = adapter.complement ?customer.address.complement
+        customer.address.zipCode = adapter.zipCode ?customer.address.zipCode
 
         customer.save(failOnError: true)
         return customer
