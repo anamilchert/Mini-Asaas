@@ -71,4 +71,15 @@ class PayerController {
             redirect(action:"show", id:params.id)
         }
     }
+
+     def delete() {
+        try {
+            payerService.delete(params.id.toLong())
+            flash.message = "Pagador excluído com sucesso"
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Não foi possível excluir pagador"
+            redirect(action: "index")
+        }
+    }
 }

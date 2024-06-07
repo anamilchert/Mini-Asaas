@@ -72,6 +72,11 @@
         <g:link action="index">Voltar</g:link>
         <input type="submit" value="Salvar" />
     </g:form>
+
+    <form action="${createLink(controller: "payer", action: "delete")}" method="post">
+        <input type="hidden" name="id" value="${payer.id}" />
+        <button type="submit">Excluir Pagador</button>
+    </form>
   </g:if>
   <g:else>
      <p>Não foi possível registrar o pagador</p>
