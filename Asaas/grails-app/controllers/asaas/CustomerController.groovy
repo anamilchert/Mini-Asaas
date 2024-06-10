@@ -56,5 +56,17 @@ import grails.validation.ValidationException
                 flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
                 render(view: 'edit', model: [customer: customerRepository.query([includeDeleted: false, id: id]).get() as Customer])
             }
+
+     def delete() {
+        Long id = params.id?.toLong()
+        try {
+            customerService.delete(id)
+            flash.message = 'Conta deletada com sucesso'
+            redirect(action: 'index')
+        } catch (ValidationException e) {
+            flash.error = "Não foi possível deletar a conta: ${e.message}"
+            redirect(action: 'show', id: id)
+        }
     }
+  }
 }
