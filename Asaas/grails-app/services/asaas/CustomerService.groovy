@@ -56,14 +56,13 @@ class CustomerService {
 
         validateCpfCnpj(adapter.cpfCnpj)
 
-        customer.address.street = adapter.street ?: customer.address.street
-        customer.address.number = adapter.number ?: customer.address.number
-        customer.address.province = adapter.province ?: customer.address.province
-        customer.address.city = adapter.city ?: customer.address.city
-        customer.address.state = adapter.state ?: customer.address.state
-        customer.address.complement = adapter.complement ?: customer.address.complement
-        customer.address.zipCode = adapter.zipCode ?: customer.address.zipCode
-
+        customer.address.street = adapter.street
+        customer.address.number = adapter.number
+        customer.address.province = adapter.province
+        customer.address.city = adapter.city
+        customer.address.state = adapter.state
+        customer.address.complement = adapter.complement
+        customer.address.zipCode = adapter.zipCode
         customer.save(failOnError: true)
         return customer
     }
