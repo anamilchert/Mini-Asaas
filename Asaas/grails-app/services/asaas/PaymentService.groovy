@@ -75,6 +75,17 @@ class PaymentService {
         payment.save(failOnError: true)
     }
 
+    public void expiredPayment() {
+        Date currentDate = new Date()
+        List<Payment> paymentList = PaymentRepository.query([status: PaymentStatus.PENDING, dueDateTo: currentDate]).list() as List<Payment>
+
+        paymentList.collect {
+            payment -> payment.status = PaymentStatus.EXPIRED
+        }
+
+        paymentList*.save(failOnError: true)
+    }
+
     private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
         Payment payment = new Payment()
         

@@ -1,11 +1,21 @@
 package asaas
 
+import asaas.Payment
+import asaas.PaymentService
+
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
+
 class ExpiredPaymentJob {
+
+    PaymentService paymentService
+
     static triggers = {
-      simple repeatInterval: 5000l // execute job once in 5 seconds
+        cron name:   "expiredPaymentTrigger",  cronExpression: "0 0 0 * * ?"
     }
 
     def execute() {
-        println "Job run!"
+        List<Payment> paymentList = paymentService.expiredPayment()
     }
 }

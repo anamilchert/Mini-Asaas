@@ -27,6 +27,18 @@ class PaymentRepository {
             if (search.containsKey('payerId')) {
                 eq('payer.id', search.payerId)
             }
+
+            if (search.containsKey('status')) {
+                eq('status', search.status)
+            }
+
+            if (search.containsKey('dueDateFrom') && search.containsKey('dueDateTo')) {
+                between('dueDate', search.dueDateFrom, search.dueDateTo)
+            } else if (search.containsKey('dueDateFrom')) {
+                ge('dueDate', search.dueDateFrom)
+            } else if (search.containsKey('dueDateTo')) {
+                le('dueDate', search.dueDateTo)
+            }
         }
 
         return query
