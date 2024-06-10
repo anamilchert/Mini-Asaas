@@ -43,5 +43,12 @@
         </div>
     </g:form>
 
+    <div>
+        <h3>Cancelar cobrança: </h3>
+    </div>
+    <g:form controller="payment" action="cancel" method="post" params="[id: payment?.id]">
+        <input type="submit" value="Cancelar">
+    </g:form>
+
 </body>
 </html>

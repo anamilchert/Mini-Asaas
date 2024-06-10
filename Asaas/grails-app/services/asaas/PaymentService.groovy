@@ -59,6 +59,22 @@ class PaymentService {
         return payment
     }
 
+    public void cancelPayment(Long paymentId) {
+        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+        
+        if (!payment) {
+            throw new RuntimeException("Pagador não encontrado")
+        }
+        
+        if (payment.status != PaymentStatus.PENDING) {
+            throw new RuntimeException("Não é possível atualizar a cobrança")
+        }
+
+        payment.status = PaymentStatus.CANCELED
+
+        payment.save(failOnError: true)
+    }
+
     private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
         Payment payment = new Payment()
         

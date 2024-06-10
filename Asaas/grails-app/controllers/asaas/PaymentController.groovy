@@ -6,6 +6,7 @@ import asaas.PayerService
 import asaas.Payment
 import asaas.PaymentService
 import asaas.PaymentType
+import asaas.repositories.PayerRepository
 import asaas.repositories.PaymentRepository
 
 import grails.validation.ValidationException
@@ -17,7 +18,7 @@ class PaymentController {
     PayerService payerService
 
     def index() {
-        List<Payer> payerList = payerService.list(params.customerId.toLong())
+        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
         List<PaymentType> paymentTypes = PaymentType.values()
         return [payerList: payerList, customerId:params.customerId, paymentTypes: paymentTypes]
     }
@@ -76,5 +77,19 @@ class PaymentController {
         List<Payment> paymentList = PaymentRepository
             .query([customerId: params.customerId.toLong(), payerId: params.payerId.toLong()]).list()
         return [paymentList: paymentList]
+    }
+
+    def cancel() {
+        try {
+            paymentService.cancelPayment(params.id.toLong())
+            flash.message = "Cobrança cancelada com sucesso"
+            redirect(action: "show", id: params.id)
+        } catch (RuntimeException runtimeException) {
+            flash.error = "Não foi possível cancelar a cobrança. Por favor, tente novamente"
+            redirect(action: "show", id: params.id)   
+        } catch (Exception exception) {
+            flash.error = "Houve um error inesperado ao tentar cancelar a cobrança. Por favor, tente novamente"
+            redirect(action: "show", id: params.id)
+        }
     }
 }
