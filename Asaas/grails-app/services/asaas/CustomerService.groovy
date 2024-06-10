@@ -4,6 +4,7 @@ import asaas.Address
 import asaas.Customer
 import asaas.PersonType
 import asaas.utils.DomainUtils
+import asaas.utils.CpfCnpjUtils
 import asaas.adapter.CustomerAdapter
 
 import grails.gorm.transactions.Transactional
@@ -53,10 +54,7 @@ class CustomerService {
 
         CustomerAdapter adapter = new CustomerAdapter(params)
 
-        customer.name = adapter.name ?: customer.name
-        customer.email = adapter.email ?: customer.email
-        customer.cpfCnpj = adapter.cpfCnpj ?: customer.cpfCnpj
-        customer.personType = adapter.personType ?: customer.personType
+        validateCpfCnpj(adapter.cpfCnpj)
 
         customer.address.street = adapter.street ?: customer.address.street
         customer.address.number = adapter.number ?: customer.address.number
