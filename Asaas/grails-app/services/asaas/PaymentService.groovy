@@ -1,11 +1,12 @@
 package asaas
 
-import asaas.adapter.PaymentSaveAdapter
+import asaas.adapter.PaymentAdapter
 import asaas.Customer
 import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
 import asaas.PaymentType
+import asaas.repositories.PaymentRepository
 import asaas.utils.DomainUtils
 
 import grails.compiler.GrailsCompileStatic
@@ -17,55 +18,64 @@ import java.text.SimpleDateFormat
 @Transactional
 class PaymentService {
   
-    public Payment save(PaymentSaveAdapter paymentSaveAdapter) {
-        Payment validatedPayment = validateSave(paymentSaveAdapter)
-
+    public Payment save(PaymentAdapter paymentAdapter) {
+        Payment validatedPayment = validate(paymentAdapter, false)
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
 
         Payment payment = new Payment()
         
-        payment.value = paymentSaveAdapter.value
-        payment.dueDate = paymentSaveAdapter.dueDate
-        payment.type = paymentSaveAdapter.type
-        payment.status = paymentSaveAdapter.status
-        payment.customer = Customer.load(paymentSaveAdapter.customerId)
-        payment.payer = Payer.load(paymentSaveAdapter.payerId)
+        payment.value = paymentAdapter.value
+        payment.dueDate = paymentAdapter.dueDate
+        payment.type = paymentAdapter.type
+        payment.status = paymentAdapter.status
+        payment.customer = Customer.load(paymentAdapter.customerId)
+        payment.payer = Payer.load(paymentAdapter.payerId)
         
         payment.save(failOnError: true)
 
         return payment
     }
 
-    private Payment validateSave(PaymentSaveAdapter paymentSaveAdapter) {
+    public Payment update(PaymentAdapter paymentAdapter, Long paymentId) {
+        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+
+        Payment validatedPayment = validate(paymentAdapter, true)
+        if (validatedPayment.hasErrors()) throw new ValidationException("Error ao editar uma cobrança", validatedPayment.errors)
+
+        if (!payment) {
+            throw new RuntimeException("Pagador não encontrado")
+        }
+
+        if (payment.status != PaymentStatus.PENDING) {
+            throw new RuntimeException("Não é possível atualizar a cobrança")
+        }
+
+        payment.value = paymentAdapter.value
+        payment.dueDate = paymentAdapter.dueDate
+        payment.type = paymentAdapter.type
+
+        payment.save(failOnError: true)
+
+        return payment
+    }
+
+    private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
         Payment payment = new Payment()
         
         Date currentDate = new Date()
 
-        if (!paymentSaveAdapter.value) {
-            DomainUtils.addError(payment, "Informe um valor válido")
-        }
+        if (!paymentAdapter.value) DomainUtils.addError(payment, "Informe um valor válido")
 
-        if (!paymentSaveAdapter.dueDate) {
-            DomainUtils.addError(payment, "Informe um valor válido")
-        } else if (paymentSaveAdapter.dueDate < currentDate) {
-            payment.errors.reject("dueDate", null, "Informe uma data superior à atual")
-        }
+        if (!paymentAdapter.dueDate) DomainUtils.addError(payment, "Informe um valor válido")
+        else if (paymentAdapter.dueDate < currentDate) DomainUtils.addError(payment, "Informe uma data superior à atual")
+        
+        if (!paymentAdapter.type) DomainUtils.addError(payment, "Tipo de pagamento inválido")
 
-        if (!paymentSaveAdapter.type) {
-            DomainUtils.addError(payment, "Tipo de pagamento inválido")
-        }
+        if (!isUpdate && !paymentAdapter.status) DomainUtils.addError(payment, "Status de pagamento inválido")
 
-        if (!paymentSaveAdapter.status) {
-            DomainUtils.addError(payment, "Status de pagamento inválido")
-        }
+        if (!isUpdate && !paymentAdapter.customerId) DomainUtils.addError(payment, "Informe um cliente válido")
 
-        if (!paymentSaveAdapter.customerId) {
-            DomainUtils.addError(payment, "Informe um cliente válido")
-        }
-
-        if (!paymentSaveAdapter.payerId) {
-            DomainUtils.addError(payment, "Informe um pagador válido")
-        }
+        if (!isUpdate && !paymentAdapter.payerId) DomainUtils.addError(payment, "Informe um pagador válido")
 
         return payment
     }

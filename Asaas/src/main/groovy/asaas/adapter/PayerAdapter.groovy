@@ -5,7 +5,7 @@ import asaas.PersonType
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class PayerSaveAdapter {
+class PayerAdapter{
 
     String name
 
@@ -33,7 +33,7 @@ class PayerSaveAdapter {
 
     Long customerId
 
-    public PayerSaveAdapter(Map params) {
+    public PayerAdapter(Map params) {
         this.name = params.name
         this.email = params.email
         this.phone = params.phone

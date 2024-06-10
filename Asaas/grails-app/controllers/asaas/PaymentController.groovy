@@ -1,6 +1,6 @@
 package asaas
 
-import asaas.adapter.PaymentSaveAdapter
+import asaas.adapter.PaymentAdapter
 import asaas.Payer
 import asaas.PayerService
 import asaas.Payment
@@ -24,16 +24,35 @@ class PaymentController {
 
     def save() {
         try {
-            PaymentSaveAdapter paymentSaveAdapter = new PaymentSaveAdapter(params)
-            Payment payment = paymentService.save(paymentSaveAdapter)
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Payment payment = paymentService.save(paymentAdapter)
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
-            redirect(action: "show")
+            redirect(action: "index",  params: [customerId: params.customerId])
         } catch (Exception exception) {
-            flash.message = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
-            redirect(action: "index")
+            flash.error = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
+            redirect(action: "index",  params: [customerId: params.customerId])
+        }
+    }
+
+    def update() {
+        try {
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Payment payment = paymentService.update(paymentAdapter, params.id.toLong())
+            flash.message = "Cobrança atualizada com sucesso"
+            redirect(action:"show", id:payment.id)
+        } catch (ValidationException e) {
+            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+            flash.error = "Não foi possível atualizar uma cobrança: $errorsMessage"
+            redirect(action: "show", id: params.id)
+        } catch (RuntimeException runtimeException) {
+            flash.error = "Houve um erro ao tentar atualizar uma cobrança. Por favor, tente novamente"
+            redirect(action: "show", id: params.id)
+        } catch (Exception exception) {
+            flash.error = "Houve um erro inesperado ao tentar atualizar uma cobrança. Por favor, tente novamente"
+            redirect(action: "show", id: params.id)
         }
     }
 
@@ -41,7 +60,8 @@ class PaymentController {
         Payment payment = PaymentRepository.query([id: params.id.toLong()]).get()
         
         if (payment) {
-            return [payment: payment]
+            List<PaymentType> paymentTypeList = PaymentType.values()
+            return [payment: payment, paymentTypeList:paymentTypeList]
         }
 
         render "Cobrança não encontrada"

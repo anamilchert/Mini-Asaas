@@ -2,9 +2,9 @@ package asaas.utils
 
 class CurrencyUtils {
 
-    public static Integer fromStringToInteger(String currency) {
+    public static BigDecimal fromStringToBigDecimal(String currency) {
         try {
-            return currency.replaceAll("[.,]","").toInteger()
+            return currency.replaceAll("[.,]","").toBigDecimal()
 
         } catch (Exception e) {
             return null
