@@ -68,6 +68,17 @@ class CustomerService {
         return customer
     }
 
+    void delete(Long id) {
+        Customer customer = customerRepository.query([includeDeleted: false, id: id]).get() as Customer
+
+        if (!customer) {
+            throw new ValidationException("Conta não encontrada")
+        }
+
+        customer.deleted = true
+        customer.save(failOnError: true)
+    }
+
     private Customer validateCustomerParams(Map params) {
         Customer customer = new Customer()
         if (!params.name) {
