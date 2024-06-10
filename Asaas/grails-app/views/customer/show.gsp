@@ -24,5 +24,9 @@
      </g:if>
     </div>
      <g:link action="edit" id="${customer?.id}" class="btn btn-primary">Editar Cliente</g:link>
+     <g:form action="delete" id="${customer?.id}" onsubmit="return confirm('Você tem certeza que deseja deletar este cliente?');">
+        <g:hiddenField name="id" value="${customer?.id}"/>
+        <g:submitButton name="delete" value="Deletar Cliente" class="btn btn-danger"/>
+    </g:form>
 </body>
 </html>
