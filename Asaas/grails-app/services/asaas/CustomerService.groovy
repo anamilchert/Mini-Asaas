@@ -68,11 +68,15 @@ class CustomerService {
         return customer
     }
 
-    void delete(Long id) {
-        Customer customer = customerRepository.query([includeDeleted: false, id: id]).get() as Customer
+    public void delete(Long id) {
+        Customer customer = Customer.get(id)
 
         if (!customer) {
             throw new ValidationException("Conta não encontrada")
+        }
+
+        if (customer.deleted) {
+            throw new ValidationException("Conta já excluída")
         }
 
         customer.deleted = true
