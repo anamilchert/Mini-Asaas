@@ -36,16 +36,20 @@ class PayerAdapter{
     public PayerAdapter(Map params) {
         this.name = params.name
         this.email = params.email
-        this.phone = params.phone
-        this.cpfCnpj = params.cpfCnpj
+        this.phone = removeNonNumerics(params.phone as String)
+        this.cpfCnpj = removeNonNumerics(params.cpfCnpj as String)
         this.personType = PersonType.convert(params.personType as String)
         this.street = params.street
         this.number = params.number as Integer
         this.province = params.province
         this.city = params.city
-        this.state = params.state
+        this.state = params.state instanceof String ? params.state.toUpperCase() : null
         this.complement = params.complement
-        this.zipCode = params.zipCode
+        this.zipCode = removeNonNumerics(params.zipCode as String)
         this.customerId = params.customerId as Long
+    }
+
+    private String removeNonNumerics(String text) {
+        return text.replaceAll(/\D/, "")
     }
 }
