@@ -16,9 +16,9 @@ import grails.compiler.GrailsCompileStatic
 class CustomerService {
 
     public Customer save(CustomerAdapter customerAdapter) {
-        Customer customerValues = validateCustomerParams(customerAdapter)
-        if (customerValues.hasErrors()) {
-            throw new ValidationException("Erro ao criar a conta", customerValues.errors)
+        Customer validatedCustomer = validateSave(customerAdapter)
+        if (validatedCustomer.hasErrors()) {
+            throw new ValidationException("Erro ao criar a conta", validatedCustomer.errors)
         }
 
         Customer customer = new Customer(
@@ -65,7 +65,7 @@ class CustomerService {
         return customer
     }
 
-    private Customer validateCustomerParams(CustomerAdapter customerAdapter) {
+    private Customer validateSave(CustomerAdapter customerAdapter) {
         Customer customer = new Customer()
         if (!customerAdapter.name) {
             DomainUtils.addError(customer, "Nome é obrigatório")
