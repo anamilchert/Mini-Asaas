@@ -58,14 +58,14 @@ class CustomerController {
         }
     }
     
-            def delete() {
-            try {
-                CustomerService.delete(params.id.toLong())
-                flash.message = "Cliente excluído com sucesso"
-                redirect(action: "index")
-            } catch (Exception exception) {
-                flash.message = "Não foi possível excluir o cliente"
-                redirect(action: "index")
+    def delete() {
+        try {
+            CustomerService.delete(params.id.toLong())
+            flash.message = "Cliente excluído com sucesso"
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Não foi possível excluir o cliente"
+            redirect(action: "index")
         }
     }
 }
