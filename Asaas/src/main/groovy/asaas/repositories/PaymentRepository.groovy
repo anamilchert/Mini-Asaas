@@ -1,6 +1,7 @@
 package asaas.repositories
 
 import asaas.Payment
+import asaas.PaymentStatus
 
 import grails.compiler.GrailsCompileStatic
 import grails.gorm.DetachedCriteria
@@ -29,15 +30,15 @@ class PaymentRepository {
             }
 
             if (search.containsKey('status')) {
-                eq('status', search.status)
+                eq('status', PaymentStatus.valueOf(search.status as String))
             }
 
-            if (search.containsKey('dueDateFrom') && search.containsKey('dueDateTo')) {
-                between('dueDate', search.dueDateFrom, search.dueDateTo)
-            } else if (search.containsKey('dueDateFrom')) {
-                ge('dueDate', search.dueDateFrom)
-            } else if (search.containsKey('dueDateTo')) {
-                le('dueDate', search.dueDateTo)
+            if (search.containsKey('dueDate[ge]')) {
+                ge('dueDate', search['dueDate[ge]'])
+            }
+
+            if (search.containsKey('dueDate[le]')) {
+                le('dueDate', search['dueDate[le]'])
             }
         }
 
