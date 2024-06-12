@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat
 class CustomDateUtils {
 
 	public static final String DATABASE_DATE_FORMAT = "yyyy-MM-dd"
+    public static final String FORM_DATE_FORMAT = "dd/MM/yyyy"
 
 	public static Date fromString(String dateStr) {
 		try {
@@ -27,7 +28,7 @@ class CustomDateUtils {
 	}
 
     public static Date setTimeToEndOfDay(String date) {
-		SimpleDateFormat sdf = new SimpleDateFormat(DATABASE_DATE_FORMAT)
+		SimpleDateFormat sdf = new SimpleDateFormat(FORM_DATE_FORMAT)
 		return setTimeToEndOfDay(sdf.parse(date))
 	}
 
