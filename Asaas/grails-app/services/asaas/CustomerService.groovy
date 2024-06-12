@@ -68,6 +68,21 @@ class CustomerService {
         return customer
     }
 
+    public void delete(Long id) {
+        Customer customer = Customer.get(id)
+
+        if (!customer) {
+            throw new ValidationException("Conta não encontrada")
+        }
+
+        if (customer.deleted) {
+            throw new ValidationException("Conta já excluída")
+        }
+
+        customer.deleted = true
+        customer.save(failOnError: true)
+    }
+
     private Customer validateCustomerParams(Map params) {
         Customer customer = new Customer()
         if (!params.name) {
