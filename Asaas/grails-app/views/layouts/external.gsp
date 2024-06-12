@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="no-js">
+<html lang="pt-BR">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -24,23 +24,13 @@
         }
     </style>
 </head>
-
 <body>
-    <g:render template="/templates/sidebar" />
-    <atlas-screen>  
-        <atlas-page class="js-atlas-page">
-            <atlas-page-header 
-                slot="header"
-                page-name="${pageProperty(name: "body.page-title")}"
-            >
-                <atlas-breadcrumb slot="breadcrumb">
-                    <atlas-breadcrumb-item text="${pageProperty(name: "body.page-title")}" icon="home"></atlas-breadcrumb-item>
-                </atlas-breadcrumb>
-            </atlas-page-header>
-            <atlas-page-content slot="content" class="js-atlas-content">
-                <g:layoutBody />
-            </atlas-page-content>
-        </atlas-page>
-    </atlas-screen>
+<atlas-screen>
+    <atlas-page class="js-atlas-page">
+        <atlas-page-content slot="content" class="js-atlas-content">
+            <g:layoutBody />
+        </atlas-page-content>
+    </atlas-page>
+</atlas-screen>
 </body>
 </html>
