@@ -54,8 +54,6 @@ class CustomerService {
 
         CustomerAdapter adapter = new CustomerAdapter(params)
 
-        validateCpfCnpj(adapter.cpfCnpj)
-
         customer.address.street = adapter.street
         customer.address.number = adapter.number
         customer.address.province = adapter.province
@@ -72,12 +70,15 @@ class CustomerService {
         if (!customerAdapter.name) {
             DomainUtils.addError(customer, "Nome é obrigatório")
         }
+
         if (!customerAdapter.email) {
             DomainUtils.addError(customer, "Email é obrigatório")
         }
+
         if (!customerAdapter.cpfCnpj) {
             DomainUtils.addError(customer, "CPF/CNPJ é obrigatório")
         }
+
         validateAddress(customerAdapter, customer)
 
         return customer
@@ -108,7 +109,7 @@ class CustomerService {
             DomainUtils.addError(customer, "Estado é obrigatório")
             return
         }
-        
+
         if (!customerAdapter.zipCode) {
             DomainUtils.addError(customer, "CEP é obrigatório")
             return
