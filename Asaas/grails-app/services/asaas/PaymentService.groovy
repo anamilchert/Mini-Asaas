@@ -59,18 +59,18 @@ class PaymentService {
         return payment
     }
 
-    public void cancelPayment(Long paymentId) {
+    public void delete(Long paymentId) {
         Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
         
         if (!payment) {
-            throw new RuntimeException("Pagador não encontrado")
+            throw new RuntimeException("Pagamento não encontrado")
         }
         
         if (payment.status != PaymentStatus.PENDING) {
-            throw new RuntimeException("Não é possível atualizar a cobrança")
+            throw new RuntimeException("Só é possível remover cobranças pendentes")
         }
 
-        payment.status = PaymentStatus.CANCELED
+        payment.deleted = true
 
         payment.save(failOnError: true)
     }

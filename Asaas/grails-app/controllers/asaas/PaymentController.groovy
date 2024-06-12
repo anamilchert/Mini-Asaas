@@ -62,7 +62,8 @@ class PaymentController {
         
         if (payment) {
             List<PaymentType> paymentTypeList = PaymentType.values()
-            return [payment: payment, paymentTypeList:paymentTypeList]
+            def enableEdit = payment.status == PaymentStatus.PENDING 
+            return [payment: payment, paymentTypeList:paymentTypeList, enableEdit: enableEdit]
         }
 
         render "Cobrança não encontrada"
@@ -79,16 +80,15 @@ class PaymentController {
         return [paymentList: paymentList]
     }
 
-    def cancel() {
+    def delete() {
         try {
-            paymentService.cancelPayment(params.id.toLong())
+            paymentService.delete(params.id.toLong())
             flash.message = "Cobrança cancelada com sucesso"
-            redirect(action: "show", id: params.id)
         } catch (RuntimeException runtimeException) {
-            flash.error = "Não foi possível cancelar a cobrança. Por favor, tente novamente"
-            redirect(action: "show", id: params.id)   
+            flash.error = runtimeException.getMessage()
         } catch (Exception exception) {
-            flash.error = "Houve um error inesperado ao tentar cancelar a cobrança. Por favor, tente novamente"
+            flash.error = "Erro ao cancelar a cobrança. Por favor, contate o time de suporte"
+        } finally {
             redirect(action: "show", id: params.id)
         }
     }
