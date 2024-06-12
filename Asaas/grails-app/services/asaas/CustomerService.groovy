@@ -88,22 +88,27 @@ class CustomerService {
             DomainUtils.addError(customer, "Rua é obrigatória")
             return
         }
+
         if (!customerAdapter.number) {
             DomainUtils.addError(customer, "Número é obrigatório")
             return
         }
+
         if (!customerAdapter.province) {
             DomainUtils.addError(customer, "Bairro é obrigatório")
             return
         }
+
         if (!customerAdapter.city) {
             DomainUtils.addError(customer, "Cidade é obrigatória")
             return
         }
+
         if (!customerAdapter.state) {
             DomainUtils.addError(customer, "Estado é obrigatório")
             return
         }
+        
         if (!customerAdapter.zipCode) {
             DomainUtils.addError(customer, "CEP é obrigatório")
             return
