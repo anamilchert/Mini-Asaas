@@ -18,11 +18,11 @@ import grails.validation.ValidationException
                 CustomerAdapter customerAdapter = new CustomerAdapter(params)
                 Customer customer = customerService.save(customerAdapter)
 
-                redirect(action: 'show', id: customer.id)
-                } catch (ValidationException e) {
-                String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
-                flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-                render(view: "index", model: [customer: new Customer(params)])
+            redirect(action: 'show', id: customer.id)
+            } catch (ValidationException validationException) {
+            String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
+            flash.error = "Não foi possível salvar sua conta: $errorsMessage"
+            render(view: "index", model: [customer: new Customer(params)])
             }
         }
 
