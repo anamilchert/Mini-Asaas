@@ -46,7 +46,7 @@
     <div>
         <h3>Cancelar cobrança: </h3>
     </div>
-    <g:form controller="payment" action="cancel" method="post" params="[id: payment?.id]">
+    <g:form controller="payment" action="delete" method="post" params="[id: payment.id]">
         <input type="submit" value="Cancelar">
     </g:form>
 
