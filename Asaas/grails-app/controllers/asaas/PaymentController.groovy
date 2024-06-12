@@ -6,6 +6,7 @@ import asaas.PayerService
 import asaas.Payment
 import asaas.PaymentService
 import asaas.PaymentType
+import asaas.repositories.PayerRepository
 import asaas.repositories.PaymentRepository
 
 import grails.validation.ValidationException
@@ -17,15 +18,16 @@ class PaymentController {
     PayerService payerService
 
     def index() {
-        List<Payer> payerList = payerService.list(params.customerId.toLong())
-        List<PaymentType> paymentTypes = PaymentType.values()
-        return [payerList: payerList, customerId:params.customerId, paymentTypes: paymentTypes]
+        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        List<PaymentType> paymentTypeList = PaymentType.values()
+        return [payerList: payerList, customerId:params.customerId, paymentTypeList: paymentTypeList]
     }
 
     def save() {
         try {
             PaymentAdapter paymentAdapter = new PaymentAdapter(params)
             Payment payment = paymentService.save(paymentAdapter)
+            flash.message = "Cobrança criada com sucesso"
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
@@ -58,7 +60,6 @@ class PaymentController {
 
     def show() {
         Payment payment = PaymentRepository.query([id: params.id.toLong()]).get()
-        
         if (payment) {
             List<PaymentType> paymentTypeList = PaymentType.values()
             return [payment: payment, paymentTypeList:paymentTypeList]
