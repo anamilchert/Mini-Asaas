@@ -14,8 +14,10 @@ class PayerController {
     PayerService payerService
 
     def index() {
-        List<Customer> customerList = Customer.list()
-        return [customerList: customerList]
+        println params
+        Long customerId = params.customerId.toLong()
+        List<PersonType> personTypeList = PersonType.values()
+        return [customerId: customerId, personTypeList: personTypeList]
     }
 
 
@@ -26,14 +28,14 @@ class PayerController {
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
-            flash.error = "Não foi possível salvar um pagador: $errorsMessage"
-            redirect(view: "index")
+            flash.error = "Não foi possível salvar um pagador"
+            redirect(action: "index", params: [customerId: params.customerId])
         } catch (RuntimeException runtimeException) {
-            flash.message = "Ocorreu um erro ao tentar criar um pagador. Por favor, tente novamente"
-            redirect(action: "index")
+            flash.error = "Ocorreu um erro ao tentar criar um pagador. Por favor, tente novamente"
+            redirect(action: "index", params: [customerId: params.customerId])
         } catch (Exception exception) {
-            flash.message = "Ocorreu um erro inesperado ao tentar criar um pagador. Por favor, tente novamente"
-            redirect(action: "index")
+            flash.error = "Ocorreu um erro inesperado ao tentar criar um pagador. Por favor, tente novamente"
+            redirect(action: "index", params: [customerId: params.customerId])
         }
     }
 
@@ -50,7 +52,7 @@ class PayerController {
 
     def list() {
         List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
-        return [payerList: payerList]   
+        return [payerList: payerList, customerId: params.customerId]
     }
 
     def update() {
@@ -61,13 +63,13 @@ class PayerController {
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
-            flash.error = "Não foi possível atualizar os dados: $errorsMessage"
+            flash.error = "Não foi possível atualizar os dados"
             redirect(action: "show", id: params.id)
         } catch (RuntimeException runtimeException) {
-            flash.message = "Não foi possível atualizar os dados. Por favor, tente novamente."
+            flash.error = "Não foi possível atualizar os dados. Por favor, tente novamente."
             redirect(action:"show", id:params.id)
         } catch (Exception exception) {
-            flash.message = "Ocorreu um error inesperado. Por favor, tente novamente."
+            flash.error = "Ocorreu um error inesperado. Por favor, tente novamente."
             redirect(action:"show", id:params.id)
         }
     }
@@ -76,7 +78,7 @@ class PayerController {
         try {
             payerService.delete(params.id.toLong())
             flash.message = "Pagador excluído com sucesso"
-            redirect(action: "index")
+            redirect(action: "list", params: [params.customerId])
         } catch (Exception exception) {
             flash.message = "Não foi possível excluir pagador"
             redirect(action: "index")

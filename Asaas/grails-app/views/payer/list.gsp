@@ -1,21 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">  
+    <meta name="layout" content="external"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-  <g:if test="${ payerList }">
-    <form >
-      <g:select name="payerId" from="${payerList}" optionKey="id" optionValue="name"
-      noSelection="['':'Selecione um pagador']" />
-    </form>
-  </g:if>
-  <g:else>
-     <div>
-      <p>Nenhum pagador registrado</p>
-     </div>
-  </g:else>
+<atlas-panel header="Pagadores">
+    <atlas-layout gap="2" justify="start">
+        <atlas-button 
+            type="outlined" 
+            size="sm" 
+            theme="secondary" 
+            description="Voltar"
+            href="${createLink(controller: "payer", action: "index", params: [customerId: customerId])}"
+            icon="arrow-left"
+            pill
+        >
+        </atlas-button>
+    </atlas-layout>
+    <g:if test="${ payerList }">
+        <g:each var="payer" in="${ payerList }">
+            <atlas-card header="${payer.name}">
+                <atlas-layout gap="2">
+                    <atlas-col>
+                        <atlas-text bold>Telefone:</atlas-text>
+                        <atlas-text>${payer.phone} </atlas-text>
+                        </atlas-col>
+                    <atlas-col>
+                        <atlas-text bold>Email:</atlas-text>
+                        <atlas-text>${payer.email} </atlas-text>
+                    </atlas-col>
+                </atlas-layout>
+                <atlas-divider spacing="6"></atlas-divider>
+                <atlas-layout gap="2" inline>
+                    <atlas-button 
+                        description="Editar" 
+                        theme="primary" 
+                        size="sm"
+                        icon="pencil"
+                        href="${createLink(controller: "payer", action: "show", id: payer.id)}"
+                    >
+                    </atlas-button>
+                    <atlas-button 
+                        type="outlined" 
+                        description="Deletar" 
+                        theme="danger" 
+                        size="sm"
+                        icon="trash"
+                        href="${createLink(controller: "payer", action: "delete", id: payer.id)}"
+                    >
+                    </atlas-button>
+                </atlas-layout>
+            </atlas-card>
+        </g:each>
+        <atlas-layout gap="2" alignment="center" justify="center">
+            <atlas-link>
+                <atlas-button 
+                description="Cadastrar pagador" 
+                theme="primary" 
+                size="lg"
+                href="${createLink(controller: "payer", action: "index", params: [customerId: customerId])}"
+                 >
+                 </atlas-button>
+            </atlas-link>
+        </atlas-layout>
+    </g:if> 
+    <g:else>
+        <div>
+            <p>Nenhum pagador registrado</p>
+        </div>
+    </g:else>
+</atlas-panel>
 </body>
 </html>
