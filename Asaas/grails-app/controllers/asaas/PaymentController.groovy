@@ -7,6 +7,7 @@ import asaas.PayerService
 import asaas.Payment
 import asaas.PaymentService
 import asaas.PaymentType
+import asaas.repositories.PayerRepository
 import asaas.repositories.PaymentRepository
 
 import grails.plugin.springsecurity.annotation.Secured
@@ -20,7 +21,7 @@ class PaymentController extends BaseController{
     PayerService payerService
 
     def index() {
-        List<Payer> payerList = payerService.list(params.customerId.toLong())
+        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
         List<PaymentType> paymentTypes = PaymentType.values()
         return [payerList: payerList, customerId:params.customerId, paymentTypes: paymentTypes]
     }
