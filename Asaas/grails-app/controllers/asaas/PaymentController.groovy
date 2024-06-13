@@ -21,14 +21,16 @@ class PaymentController extends BaseController{
     PayerService payerService
 
     def index() {
-        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        Long customerId = getCurrentCustomerId()
+        List<Payer> payerList = PayerRepository.query([customerId: customerId]).list()
         List<PaymentType> paymentTypes = PaymentType.values()
-        return [payerList: payerList, customerId:params.customerId, paymentTypes: paymentTypes]
+        return [payerList: payerList, paymentTypes: paymentTypes]
     }
 
     def save() {
         try {
-            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params, customerId)
             Payment payment = paymentService.save(paymentAdapter)
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
@@ -43,7 +45,8 @@ class PaymentController extends BaseController{
 
     def update() {
         try {
-            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params, customerId)
             Payment payment = paymentService.update(paymentAdapter, params.id.toLong())
             flash.message = "Cobrança atualizada com sucesso"
             redirect(action:"show", id:payment.id)
@@ -72,13 +75,13 @@ class PaymentController extends BaseController{
     }
 
     def list() {
-        List<Payment> paymentList = PaymentRepository.query([customerId: params.customerId.toLong()]).list()
+        List<Payment> paymentList = PaymentRepository.query([customerId: getCurrentCustomerId()]).list()
         return [paymentList: paymentList]
     }
 
     def fetchAllCustomerAndPayerPayment() {
         List<Payment> paymentList = PaymentRepository
-            .query([customerId: params.customerId.toLong(), payerId: params.payerId.toLong()]).list()
+            .query([customerId: getCurrentCustomerId(), payerId: params.payerId.toLong()]).list()
         return [paymentList: paymentList]
     }
 }

@@ -14,10 +14,6 @@
     </g:if>
     <g:form controller="payment" action="update" method="post" params="[id: payment?.id]">
         <div>
-            <label for="customer">Cobrador:</label>
-            <input type="text" id="customer" name="customerId" value="${payment.customer.id}" readonly>
-        </div>
-        <div>
             <label for="payer">Pagador:</label>
             <input type="text" id="payer" name="payerId" value="${payment.payer.id}" readonly>
         </div>

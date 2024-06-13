@@ -50,7 +50,7 @@ class PayerController extends BaseController{
     }
 
     def list() {
-        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        List<Payer> payerList = PayerRepository.query([customerId:getCurrentCustomerId()]).list()
         return [payerList: payerList]   
     }
 
