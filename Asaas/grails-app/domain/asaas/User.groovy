@@ -32,4 +32,20 @@ class User implements Serializable {
     static mapping = {
 	    password column: '`password`'
     }
+
+    static namedQueries = {
+        query { Map search ->
+             if (!Boolean.valueOf(search.includeDeleted)) {
+                eq('deleted', false)
+            }
+            if (search.containsKey('id')) {
+                eq('id', search.id)
+            }
+
+            if (search.containsKey('customerId')) {
+                eq('customer.id', search.customerId)
+            }
+        }
+    }
+
 }
