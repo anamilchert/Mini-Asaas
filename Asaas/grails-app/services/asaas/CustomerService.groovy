@@ -4,6 +4,7 @@ import asaas.Address
 import asaas.Customer
 import asaas.PersonType
 import asaas.utils.DomainUtils
+import asaas.repositories.CustomerRepository
 
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
@@ -42,8 +43,8 @@ class CustomerService {
     }
 
     def update(Long id, Map params) {
-        Customer customer = Customer.get(id)
-        
+        Customer customer = CustomerRepository.query([includeDeleted: false, id: id]).get() as Customer
+
         if (!customer) {
             throw new ValidationException("Conta não encontrada")
         }
