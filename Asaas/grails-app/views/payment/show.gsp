@@ -39,9 +39,21 @@
         </div>
         <div>
             <g:link action="index" params="[customerId:payment.customer.id]">Voltar</g:link>
-            <input type="submit" value="Editar" />
+            <g:if test="${ payment.status.isPending() }">
+                <input type="submit" value="Editar" />
+            </g:if>
         </div>
     </g:form>
+
+    
+    <g:if test="${  payment.status.isPending() }"> 
+        <div>
+            <h3>Cancelar cobrança</h3>
+        </div>  
+        <g:form controller="payment" action="delete" method="post" params="[id: payment.id]">
+            <input type="submit" value="Deletar">
+        </g:form>
+    </g:if>
 
 </body>
 </html>
