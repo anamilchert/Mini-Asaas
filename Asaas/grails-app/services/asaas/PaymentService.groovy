@@ -76,7 +76,7 @@ class PaymentService {
         payment.save(failOnError: true)
     }
 
-    public void processOverduePaymentsJob() {
+    public void processOverduePayments() {
         Date today = new Date()
         List<Long> paymentIdList = PaymentRepository.query([
             status: PaymentStatus.PENDING,
