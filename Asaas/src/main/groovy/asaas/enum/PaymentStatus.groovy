@@ -12,16 +12,17 @@ enum PaymentStatus {
         try {
             if (paymentStatus instanceof String) paymentStatus = paymentStatus.toUpperCase()
             return paymentStatus as PaymentStatus
-        } catch(Exception e) {
-        return null
+        } catch(Exception exception) {
+            return null
         }
-   }
+    }
 
-  public String getLabel() {
-    return Holders.applicationContext.getBean("messageSource").getMessage("PaymentStatus.${this}.label", null, "", new Locale("pt", "BR"))
-  }
+    public String getLabel() {
+        return Holders.applicationContext.getBean("messageSource")
+            .getMessage("PaymentStatus.${this}.label", null, "", new Locale("pt", "BR"))
+    }
 
-  public Boolean isPending() {
-    return this == PENDING
-  }
+    public Boolean isPending() {
+        return this == PENDING
+    }
 }
