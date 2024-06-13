@@ -1,12 +1,13 @@
 package asaas
 
+import asaas.BaseController
 import asaas.Customer
 import asaas.CustomerService
 
 import grails.validation.ValidationException
 import grails.plugin.springsecurity.annotation.Secured
 
-class CustomerController {
+class CustomerController extends BaseController {
 
     def customerService
     
@@ -28,14 +29,15 @@ class CustomerController {
 
     @Secured("ROLE_ADMIN")
     def show() {
-        println getAuthenticatedUser().customer.id
         Long id = params.id?.toLong()
         Customer customer = Customer.read(id)
+
         if (!customer) {
             flash.error = 'Conta não encontrada'
             redirect(action: 'index')
             return
         }
+
         render(view: 'show', model: [customer: customer])
     }
 
@@ -55,14 +57,14 @@ class CustomerController {
     @Secured("ROLE_ADMIN")
     def update() {
         Long id = params.id?.toLong()
-            try {
-                Customer customer = customerService.update(id, params)
-                flash.message = 'Conta atualizada com sucesso'
-                redirect(action: 'show', id: customer.id)
-            } catch (ValidationException e) {
-                String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
-                flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
-                render(view: 'edit', model: [customer: Customer.get(id)])
-            }
+        try {
+            Customer customer = customerService.update(id, params)
+            flash.message = 'Conta atualizada com sucesso'
+            redirect(action: 'show', id: customer.id)
+        } catch (ValidationException e) {
+            String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
+            flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
+            render(view: 'edit', model: [customer: Customer.get(id)])
+        }
     }
 }
