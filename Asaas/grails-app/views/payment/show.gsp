@@ -39,16 +39,17 @@
         </div>
         <div>
             <g:link action="index" params="[customerId:payment.customer.id]">Voltar</g:link>
-            <g:if test="${ enableEdit }">
+            <g:if test="${ payment.status.isPending() }">
                 <input type="submit" value="Editar" />
             </g:if>
         </div>
     </g:form>
 
-    <div>
-        <h3>Cancelar cobrança</h3>
-    </div>
-    <g:if test="${ enableEdit }">   
+    
+    <g:if test="${  payment.status.isPending() }"> 
+        <div>
+            <h3>Cancelar cobrança</h3>
+        </div>  
         <g:form controller="payment" action="delete" method="post" params="[id: payment.id]">
             <input type="submit" value="Deletar">
         </g:form>

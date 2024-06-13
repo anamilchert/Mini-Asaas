@@ -62,8 +62,7 @@ class PaymentController {
         
         if (payment) {
             List<PaymentType> paymentTypeList = PaymentType.values()
-            def enableEdit = payment.status == PaymentStatus.PENDING 
-            return [payment: payment, paymentTypeList:paymentTypeList, enableEdit: enableEdit]
+            return [payment: payment, paymentTypeList:paymentTypeList]
         }
 
         render "Cobrança não encontrada"
