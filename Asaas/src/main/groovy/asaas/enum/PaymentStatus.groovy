@@ -17,7 +17,11 @@ enum PaymentStatus {
         }
    }
 
-    public String getLabel() {
-        return Holders.applicationContext.getBean("messageSource").getMessage("PaymentStatus.${this}.label", null, "", new Locale("pt", "BR"))
-    }
+  public String getLabel() {
+    return Holders.applicationContext.getBean("messageSource").getMessage("PaymentStatus.${this}.label", null, "", new Locale("pt", "BR"))
+  }
+
+  public Boolean isPending() {
+    return this == PENDING
+  }
 }
