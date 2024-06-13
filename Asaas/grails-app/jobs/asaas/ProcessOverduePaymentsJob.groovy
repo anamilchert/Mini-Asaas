@@ -17,7 +17,7 @@ class ProcessOverduePaymentsJob {
 
     def execute() {
         try {
-            List<Payment> paymentList = paymentService.processOverduePaymentsJob()
+            paymentService.processOverduePaymentsJob()
         } catch (Exception exception) {
             logger.error("Ocorreu um erro durante o processamento dos pagamentos vencidos: ${exception.message}", exception)
         }

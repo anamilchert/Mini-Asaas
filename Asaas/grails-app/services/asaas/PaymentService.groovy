@@ -87,7 +87,7 @@ class PaymentService {
             Payment.withNewTransaction { TransactionStatus status ->
                 try {
                     Payment payment = Payment.get(id)
-                    payment.status = PaymentStatus.EXPIRED
+                    payment.status = PaymentStatus.OVERDUE
                     payment.save(failOnError: true)
                 } catch (Exception exception) {
                     status.setRollbackOnly()
