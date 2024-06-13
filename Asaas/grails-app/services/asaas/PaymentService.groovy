@@ -59,6 +59,23 @@ class PaymentService {
         return payment
     }
 
+    public Payment confirmReceivedInCash(Long paymentId) {
+        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+
+        if (!payment) {
+            throw new RuntimeException("Pagamento não encontrado")
+        }
+
+        if (payment.status != PaymentStatus.PENDING) {
+            throw new RuntimeException("Somente pagamentos pendentes podem ser confirmados")
+        }
+
+        payment.status = PaymentStatus.RECEIVED
+        payment.save(failOnError: true)
+
+        return payment
+    }
+
     public void delete(Long paymentId) {
         Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
         
