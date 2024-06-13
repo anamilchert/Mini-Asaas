@@ -1,6 +1,7 @@
 package asaas
 
 import asaas.adapter.PaymentAdapter
+import asaas.BaseController
 import asaas.Payer
 import asaas.PayerService
 import asaas.Payment
@@ -8,9 +9,11 @@ import asaas.PaymentService
 import asaas.PaymentType
 import asaas.repositories.PaymentRepository
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
-class PaymentController {
+@Secured('IS_AUTHENTICATED_FULLY')
+class PaymentController extends BaseController{
 
     PaymentService paymentService
 

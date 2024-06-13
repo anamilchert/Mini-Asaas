@@ -1,15 +1,19 @@
 package asaas
 
 import asaas.adapter.PayerAdapter
+import asaas.BaseController
 import asaas.Customer
 import asaas.Payer
 import asaas.Payer
 import asaas.PayerService
 import asaas.repositories.PayerRepository
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
-class PayerController {
+
+@Secured('IS_AUTHENTICATED_FULLY')
+class PayerController extends BaseController{
 
     PayerService payerService
 
