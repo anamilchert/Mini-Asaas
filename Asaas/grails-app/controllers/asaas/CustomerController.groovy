@@ -23,7 +23,7 @@ class CustomerController extends BaseController {
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-            render(view: "edit", model: [customer: new Customer(params)])
+            redirect(view: "index")
         }
     }
 
@@ -44,12 +44,12 @@ class CustomerController extends BaseController {
         try {
             Long customerId = getCurrentCustomerId() as Long
             Customer customer = customerService.update(customerId, params)
-            flash.message = 'Conta atualizada com sucesso'
-            redirect(action: 'show', id: customer.id)
+            flash.message = "Conta atualizada com sucesso"
+            redirect(action: "show", id: customer.id)
         } catch (ValidationException e) {
             String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
-            render(view: 'edit', model: [customer: Customer.get(id)])
+            redirect(action: "edit")
         }
     }
 }

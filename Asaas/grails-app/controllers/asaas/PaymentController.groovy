@@ -36,10 +36,10 @@ class PaymentController extends BaseController{
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
-            redirect(action: "index",  params: [customerId: params.customerId])
+            redirect(action: "index")
         } catch (Exception exception) {
             flash.error = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
-            redirect(action: "index",  params: [customerId: params.customerId])
+            redirect(action: "index")
         }
     }
 
