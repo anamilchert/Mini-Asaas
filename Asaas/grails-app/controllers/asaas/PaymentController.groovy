@@ -69,6 +69,20 @@ class PaymentController {
         render "Cobrança não encontrada"
     }
 
+    def confirmReceivedInCash() {
+        try {
+            Payment payment = paymentService.confirmReceivedInCash(params.id.toLong())
+            flash.message = "Pagamento confirmado como recebido em dinheiro"
+            redirect(action:"show", id:payment.id)
+        } catch (RuntimeException runtimeException) {
+            flash.error = runtimeException.message
+            redirect(action: "show", id: params.id)
+        } catch (Exception exception) {
+            flash.error = "Houve um erro inesperado ao tentar confirmar o pagamento. Por favor, tente novamente"
+            redirect(action: "show", id: params.id)
+        }
+    }
+
     def list() {
         List<Payment> paymentList = PaymentRepository.query([customerId: params.customerId.toLong()]).list()
         return [paymentList: paymentList]
