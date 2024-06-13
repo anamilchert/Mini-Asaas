@@ -70,7 +70,7 @@ class PaymentService {
             throw new RuntimeException("Somente pagamentos pendentes podem ser confirmados")
         }
 
-        payment.status = PaymentStatus.RECEIVED
+        payment.status = PaymentStatus.RECEIVED_IN_CASH
         payment.save(failOnError: true)
 
         return payment
