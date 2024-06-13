@@ -33,7 +33,7 @@ class PayerAdapter{
 
     Long customerId
 
-    public PayerAdapter(Map params) {
+    public PayerAdapter(Map params, Long customerId) {
         this.name = params.name
         this.email = params.email
         this.phone = params.phone
@@ -46,6 +46,6 @@ class PayerAdapter{
         this.state = params.state
         this.complement = params.complement
         this.zipCode = params.zipCode
-        this.customerId = params.customerId as Long
+        this.customerId = customerId
     }
 }
