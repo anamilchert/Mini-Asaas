@@ -6,7 +6,8 @@ enum PaymentStatus {
   PENDING,
   CANCELED,
   EXPIRED,
-  APPROVED
+  APPROVED,
+  RECEIVED_IN_CASH
   
   public static PaymentStatus convert(String paymentStatus) {
     try {
