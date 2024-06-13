@@ -3,6 +3,10 @@ grails.plugin.springsecurity.password.algorithm = 'bcrypt'
 grails.plugin.springsecurity.userLookup.userDomainClassName = 'asaas.User'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'asaas.UserRole'
 grails.plugin.springsecurity.authority.className = 'asaas.Role'
+
+grails.plugin.springsecurity.logout.postOnly = false
+grails.plugin.springsecurity.logout.filterProcessesUrl = '/logout'
+
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/',               access: ['permitAll']],
 	[pattern: '/error',          access: ['permitAll']],

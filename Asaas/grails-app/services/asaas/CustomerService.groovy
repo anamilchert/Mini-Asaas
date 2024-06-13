@@ -4,6 +4,8 @@ import asaas.Address
 import asaas.Customer
 import asaas.PersonType
 import asaas.utils.DomainUtils
+import asaas.adapter.UserAdapter
+import asaas.UserService
 
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
@@ -11,11 +13,15 @@ import grails.validation.ValidationException
 @Transactional
 class CustomerService {
 
+    UserService userService
+
     public Customer save(Map params) {
         Customer customerValues = validateCustomerParams(params)
         if (customerValues.hasErrors()) {
             throw new ValidationException("Erro ao criar a conta", customerValues.errors)
         }
+
+        UserAdapter userAdapter = new UserAdapter(params)
 
         Customer customer = new Customer(
             name: params.name,
@@ -37,6 +43,8 @@ class CustomerService {
         customer.address = address
 
         customer.save(failOnError: true)
+
+        userService.createUser(userAdapter, customer.id, "ROLE_ADMIN")
 
         return customer
     }

@@ -12,7 +12,9 @@ class User implements Serializable {
     private static final long serialVersionUID = 1
 
     String username
-    String password
+    String password 
+    String name
+    Customer customer
     boolean enabled = true
     boolean accountExpired
     boolean accountLocked
