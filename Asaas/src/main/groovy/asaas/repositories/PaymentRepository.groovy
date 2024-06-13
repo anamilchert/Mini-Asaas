@@ -30,7 +30,7 @@ class PaymentRepository {
             }
 
             if (search.containsKey('status')) {
-                eq('status', PaymentStatus.valueOf(search.status as String))
+                eq('status', PaymentStatus.valueOf(search.status.toString()))
             }
 
             if (search.containsKey('dueDate[ge]')) {
