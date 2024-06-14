@@ -67,7 +67,7 @@ class PaymentService {
         }
 
         if (payment.status != PaymentStatus.PENDING) {
-            throw new RuntimeException("Somente pagamentos pendentes podem ser confirmados")
+            throw new RuntimeException("Somente cobranças aguardando pagamento podem ser recebidas em dinheiro")
         }
 
         payment.status = PaymentStatus.RECEIVED_IN_CASH
