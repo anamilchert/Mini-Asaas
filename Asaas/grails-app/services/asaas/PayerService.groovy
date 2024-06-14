@@ -5,6 +5,7 @@ import asaas.Address
 import asaas.Customer
 import asaas.Payer
 import asaas.PersonType
+import asaas.State
 import asaas.repositories.PayerRepository
 import asaas.utils.DomainUtils
 
@@ -90,6 +91,10 @@ class PayerService {
         if (!payerAdapter.email) DomainUtils.addError(payer, "Email é obrigatório")
 
         if (hasValidAddress(payerAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
+
+         if (!State.validate(parameterMap.state)) {
+            validate.errors.rejectValue("state", "invalid")
+        }
 
         return payer
     }

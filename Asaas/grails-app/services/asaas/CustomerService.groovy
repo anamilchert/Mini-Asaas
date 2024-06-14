@@ -3,6 +3,7 @@ package asaas
 import asaas.Address
 import asaas.Customer
 import asaas.PersonType
+import asaas.State
 import asaas.utils.DomainUtils
 
 import grails.gorm.transactions.Transactional
@@ -82,6 +83,10 @@ class CustomerService {
             !params.address.province || !params.address.city || !params.address.state ||
             !params.address.zipCode) {
             DomainUtils.addError(customer, "Endereço incompleto")
+        }
+
+         if (!State.validate(parameterMap.state)) {
+            validateCustomerParams.errors.rejectValue("state", "invalid")
         }
 
         return customer
