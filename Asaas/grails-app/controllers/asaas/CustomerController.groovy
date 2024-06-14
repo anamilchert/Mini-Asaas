@@ -1,8 +1,10 @@
 package asaas
 
+import asaas.adapter.UserAdapter
 import asaas.BaseController
 import asaas.Customer
 import asaas.CustomerService
+import asaas.adapter.CustomerAdapter
 
 import grails.validation.ValidationException
 import grails.plugin.springsecurity.annotation.Secured
@@ -15,15 +17,17 @@ class CustomerController extends BaseController {
     def index() {
     }
 
-    @Secured("isAnonymous()")
+    @Secured("isAnonymous()")  
     def save() {
         try {
-            Customer customer = customerService.save(params)
+            CustomerAdapter customerAdapter = new CustomerAdapter(params)
+            UserAdapter userAdapter = new UserAdapter(params)
+            Customer customer = customerService.save(customerAdapter, userAdapter)
             redirect(action: 'show', id: customer.id)
         } catch (ValidationException validationException) {
-            String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
+            String errorsMessage = validationException.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-            redirect(view: "index")
+            render(view: 'index', model: [customer: new Customer(params)])
         }
     }
 
@@ -46,8 +50,8 @@ class CustomerController extends BaseController {
             Customer customer = customerService.update(customerId, params)
             flash.message = "Conta atualizada com sucesso"
             redirect(action: "show", id: customer.id)
-        } catch (ValidationException ValidationException) {
-            String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
+        } catch (ValidationException validationException) {
+            String errorsMessage = validationException.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
             redirect(action: "edit")
         }

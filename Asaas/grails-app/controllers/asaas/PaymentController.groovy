@@ -55,8 +55,8 @@ class PaymentController extends BaseController{
             Payment payment = paymentService.update(paymentAdapter, params.id.toLong())
             flash.message = "Cobrança atualizada com sucesso"
             redirect(action:"show", id:payment.id)
-        } catch (ValidationException e) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+        } catch (ValidationException validationException) {
+            String errorsMessage = validationExceptione.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível atualizar uma cobrança: $errorsMessage"
             redirect(action: "show", id: params.id)
         } catch (RuntimeException runtimeException) {
@@ -86,6 +86,20 @@ class PaymentController extends BaseController{
             redirect(action: "index")
         }
         
+    }
+
+    def confirmReceivedInCash() {
+        try {
+            Payment payment = paymentService.confirmReceivedInCash(params.id.toLong())
+            flash.message = "Pagamento confirmado como recebido em dinheiro"
+            redirect(action:"show", id:payment.id)
+        } catch (RuntimeException runtimeException) {
+            flash.error = runtimeException.message
+            redirect(action: "show", id: params.id)
+        } catch (Exception exception) {
+            flash.error = "Houve um erro inesperado ao tentar confirmar o pagamento. Por favor, tente novamente"
+            redirect(action: "show", id: params.id)
+        }
     }
 
     def list() {
