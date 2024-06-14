@@ -141,4 +141,17 @@ class PaymentController extends BaseController{
             redirect(action: "show", id: params.id)
         }
     }
+
+    def restore() {
+        try {
+            paymentService.restore(params.id.toLong())
+            flash.message = "Cobrança restaurada com sucesso"
+        } catch (RuntimeException runtimeException) {
+            flash.error = runtimeException.getMessage()
+        } catch (Exception exception) {
+            flash.error = "Erro ao restaurar a cobrança. Por favor, contate o time de suporte"
+        } finally {
+            redirect(action: "list")
+        }
+    }
 }
