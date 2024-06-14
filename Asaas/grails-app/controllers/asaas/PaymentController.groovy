@@ -84,4 +84,17 @@ class PaymentController extends BaseController{
             .query([customerId: getCurrentCustomerId(), payerId: params.payerId.toLong()]).list()
         return [paymentList: paymentList]
     }
+
+    def delete() {
+        try {
+            paymentService.delete(params.id.toLong())
+            flash.message = "Cobrança cancelada com sucesso"
+        } catch (RuntimeException runtimeException) {
+            flash.error = runtimeException.getMessage()
+        } catch (Exception exception) {
+            flash.error = "Erro ao cancelar a cobrança. Por favor, contate o time de suporte"
+        } finally {
+            redirect(action: "show", id: params.id)
+        }
+    }
 }
