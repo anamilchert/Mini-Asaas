@@ -92,7 +92,7 @@ class PayerService {
 
         if (hasValidAddress(payerAdapter)) DomainUtils.addError(payer, "Endereço incompleto")
 
-         if (!State.validate(parameterMap.state)) {
+         if (!State.validate(payerAdapter.state)) {
             validate.errors.rejectValue("state", "invalid")
         }
 
