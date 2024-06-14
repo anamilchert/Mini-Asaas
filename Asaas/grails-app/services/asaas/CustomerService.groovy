@@ -80,7 +80,7 @@ class CustomerService {
         }
 
         if (!CpfCnpjUtils.isValidCpfCnpj(customerAdapter.cpfCnpj)) {
-            DomainUtils.addError(customer, "CPF/CNPJ é inváliado")
+            DomainUtils.addError(customer, "CPF/CNPJ é inválido")
         }
 
         validateAddress(customerAdapter, customer)
