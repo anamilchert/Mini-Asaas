@@ -1,11 +1,6 @@
 package asaas
 
-import asaas.Payment
 import asaas.PaymentService
-
-import java.time.LocalDate
-import java.time.ZoneId
-import java.util.Date
 
 class ProcessOverduePaymentsJob {
 
