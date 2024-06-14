@@ -1,5 +1,6 @@
 package asaas
 
+import asaas.adapter.UserAdapter
 import asaas.BaseController
 import asaas.Customer
 import asaas.CustomerService
@@ -16,11 +17,12 @@ class CustomerController extends BaseController {
     def index() {
     }
 
+    @Secured("isAnonymous()")  
     def save() {
         try {
             CustomerAdapter customerAdapter = new CustomerAdapter(params)
-            Customer customer = customerService.save(customerAdapter)
-
+            UserAdapter userAdapter = new UserAdapter(params)
+            Customer customer = customerService.save(customerAdapter, userAdapter)
             redirect(action: 'show', id: customer.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.collect { it.defaultMessage }.join(', ')
