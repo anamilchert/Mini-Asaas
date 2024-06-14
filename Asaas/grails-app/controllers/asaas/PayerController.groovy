@@ -49,7 +49,8 @@ class PayerController {
     }
 
     def list() {
-        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        List<Payer> payerList = PayerRepository
+            .query([includeDeleted: params?.includeDeleted, customerId: params.customerId.toLong()]).list()
         return [payerList: payerList]   
     }
 
@@ -80,6 +81,21 @@ class PayerController {
         } catch (Exception exception) {
             flash.message = "Não foi possível excluir pagador"
             redirect(action: "index")
+        }
+    }
+
+    def restore() {
+        try {
+            payerService.restore(params.id.toLong())
+            flash.message = "Pagador restaurado com sucesso"
+        } catch (RuntimeException runtimeException) {
+            println runtimeException
+            flash.error = runtimeException.getMessage()
+        } catch (Exception exception) {
+            println runtimeException
+            flash.error = "Erro ao restaurar um pagador. Por favor, contate o time de suporte"
+        } finally {
+            redirect(action: "list")
         }
     }
 }

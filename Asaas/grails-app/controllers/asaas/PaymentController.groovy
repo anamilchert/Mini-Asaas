@@ -112,10 +112,8 @@ class PaymentController {
             paymentService.restore(params.id.toLong())
             flash.message = "Cobrança restaurada com sucesso"
         } catch (RuntimeException runtimeException) {
-            println runtimeException
             flash.error = runtimeException.getMessage()
         } catch (Exception exception) {
-            println exception
             flash.error = "Erro ao restaurar a cobrança. Por favor, contate o time de suporte"
         } finally {
             redirect(action: "list")
