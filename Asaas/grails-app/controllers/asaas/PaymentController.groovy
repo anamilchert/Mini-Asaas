@@ -83,7 +83,8 @@ class PaymentController {
     }
 
     def list() {
-        List<Payment> paymentList = PaymentRepository.query([customerId: params.customerId.toLong()]).list()
+        List<Payment> paymentList = PaymentRepository
+            .query([includeDeleted: params?.includeDeleted, customerId: params.customerId.toLong()]).list()
         return [paymentList: paymentList]
     }
 
@@ -103,6 +104,21 @@ class PaymentController {
             flash.error = "Erro ao cancelar a cobrança. Por favor, contate o time de suporte"
         } finally {
             redirect(action: "show", id: params.id)
+        }
+    }
+
+    def restore() {
+        try {
+            paymentService.restore(params.id.toLong())
+            flash.message = "Cobrança restaurada com sucesso"
+        } catch (RuntimeException runtimeException) {
+            println runtimeException
+            flash.error = runtimeException.getMessage()
+        } catch (Exception exception) {
+            println exception
+            flash.error = "Erro ao restaurar a cobrança. Por favor, contate o time de suporte"
+        } finally {
+            redirect(action: "list")
         }
     }
 }

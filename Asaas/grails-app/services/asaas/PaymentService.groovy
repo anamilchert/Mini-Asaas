@@ -93,6 +93,22 @@ class PaymentService {
         payment.save(failOnError: true)
     }
 
+    public void restore(Long paymentId) {
+        Payment payment = PaymentRepository.query([includeDeleted: true, id: paymentId]).get()
+
+        if (!payment) {
+            throw new RuntimeException("Pagamento não encontrado")
+        }
+
+        if (!payment.deleted) {
+            throw new RuntimeException("Só é possível restaurar cobranças deletadas")
+        }
+
+        payment.deleted = false
+        
+        payment.save(failOnError: true)
+    }   
+
     public void processOverduePayments() {
         Date today = new Date()
         List<Long> paymentIdList = PaymentRepository.query([
