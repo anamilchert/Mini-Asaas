@@ -83,7 +83,7 @@ class PayerService {
 
         if (!isUpdate && !payerAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
 
-        if (!isUpdate && !CpfCnpjUtils.isValidCpfCnpj(payerAdapter.cpfCnpj)) DomainUtils.addError(payer, "CPF/CNPJ é inváliado")
+        if (!isUpdate && !CpfCnpjUtils.isValidCpfCnpj(payerAdapter.cpfCnpj)) DomainUtils.addError(payer, "CPF/CNPJ é inválido")
 
         if (!isUpdate && !payerAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
 
