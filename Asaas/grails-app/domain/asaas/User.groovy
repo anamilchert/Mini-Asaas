@@ -12,12 +12,19 @@ class User implements Serializable {
     private static final long serialVersionUID = 1
 
     String username
+
     String password 
+
     String name
+
     Customer customer
+
     boolean enabled = true
+
     boolean accountExpired
+
     boolean accountLocked
+
     boolean passwordExpired
 
     Set<Role> getAuthorities() {
@@ -30,14 +37,15 @@ class User implements Serializable {
     }
 
     static mapping = {
-	    password column: '`password`'
+        password column: '`password`'
     }
 
     static namedQueries = {
         query { Map search ->
-             if (!Boolean.valueOf(search.includeDeleted)) {
+            if (!Boolean.valueOf(search.includeDeleted)) {
                 eq('deleted', false)
             }
+
             if (search.containsKey('id')) {
                 eq('id', search.id)
             }
