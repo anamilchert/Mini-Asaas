@@ -14,10 +14,6 @@
     </g:if>
     <g:form controller="payment" action="update" method="post" params="[id: payment?.id]">
         <div>
-            <label for="customer">Cobrador:</label>
-            <input type="text" id="customer" name="customerId" value="${payment.customer.id}" readonly>
-        </div>
-        <div>
             <label for="payer">Pagador:</label>
             <input type="text" id="payer" name="payerId" value="${payment.payer.id}" readonly>
         </div>
@@ -58,7 +54,7 @@
       <div>
         <h3>Confirmar recebimento em dinheiro</h3>
     </div>
-    <g:if test="${ enableEdit }">
+    <g:if test="${ payment.status.isPending() }">
         <g:form controller="payment" action="confirmReceivedInCash" method="post" params="[id: payment.id]">
             <input type="submit" value="Confirmar recebimento">
         </g:form>

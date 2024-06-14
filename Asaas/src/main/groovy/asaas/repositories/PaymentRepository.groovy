@@ -12,6 +12,10 @@ class PaymentRepository {
     static DetachedCriteria<Payment> query(Map search) {
         DetachedCriteria<Payment> query = Payment.where({})
 
+        if (!search.ignoreCustomer && !search.customerId) {
+            throw new RuntimeException("Customer deve ser informado")
+        }
+
         query = query.where {
             if (!search.includeDeleted ?: false) {
                 eq('deleted', false)

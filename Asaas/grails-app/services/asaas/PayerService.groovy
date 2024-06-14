@@ -44,7 +44,7 @@ class PayerService {
     }
 
     public Payer update(PayerAdapter payerAdapter, Long payerId) {
-        Payer payer = PayerRepository.query([id: payerId]).get() as Payer
+        Payer payer = PayerRepository.query([customerId: payerAdapter.customerId, id: payerId]).get() as Payer
         if(!payer) throw new RuntimeException("Pagador não encontrado")
 
         Payer validatedPayer = validate(payerAdapter, true)
@@ -66,8 +66,8 @@ class PayerService {
         return payer
     }
 
-    public void delete(Long payerId) {
-        Payer payer = PayerRepository.query([id: payerId]).get() as Payer
+    public void delete(Long payerId, Long customerId) {
+        Payer payer = PayerRepository.query([customerId: customerId, id: payerId]).get() as Payer
         if (!payer) throw new RuntimeException("Pagador não encontrado")
 
         payer.deleted = true

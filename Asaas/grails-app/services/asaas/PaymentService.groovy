@@ -38,7 +38,7 @@ class PaymentService {
     }
 
     public Payment update(PaymentAdapter paymentAdapter, Long paymentId) {
-        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+        Payment payment = PaymentRepository.query([customerId: paymentAdapter.customerId, id: paymentId]).get() as Payment
 
         Payment validatedPayment = validate(paymentAdapter, true)
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao editar uma cobrança", validatedPayment.errors)
@@ -60,8 +60,8 @@ class PaymentService {
         return payment
     }
 
-    public Payment confirmReceivedInCash(Long paymentId) {
-        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+    public Payment confirmReceivedInCash(Long paymentId, Long customerId) {
+        Payment payment = PaymentRepository.query([customerId: customerId, id: paymentId]).get() as Payment
 
         if (!payment) {
             throw new RuntimeException("Cobrança não encontrada")
@@ -77,8 +77,8 @@ class PaymentService {
         return payment
     }
 
-    public void delete(Long paymentId) {
-        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+    public void delete(Long paymentId, Long customerId) {
+        Payment payment = PaymentRepository.query([customerId: customerId, id: paymentId]).get() as Payment
         
         if (!payment) {
             throw new RuntimeException("Pagamento não encontrado")
@@ -112,6 +112,7 @@ class PaymentService {
     public void processOverduePayments() {
         Date today = new Date()
         List<Long> paymentIdList = PaymentRepository.query([
+            ignoreCustomer: true,
             status: PaymentStatus.PENDING,
             "dueDate[le]": today
         ]).property("id").list() as List<Long>

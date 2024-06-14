@@ -1,27 +1,30 @@
 package asaas
 
 import asaas.adapter.PayerAdapter
+import asaas.BaseController
 import asaas.Customer
 import asaas.Payer
 import asaas.Payer
 import asaas.PayerService
 import asaas.repositories.PayerRepository
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
-class PayerController {
+
+@Secured('IS_AUTHENTICATED_FULLY')
+class PayerController extends BaseController{
 
     PayerService payerService
 
     def index() {
-        List<Customer> customerList = Customer.list()
-        return [customerList: customerList]
     }
 
 
     def save() {
         try {
-            PayerAdapter payerAdapter = new PayerAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PayerAdapter payerAdapter = new PayerAdapter(params, customerId)
             Payer payer = payerService.save(payerAdapter)
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
@@ -38,25 +41,37 @@ class PayerController {
     }
 
     def show() {
-        Payer payer = PayerRepository.query([id: params.id.toLong()]).get()
-
-        if (!payer) {
-            flash.message = "Pagador não encontrado"
+        try {
+            Payer payer = PayerRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
+            if(!payer) throw new RuntimeException("Pagador não encontrado")
+            return [payer: payer]
+        } catch (RuntimeException runtimeException) {
+            flash.message = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Erro ao buscar o pagador. Por favor, contate o suporte"
             redirect(action: "index")
         }
-
-        return [payer: payer]
+        
     }
 
     def list() {
-        List<Payer> payerList = PayerRepository
-            .query([includeDeleted: params.includeDeleted, customerId: params.customerId.toLong()]).list()
-        return [payerList: payerList]   
+        try {
+            List<Payer> payerList = PayerRepository.query([customerId: getCurrentCustomerId()]).list()
+            return [payerList: payerList]   
+        } catch (RuntimeException runtimeException) {
+            flash.message = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Erro ao buscar lista de pagadores. Por favor, contate o suporte"
+            redirect(action: "index")
+        }
     }
 
     def update() {
         try {
-            PayerAdapter payerAdapter = new PayerAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PayerAdapter payerAdapter = new PayerAdapter(params, customerId)
             Payer payer = payerService.update(payerAdapter, params.id.toLong())
             flash.message = "Os dados foram atualizados com sucesso!"
             redirect(action:"show", id:payer.id)
@@ -75,7 +90,7 @@ class PayerController {
 
      def delete() {
         try {
-            payerService.delete(params.id.toLong())
+            payerService.delete(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Pagador excluído com sucesso"
             redirect(action: "index")
         } catch (Exception exception) {

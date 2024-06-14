@@ -14,6 +14,15 @@
         <label for="email">Email:</label>
         <input type="email" name="email" id="email" required/><br/>
 
+        <label for="username">Username:</label>
+        <input type="text" name="username" required/><br/>
+
+        <label for="password">Senha:</label>
+        <input type="password" name="password" required/><br/>
+
+        <label for="email">Confirmar senha:</label>
+        <input type="password" name="confirmedPassword" required/><br/>
+
         <label for="cpfCnpj">CPF/CNPJ:</label>
         <input type="text" name="cpfCnpj" id="cpfCnpj" required/><br/>
 
