@@ -85,6 +85,10 @@ class CustomerService {
             DomainUtils.addError(customer, "CPF/CNPJ é obrigatório")
         }
 
+        if (!CpfCnpjUtils.isValidCpfCnpj(customerAdapter.cpfCnpj)) {
+            DomainUtils.addError(customer, "CPF/CNPJ é inválido")
+        }
+
         validateAddress(customerAdapter, customer)
 
         return customer
