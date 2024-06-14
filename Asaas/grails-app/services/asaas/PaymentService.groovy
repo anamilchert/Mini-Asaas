@@ -63,7 +63,7 @@ class PaymentService {
         Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
 
         if (!payment) {
-            throw new RuntimeException("Pagamento não encontrado")
+            throw new RuntimeException("Cobrança não encontrada")
         }
 
         if (payment.status != PaymentStatus.PENDING) {
