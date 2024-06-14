@@ -50,8 +50,8 @@ class PaymentController extends BaseController{
             Payment payment = paymentService.update(paymentAdapter, params.id.toLong())
             flash.message = "Cobrança atualizada com sucesso"
             redirect(action:"show", id:payment.id)
-        } catch (ValidationException e) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+        } catch (ValidationException validationException) {
+            String errorsMessage = validationExceptione.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível atualizar uma cobrança: $errorsMessage"
             redirect(action: "show", id: params.id)
         } catch (RuntimeException runtimeException) {
