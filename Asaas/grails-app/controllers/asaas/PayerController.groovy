@@ -41,17 +41,31 @@ class PayerController extends BaseController{
     }
 
     def show() {
-        Payer payer = PayerRepository.query([id: params.id.toLong()]).get()
-        Long customerId = getCurrentCustomerId()
+        try {
+            Payer payer = PayerRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
+            if(!payer) throw new RuntimeException("Pagador não encontrado")
+            return [payer: payer]
+        } catch (RuntimeException runtimeException) {
+            flash.message = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Erro ao buscar o pagador. Por favor, contate o suporte"
+            redirect(action: "index")
+        }
         
-        if(!payer || getCurrentCustomerId() != payer.customer.id) redirect(uri: "/")
-
-        return [payer: payer]
     }
 
     def list() {
-        List<Payer> payerList = PayerRepository.query([customerId:getCurrentCustomerId()]).list()
-        return [payerList: payerList]   
+        try {
+            List<Payer> payerList = PayerRepository.query([customerId: getCurrentCustomerId()]).list()
+            return [payerList: payerList]   
+        } catch (RuntimeException runtimeException) {
+            flash.message = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.message = "Erro ao buscar lista de pagadores. Por favor, contate o suporte"
+            redirect(action: "index")
+        }
     }
 
     def update() {
@@ -76,7 +90,7 @@ class PayerController extends BaseController{
 
      def delete() {
         try {
-            payerService.delete(params.id.toLong())
+            payerService.delete(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Pagador excluído com sucesso"
             redirect(action: "index")
         } catch (Exception exception) {
