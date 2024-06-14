@@ -60,6 +60,23 @@ class PaymentService {
         return payment
     }
 
+    public Payment confirmReceivedInCash(Long paymentId) {
+        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+
+        if (!payment) {
+            throw new RuntimeException("Cobrança não encontrada")
+        }
+
+        if (payment.status != PaymentStatus.PENDING) {
+            throw new RuntimeException("Somente cobranças aguardando pagamento podem ser recebidas em dinheiro")
+        }
+
+        payment.status = PaymentStatus.RECEIVED_IN_CASH
+        payment.save(failOnError: true)
+
+        return payment
+    }
+
     public void delete(Long paymentId) {
         Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
         
