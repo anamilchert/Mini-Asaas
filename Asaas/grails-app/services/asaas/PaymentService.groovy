@@ -13,6 +13,7 @@ import grails.compiler.GrailsCompileStatic
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
 import java.text.SimpleDateFormat
+import org.springframework.transaction.TransactionStatus
 
 @GrailsCompileStatic
 @Transactional
@@ -73,6 +74,26 @@ class PaymentService {
         payment.deleted = true
 
         payment.save(failOnError: true)
+    }
+
+    public void processOverduePayments() {
+        Date today = new Date()
+        List<Long> paymentIdList = PaymentRepository.query([
+            status: PaymentStatus.PENDING,
+            "dueDate[le]": today
+        ]).property("id").list() as List<Long>
+        
+        for (Long id : paymentIdList) {
+            Payment.withNewTransaction { TransactionStatus status ->
+                try {
+                    Payment payment = Payment.get(id)
+                    payment.status = PaymentStatus.OVERDUE
+                    payment.save(failOnError: true)
+                } catch (Exception exception) {
+                    status.setRollbackOnly()
+                }
+            }
+        }
     }
 
     private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
