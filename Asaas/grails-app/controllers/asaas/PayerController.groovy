@@ -89,10 +89,8 @@ class PayerController {
             payerService.restore(params.id.toLong())
             flash.message = "Pagador restaurado com sucesso"
         } catch (RuntimeException runtimeException) {
-            println runtimeException
             flash.error = runtimeException.getMessage()
         } catch (Exception exception) {
-            println runtimeException
             flash.error = "Erro ao restaurar um pagador. Por favor, contate o time de suporte"
         } finally {
             redirect(action: "list")
