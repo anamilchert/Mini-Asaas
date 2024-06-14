@@ -3,6 +3,7 @@ package asaas
 import asaas.BaseController
 import asaas.Customer
 import asaas.CustomerService
+import asaas.adapter.CustomerAdapter
 
 import grails.validation.ValidationException
 import grails.plugin.springsecurity.annotation.Secured
@@ -15,15 +16,16 @@ class CustomerController extends BaseController {
     def index() {
     }
 
-    @Secured("isAnonymous()")
     def save() {
         try {
-            Customer customer = customerService.save(params)
+            CustomerAdapter customerAdapter = new CustomerAdapter(params)
+            Customer customer = customerService.save(customerAdapter)
+
             redirect(action: 'show', id: customer.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
-            redirect(view: "index")
+            render(view: 'index', model: [customer: new Customer(params)])
         }
     }
 

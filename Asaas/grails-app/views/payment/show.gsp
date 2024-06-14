@@ -51,5 +51,14 @@
         </g:form>
     </g:if>
 
+      <div>
+        <h3>Confirmar recebimento em dinheiro</h3>
+    </div>
+    <g:if test="${ enableEdit }">
+        <g:form controller="payment" action="confirmReceivedInCash" method="post" params="[id: payment.id]">
+            <input type="submit" value="Confirmar recebimento">
+        </g:form>
+    </g:if>
+
 </body>
 </html>

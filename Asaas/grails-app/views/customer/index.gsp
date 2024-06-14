@@ -33,25 +33,25 @@
         </select><br/>
 
         <label for="street">Rua:</label>
-        <input type="text" name="address.street" id="street" required/><br/>
+        <input type="text" name="street" id="street" required/><br/>
 
         <label for="number">Número:</label>
-        <input type="text" name="address.number" id="number" required/><br/>
+        <input type="text" name="number" id="number" required/><br/>
 
         <label for="province">Bairro:</label>
-        <input type="text" name="address.province" id="province" required/><br/>
+        <input type="text" name="province" id="province" required/><br/>
 
         <label for="city">Cidade:</label>
-        <input type="text" name="address.city" id="city" required/><br/>
+        <input type="text" name="city" id="city" required/><br/>
 
         <label for="state">Estado:</label>
-        <input type="text" name="address.state" id="state" required/><br/>
+        <input type="text" name="state" id="state" required/><br/>
 
         <label for="complement">Complemento:</label>
-        <input type="text" name="address.complement" id="complement"/><br/>
+        <input type="text" name="complement" id="complement"/><br/>
 
         <label for="zipCode">CEP:</label>
-        <input type="text" name="address.zipCode" id="CEP" required/><br/>
+        <input type="text" name="zipCode" id="CEP" required/><br/>
 
         <input type="submit" value="Salvar"/>
     </g:form>

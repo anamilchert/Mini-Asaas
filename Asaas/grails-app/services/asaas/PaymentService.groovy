@@ -13,6 +13,7 @@ import grails.compiler.GrailsCompileStatic
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
 import java.text.SimpleDateFormat
+import org.springframework.transaction.TransactionStatus
 
 @GrailsCompileStatic
 @Transactional
@@ -59,6 +60,23 @@ class PaymentService {
         return payment
     }
 
+    public Payment confirmReceivedInCash(Long paymentId) {
+        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+
+        if (!payment) {
+            throw new RuntimeException("Cobrança não encontrada")
+        }
+
+        if (payment.status != PaymentStatus.PENDING) {
+            throw new RuntimeException("Somente cobranças aguardando pagamento podem ser recebidas em dinheiro")
+        }
+
+        payment.status = PaymentStatus.RECEIVED_IN_CASH
+        payment.save(failOnError: true)
+
+        return payment
+    }
+
     public void delete(Long paymentId) {
         Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
         
@@ -73,6 +91,26 @@ class PaymentService {
         payment.deleted = true
 
         payment.save(failOnError: true)
+    }
+
+    public void processOverduePayments() {
+        Date today = new Date()
+        List<Long> paymentIdList = PaymentRepository.query([
+            status: PaymentStatus.PENDING,
+            "dueDate[le]": today
+        ]).property("id").list() as List<Long>
+        
+        for (Long id : paymentIdList) {
+            Payment.withNewTransaction { TransactionStatus status ->
+                try {
+                    Payment payment = Payment.get(id)
+                    payment.status = PaymentStatus.OVERDUE
+                    payment.save(failOnError: true)
+                } catch (Exception exception) {
+                    status.setRollbackOnly()
+                }
+            }
+        }
     }
 
     private Payment validate(PaymentAdapter paymentAdapter, Boolean isUpdate) {
