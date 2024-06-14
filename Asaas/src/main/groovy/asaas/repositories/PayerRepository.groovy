@@ -10,6 +10,10 @@ class PayerRepository {
 
     static DetachedCriteria<Payer> query(Map search) {
         DetachedCriteria<Payer> query = Payer.where({})
+        
+        if (!search.customerId) {
+            throw new RuntimeException("Customer deve ser informado")
+        }
 
         query = query.where {
             if (!search.includeDeleted ?: false) {
