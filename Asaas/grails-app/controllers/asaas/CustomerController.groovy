@@ -20,7 +20,7 @@ class CustomerController extends BaseController {
         try {
             Customer customer = customerService.save(params)
             redirect(action: 'show', id: customer.id)
-        } catch (ValidationException e) {
+        } catch (ValidationException validationException) {
             String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
             redirect(view: "index")
@@ -46,7 +46,7 @@ class CustomerController extends BaseController {
             Customer customer = customerService.update(customerId, params)
             flash.message = "Conta atualizada com sucesso"
             redirect(action: "show", id: customer.id)
-        } catch (ValidationException e) {
+        } catch (ValidationException ValidationException) {
             String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível atualizar sua conta: $errorsMessage"
             redirect(action: "edit")
