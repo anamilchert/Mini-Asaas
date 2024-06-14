@@ -61,6 +61,7 @@ dependencies {
     implementation ("org.quartz-scheduler:quartz:2.3.2") {
         exclude group: 'slf4j-api', module: 'c3p0'
     }
+    implementation "org.grails.plugins:spring-security-core:5.0.0-RC1"
     profile "org.grails.profiles:web"
     runtimeOnly 'mysql:mysql-connector-java:8.0.27'
     runtimeOnly "org.glassfish.web:el-impl:2.2.1-b05"

@@ -1,11 +1,13 @@
 package asaas
 
+import asaas.adapter.CustomerAdapter
+import asaas.adapter.UserAdapter
 import asaas.Address
 import asaas.Customer
 import asaas.PersonType
+import asaas.UserService
 import asaas.utils.DomainUtils
 import asaas.utils.CpfCnpjUtils
-import asaas.adapter.CustomerAdapter
 
 import grails.gorm.transactions.Transactional
 import grails.validation.ValidationException
@@ -15,7 +17,9 @@ import grails.compiler.GrailsCompileStatic
 @Transactional
 class CustomerService {
 
-    public Customer save(CustomerAdapter customerAdapter) {
+    UserService userService
+
+    public Customer save(CustomerAdapter customerAdapter, UserAdapter userAdapter) {
         Customer validatedCustomer = validateSave(customerAdapter)
         if (validatedCustomer.hasErrors()) {
             throw new ValidationException("Erro ao criar a conta", validatedCustomer.errors)
@@ -41,6 +45,8 @@ class CustomerService {
         customer.address = address
 
         customer.save(failOnError: true)
+
+        userService.createUser(userAdapter, customer.id, "ROLE_ADMIN")
 
         return customer
     }
@@ -87,32 +93,26 @@ class CustomerService {
     private void validateAddress(CustomerAdapter customerAdapter, Customer customer) {
         if (!customerAdapter.street) {
             DomainUtils.addError(customer, "Rua é obrigatória")
-            return
         }
 
         if (!customerAdapter.number) {
             DomainUtils.addError(customer, "Número é obrigatório")
-            return
         }
 
         if (!customerAdapter.province) {
             DomainUtils.addError(customer, "Bairro é obrigatório")
-            return
         }
 
         if (!customerAdapter.city) {
             DomainUtils.addError(customer, "Cidade é obrigatória")
-            return
         }
 
         if (!customerAdapter.state) {
             DomainUtils.addError(customer, "Estado é obrigatório")
-            return
         }
 
         if (!customerAdapter.zipCode) {
             DomainUtils.addError(customer, "CEP é obrigatório")
-            return
         }
     }
 }

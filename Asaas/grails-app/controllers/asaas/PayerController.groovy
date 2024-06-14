@@ -1,27 +1,30 @@
 package asaas
 
 import asaas.adapter.PayerAdapter
+import asaas.BaseController
 import asaas.Customer
 import asaas.Payer
 import asaas.Payer
 import asaas.PayerService
 import asaas.repositories.PayerRepository
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
-class PayerController {
+
+@Secured('IS_AUTHENTICATED_FULLY')
+class PayerController extends BaseController{
 
     PayerService payerService
 
     def index() {
-        List<Customer> customerList = Customer.list()
-        return [customerList: customerList]
     }
 
 
     def save() {
         try {
-            PayerAdapter payerAdapter = new PayerAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PayerAdapter payerAdapter = new PayerAdapter(params, customerId)
             Payer payer = payerService.save(payerAdapter)
             redirect(action:"show", id:payer.id)
         } catch (ValidationException validationException) {
@@ -39,23 +42,22 @@ class PayerController {
 
     def show() {
         Payer payer = PayerRepository.query([id: params.id.toLong()]).get()
-
-        if (!payer) {
-            flash.message = "Pagador não encontrado"
-            redirect(action: "index")
-        }
+        Long customerId = getCurrentCustomerId()
+        
+        if(!payer || getCurrentCustomerId() != payer.customer.id) redirect(uri: "/")
 
         return [payer: payer]
     }
 
     def list() {
-        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        List<Payer> payerList = PayerRepository.query([customerId:getCurrentCustomerId()]).list()
         return [payerList: payerList]   
     }
 
     def update() {
         try {
-            PayerAdapter payerAdapter = new PayerAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PayerAdapter payerAdapter = new PayerAdapter(params, customerId)
             Payer payer = payerService.update(payerAdapter, params.id.toLong())
             flash.message = "Os dados foram atualizados com sucesso!"
             redirect(action:"show", id:payer.id)

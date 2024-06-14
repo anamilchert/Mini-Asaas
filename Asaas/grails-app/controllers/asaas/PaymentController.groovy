@@ -1,6 +1,7 @@
 package asaas
 
 import asaas.adapter.PaymentAdapter
+import asaas.BaseController
 import asaas.Payer
 import asaas.PayerService
 import asaas.Payment
@@ -9,43 +10,48 @@ import asaas.PaymentType
 import asaas.repositories.PayerRepository
 import asaas.repositories.PaymentRepository
 
+import grails.plugin.springsecurity.annotation.Secured
 import grails.validation.ValidationException
 
-class PaymentController {
+@Secured('IS_AUTHENTICATED_FULLY')
+class PaymentController extends BaseController{
 
     PaymentService paymentService
 
     PayerService payerService
 
     def index() {
-        List<Payer> payerList = PayerRepository.query([customerId: params.customerId.toLong()]).list()
+        Long customerId = getCurrentCustomerId()
+        List<Payer> payerList = PayerRepository.query([customerId: customerId]).list()
         List<PaymentType> paymentTypes = PaymentType.values()
-        return [payerList: payerList, customerId:params.customerId, paymentTypes: paymentTypes]
+        return [payerList: payerList, paymentTypes: paymentTypes]
     }
 
     def save() {
         try {
-            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params, customerId)
             Payment payment = paymentService.save(paymentAdapter)
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível salvar uma cobrança: $errorsMessage"
-            redirect(action: "index",  params: [customerId: params.customerId])
+            redirect(action: "index")
         } catch (Exception exception) {
             flash.error = "Houve um erro inesperado ao tentar salvar uma cobrança. Por favor, tente novamente"
-            redirect(action: "index",  params: [customerId: params.customerId])
+            redirect(action: "index")
         }
     }
 
     def update() {
         try {
-            PaymentAdapter paymentAdapter = new PaymentAdapter(params)
+            Long customerId = getCurrentCustomerId()
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params, customerId)
             Payment payment = paymentService.update(paymentAdapter, params.id.toLong())
             flash.message = "Cobrança atualizada com sucesso"
             redirect(action:"show", id:payment.id)
-        } catch (ValidationException e) {
-            String errorsMessage = e.errors.allErrors.defaultMessage.join(", ")
+        } catch (ValidationException validationException) {
+            String errorsMessage = validationExceptione.errors.allErrors.defaultMessage.join(", ")
             flash.error = "Não foi possível atualizar uma cobrança: $errorsMessage"
             redirect(action: "show", id: params.id)
         } catch (RuntimeException runtimeException) {
@@ -83,13 +89,13 @@ class PaymentController {
     }
 
     def list() {
-        List<Payment> paymentList = PaymentRepository.query([customerId: params.customerId.toLong()]).list()
+        List<Payment> paymentList = PaymentRepository.query([customerId: getCurrentCustomerId()]).list()
         return [paymentList: paymentList]
     }
 
     def fetchAllCustomerAndPayerPayment() {
         List<Payment> paymentList = PaymentRepository
-            .query([customerId: params.customerId.toLong(), payerId: params.payerId.toLong()]).list()
+            .query([customerId: getCurrentCustomerId(), payerId: params.payerId.toLong()]).list()
         return [paymentList: paymentList]
     }
 
