@@ -20,7 +20,7 @@ class CustomerController {
 
             redirect(action: 'show', id: customer.id)
         } catch (ValidationException validationException) {
-            String errorsMessage = e.errors.allErrors.collect { it.defaultMessage }.join(', ')
+            String errorsMessage = validationException.errors.allErrors.collect { it.defaultMessage }.join(', ')
             flash.error = "Não foi possível salvar sua conta: $errorsMessage"
             render(view: 'index', model: [customer: new Customer(params)])
         }
