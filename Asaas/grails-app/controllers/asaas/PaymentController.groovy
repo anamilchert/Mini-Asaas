@@ -21,16 +21,22 @@ class PaymentController extends BaseController{
     PayerService payerService
 
     def index() {
-        Long customerId = getCurrentCustomerId()
-        List<Payer> payerList = PayerRepository.query([customerId: customerId]).list()
-        List<PaymentType> paymentTypes = PaymentType.values()
-        return [payerList: payerList, paymentTypes: paymentTypes]
+        try {
+            List<Payer> payerList = PayerRepository.query([customerId: getCurrentCustomerId()]).list()
+            List<PaymentType> paymentTypes = PaymentType.values()
+            return [payerList: payerList, paymentTypes: paymentTypes]
+        } catch (RuntimeException runtimeException) {
+            flash.message = runtimeException.getMessage()
+            redirect(uri: "/")
+        } catch (Exception exception) {
+            flash.message = "Erro inesperado. Por favor, contate o suporte"
+            redirect(uri: "/")
+        }
     }
 
     def save() {
         try {
-            Long customerId = getCurrentCustomerId()
-            PaymentAdapter paymentAdapter = new PaymentAdapter(params, customerId)
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params, getCurrentCustomerId())
             Payment payment = paymentService.save(paymentAdapter)
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
@@ -45,8 +51,7 @@ class PaymentController extends BaseController{
 
     def update() {
         try {
-            Long customerId = getCurrentCustomerId()
-            PaymentAdapter paymentAdapter = new PaymentAdapter(params, customerId)
+            PaymentAdapter paymentAdapter = new PaymentAdapter(params, getCurrentCustomerId())
             Payment payment = paymentService.update(paymentAdapter, params.id.toLong())
             flash.message = "Cobrança atualizada com sucesso"
             redirect(action:"show", id:payment.id)
@@ -64,30 +69,55 @@ class PaymentController extends BaseController{
     }
 
     def show() {
-        Payment payment = PaymentRepository.query([id: params.id.toLong()]).get()
-        
-        if (payment) {
-            List<PaymentType> paymentTypeList = PaymentType.values()
-            return [payment: payment, paymentTypeList:paymentTypeList]
-        }
+        try {
+            Payment payment = PaymentRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
 
-        render "Cobrança não encontrada"
+            if (payment) {
+                List<PaymentType> paymentTypeList = PaymentType.values()
+                return [payment: payment, paymentTypeList:paymentTypeList]
+            }
+
+            redirect(action: "index")
+        } catch (RuntimeException runtimeException) {
+            flash.erro = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.erro = "Erro ao criar cobrança. Por favor, contate o suporte"
+            redirect(action: "index")
+        }
+        
     }
 
     def list() {
-        List<Payment> paymentList = PaymentRepository.query([customerId: getCurrentCustomerId()]).list()
-        return [paymentList: paymentList]
+        try {
+            List<Payment> paymentList = PaymentRepository.query([customerId: getCurrentCustomerId()]).list()
+            return [paymentList: paymentList]
+        } catch (RuntimeException runtimeException) {
+            flash.erro = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.erro = "Erro ao buscar cobranças. Por favor, contate o suporte"
+            redirect(action: "index")
+        }
     }
 
     def fetchAllCustomerAndPayerPayment() {
-        List<Payment> paymentList = PaymentRepository
-            .query([customerId: getCurrentCustomerId(), payerId: params.payerId.toLong()]).list()
-        return [paymentList: paymentList]
+        try {
+            List<Payment> paymentList = PaymentRepository
+                .query([customerId: getCurrentCustomerId(), payerId: params.payerId.toLong()]).list()
+            return [paymentList: paymentList]
+        } catch (RuntimeException runtimeException) {
+            flash.erro = runtimeException.getMessage()
+            redirect(action: "index")
+        } catch (Exception exception) {
+            flash.erro = "Erro ao buscar cobranças. Por favor, contate o suporte"
+            redirect(action: "index")
+        }
     }
 
     def delete() {
         try {
-            paymentService.delete(params.id.toLong())
+            paymentService.delete(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Cobrança cancelada com sucesso"
         } catch (RuntimeException runtimeException) {
             flash.error = runtimeException.getMessage()
