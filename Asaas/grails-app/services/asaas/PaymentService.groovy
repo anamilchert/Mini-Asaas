@@ -60,8 +60,8 @@ class PaymentService {
         return payment
     }
 
-    public Payment confirmReceivedInCash(Long paymentId) {
-        Payment payment = PaymentRepository.query([id: paymentId]).get() as Payment
+    public Payment confirmReceivedInCash(Long paymentId, Long customerId) {
+        Payment payment = PaymentRepository.query([customerId: customerId, id: paymentId]).get() as Payment
 
         if (!payment) {
             throw new RuntimeException("Cobrança não encontrada")

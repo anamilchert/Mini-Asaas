@@ -72,10 +72,10 @@ class PaymentController extends BaseController{
         try {
             Payment payment = PaymentRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
 
-            if (payment) {
-                List<PaymentType> paymentTypeList = PaymentType.values()
-                return [payment: payment, paymentTypeList:paymentTypeList]
-            }
+            if (!payment) throw new RuntimeException("Cobrança não encontrada")
+
+            List<PaymentType> paymentTypeList = PaymentType.values()
+            return [payment: payment, paymentTypeList:paymentTypeList]
 
             redirect(action: "index")
         } catch (RuntimeException runtimeException) {
@@ -90,7 +90,7 @@ class PaymentController extends BaseController{
 
     def confirmReceivedInCash() {
         try {
-            Payment payment = paymentService.confirmReceivedInCash(params.id.toLong())
+            Payment payment = paymentService.confirmReceivedInCash(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Pagamento confirmado como recebido em dinheiro"
             redirect(action:"show", id:payment.id)
         } catch (RuntimeException runtimeException) {

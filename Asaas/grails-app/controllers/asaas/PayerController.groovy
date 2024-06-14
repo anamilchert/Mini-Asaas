@@ -43,14 +43,14 @@ class PayerController extends BaseController{
     def show() {
         try {
             Payer payer = PayerRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
-            if(!payer) redirect(uri: "/")
+            if(!payer) throw new RuntimeException("Pagador não encontrado")
             return [payer: payer]
         } catch (RuntimeException runtimeException) {
             flash.message = runtimeException.getMessage()
-            redirect(uri: "/")
+            redirect(action: "index")
         } catch (Exception exception) {
             flash.message = "Erro ao buscar o pagador. Por favor, contate o suporte"
-            redirect(uri: "/")
+            redirect(action: "index")
         }
         
     }

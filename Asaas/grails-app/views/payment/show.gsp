@@ -54,7 +54,7 @@
       <div>
         <h3>Confirmar recebimento em dinheiro</h3>
     </div>
-    <g:if test="${ enableEdit }">
+    <g:if test="${ payment.status.isPending() }">
         <g:form controller="payment" action="confirmReceivedInCash" method="post" params="[id: payment.id]">
             <input type="submit" value="Confirmar recebimento">
         </g:form>
