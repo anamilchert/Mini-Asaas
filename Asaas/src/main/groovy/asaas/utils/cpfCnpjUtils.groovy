@@ -22,9 +22,9 @@ class CpfCnpjUtils {
         if (cpfCnpj == null || (cpfCnpj.length() != CPF_LENGTH && cpfCnpj.length() != CNPJ_LENGTH)) return false
 
         if (isCpf(cpfCnpj))
-            return cpfValidate(cpfCnpj)
+            return isCpfValid(cpfCnpj)
         else if (isCnpj(cpfCnpj)) {
-            return cnpjValidate(cpfCnpj)
+            return isCnpjValid(cpfCnpj)
         }
     }
 
@@ -49,7 +49,7 @@ class CpfCnpjUtils {
         int firstDigit = 0, secondDigit = 0, divisionRemainder = 0
         String checkerDigit, resultDigit
 
-        if (!cpfSequenceValidate(cpf)) {
+        if (!isCpfSequenceValid(cpf)) {
             return false
         }
 
