@@ -50,7 +50,7 @@ class PayerController {
 
     def list() {
         List<Payer> payerList = PayerRepository
-            .query([includeDeleted: params?.includeDeleted, customerId: params.customerId.toLong()]).list()
+            .query([includeDeleted: params.includeDeleted, customerId: params.customerId.toLong()]).list()
         return [payerList: payerList]   
     }
 
