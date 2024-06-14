@@ -96,6 +96,7 @@ class PaymentService {
     public void processOverduePayments() {
         Date today = new Date()
         List<Long> paymentIdList = PaymentRepository.query([
+            ignoreCustomer: true,
             status: PaymentStatus.PENDING,
             "dueDate[le]": today
         ]).property("id").list() as List<Long>
