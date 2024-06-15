@@ -73,5 +73,7 @@
     </section>
 </div>
 
+<g:link controller='logout'>Logout</g:link>
+
 </body>
 </html>

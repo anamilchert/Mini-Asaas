@@ -5,8 +5,9 @@ import grails.util.Holders
 enum PaymentStatus {
     PENDING,
     CANCELED,
-    EXPIRED,
-    APPROVED
+    OVERDUE,
+    APPROVED,
+    RECEIVED_IN_CASH
   
     public static PaymentStatus convert(String paymentStatus) {
         try {
@@ -18,6 +19,11 @@ enum PaymentStatus {
     }
 
     public String getLabel() {
-        return Holders.applicationContext.getBean("messageSource").getMessage("PaymentStatus.${this}.label", null, "", new Locale("pt", "BR"))
+        return Holders.applicationContext.getBean("messageSource")
+            .getMessage("PaymentStatus.${this}.label", null, "", new Locale("pt", "BR"))
+    }
+
+    public Boolean isPending() {
+        return this == PENDING
     }
 }

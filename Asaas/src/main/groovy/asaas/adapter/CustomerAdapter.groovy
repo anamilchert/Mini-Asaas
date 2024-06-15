@@ -5,7 +5,7 @@ import asaas.PersonType
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class PayerAdapter{
+class CustomerAdapter {
 
     String name
 
@@ -31,25 +31,18 @@ class PayerAdapter{
 
     String zipCode
 
-    Long customerId
-
-    public PayerAdapter(Map params, Long customerId) {
+    public CustomerAdapter(Map params) {
         this.name = params.name
         this.email = params.email
-        this.phone = removeNonNumerics(params.phone as String)
-        this.cpfCnpj = removeNonNumerics(params.cpfCnpj as String)
+        this.phone = params.phone
+        this.cpfCnpj = params.cpfCnpj
         this.personType = PersonType.convert(params.personType as String)
         this.street = params.street
         this.number = params.number as Integer
         this.province = params.province
         this.city = params.city
-        this.state = params.state instanceof String ? params.state.toUpperCase() : null
+        this.state = params.state
         this.complement = params.complement
-        this.zipCode = removeNonNumerics(params.zipCode as String)
-        this.customerId = customerId
-    }
-
-    private String removeNonNumerics(String text) {
-        return text.replaceAll(/\D/, "")
+        this.zipCode = params.zipCode
     }
 }

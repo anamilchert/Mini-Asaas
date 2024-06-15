@@ -22,12 +22,12 @@ class PaymentAdapter {
 
   Long payerId
 
-  public PaymentAdapter(Map params) {
+  public PaymentAdapter(Map params, Long customerId) {
     this.value = CurrencyUtils.fromStringToBigDecimal(params.value as String)
     this.dueDate = CustomDateUtils.setTimeToEndOfDay(params.dueDate as String)
     this.type = PaymentType.convert(params.type as String)
     this.status = params.status ? PaymentStatus.convert(params.status as String) : PaymentStatus.PENDING
-    this.customerId = params.customerId as Long
+    this.customerId = customerId
     this.payerId = params.payerId as Long
   }
 }

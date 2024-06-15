@@ -6,6 +6,7 @@ import asaas.Customer
 import asaas.Payer
 import asaas.PersonType
 import asaas.repositories.PayerRepository
+import asaas.utils.CpfCnpjUtils
 import asaas.utils.DomainUtils
 
 import grails.compiler.GrailsCompileStatic
@@ -18,6 +19,7 @@ class PayerService {
 
     public Payer save(PayerAdapter payerAdapter) {
         Payer validatedPayer = validate(payerAdapter, false)
+
         if (validatedPayer.hasErrors()) throw new ValidationException("Erro ao criar um pagador", validatedPayer.errors)
 
         Address address = new Address()
@@ -44,7 +46,7 @@ class PayerService {
     }
 
     public Payer update(PayerAdapter payerAdapter, Long payerId) {
-        Payer payer = PayerRepository.query([id: payerId]).get() as Payer
+        Payer payer = PayerRepository.query([customerId: payerAdapter.customerId, id: payerId]).get() as Payer
         if(!payer) throw new RuntimeException("Pagador não encontrado")
 
         Payer validatedPayer = validate(payerAdapter, true)
@@ -66,11 +68,22 @@ class PayerService {
         return payer
     }
 
-    public void delete(Long payerId) {
-        Payer payer = PayerRepository.query([id: payerId]).get() as Payer
+    public void delete(Long payerId, Long customerId) {
+        Payer payer = PayerRepository.query([customerId: customerId, id: payerId]).get() as Payer
         if (!payer) throw new RuntimeException("Pagador não encontrado")
 
         payer.deleted = true
+        payer.save(failOnError: true)
+    }
+
+    public void restore(Long payerId) {
+        Payer payer = PayerRepository.query([includeDeleted: true, id: payerId]).get() as Payer
+
+        if (!payer) throw new RuntimeException("Pagador não encontrado")
+
+        if (!payer.deleted) throw new RuntimeException("Só é possível restaurar pagadores deletados")
+
+        payer.deleted = false
         payer.save(failOnError: true)
     }
 
@@ -80,6 +93,8 @@ class PayerService {
         if (!isUpdate && !payerAdapter.customerId) throw new RuntimeException("Customer id não informado")
 
         if (!isUpdate && !payerAdapter.cpfCnpj) DomainUtils.addError(payer, "CPF/CNPJ é obrigatório")
+
+        if (!isUpdate && !CpfCnpjUtils.isValidCpfCnpj(payerAdapter.cpfCnpj)) DomainUtils.addError(payer, "CPF/CNPJ é inválido")
 
         if (!isUpdate && !payerAdapter.personType) DomainUtils.addError(payer, "Informe um tipo de pessoa")
 
