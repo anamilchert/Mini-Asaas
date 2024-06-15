@@ -5,55 +5,196 @@
     <title>Criar Cliente</title>
 </head>
 <body>
-    <h1>Criar Novo Cliente</h1>
 
-    <g:form action="save">
-        <label for="name">Nome:</label>
-        <input type="text" name="name" id="name" required/><br/>
+    <atlas-panel>
+        <g:if test="${ flash.message }">
+            <atlas-alert message="${flash.message}" type="success"></atlas-alert>
+        </g:if>
+        <g:if test="${ flash.error }">
+            <atlas-alert message="${flash.error}" type="error"></atlas-alert>
+        </g:if>
+        <atlas-form action="${createLink(customer: "customer", action: "save")}">
+            <atlas-row>
+                <atlas-col>
+                    <atlas-text
+                        size="lg"
+                        bold=""
+                    >
+                        Criar Conta
+                    </atlas-text>
+                </atlas-col>
+            </atlas-row>
+            <atlas-grid>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Nome"
+                            name="name"
+                            required="true"
+                            placeholder="Informe um nome"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-masked-input
+                            label="Email"
+                            name="email"
+                            mask-alias="email"
+                            placeholder="pagador@exemplo.com"
+                            required="true"
+                        >
+                        </atlas-masked-input>
+                    </atlas-col>
+                </atlas-row>
+                 <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Username"
+                            name="username"
+                            required="true"
+                            placeholder="Informe um username"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-password-input 
+                            label="Senha" 
+                            name="password"
+                            placeholder="Informe um password"
+                            required=""
+                        >
+                        </atlas-password-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-password-input 
+                            label="Confirme a senha" 
+                            name="confirmedPassword"
+                            placeholder="Confirme a senha"
+                            required=""
+                        >
+                        </atlas-password-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-element-group required-fields="1" gap="4" inline>
+                            <g:each var="personType" in="${ personTypeList}">
+                                <atlas-radio 
+                                    value="${personType}" 
+                                    name="personType" 
+                                    required="true"
+                                >${personType.getLabel()}</atlas-radio>
+                            </g:each>
+                        </atlas-element-group>
+                    </atlas-col>
+                </atlas-row>
+                <div id="inputContainer">
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required/><br/>
-
-        <label for="username">Username:</label>
-        <input type="text" name="username" required/><br/>
-
-        <label for="password">Senha:</label>
-        <input type="password" name="password" required/><br/>
-
-        <label for="email">Confirmar senha:</label>
-        <input type="password" name="confirmedPassword" required/><br/>
-
-        <label for="cpfCnpj">CPF/CNPJ:</label>
-        <input type="text" name="cpfCnpj" id="cpfCnpj" required/><br/>
-
-        <label for="personType">Tipo de Pessoa:</label>
-        <select name="personType" id="personType" required>
-            <option value="NATURAL">Física</option>
-            <option value="LEGAL">Jurídica</option>
-        </select><br/>
-
-        <label for="street">Rua:</label>
-        <input type="text" name="street" id="street" required/><br/>
-
-        <label for="number">Número:</label>
-        <input type="text" name="number" id="number" required/><br/>
-
-        <label for="province">Bairro:</label>
-        <input type="text" name="province" id="province" required/><br/>
-
-        <label for="city">Cidade:</label>
-        <input type="text" name="city" id="city" required/><br/>
-
-        <label for="state">Estado:</label>
-        <input type="text" name="state" id="state" required/><br/>
-
-        <label for="complement">Complemento:</label>
-        <input type="text" name="complement" id="complement"/><br/>
-
-        <label for="zipCode">CEP:</label>
-        <input type="text" name="zipCode" id="CEP" required/><br/>
-
-        <input type="submit" value="Salvar"/>
-    </g:form>
+                </div>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-masked-input
+                            label="CPF/CNPJ"
+                            name="cpfCnpj"
+                            mask-alias="cpf-cnpj"
+                            required="true"
+                        >
+                        </atlas-masked-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-text
+                            size="lg"
+                            bold=""
+                        >
+                            Endereço de cobrança
+                        </atlas-text>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-postal-code 
+                        label="CEP"
+                        name="zipCode"
+                        required="true">
+                        </atlas-postal-code>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Rua"
+                            name="street"
+                            placeholder="Informe a rua"
+                            required="true"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Bairro"
+                            name="province"
+                            placeholder="Informe o bairro"
+                            required="true"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Número"
+                            name="number"
+                            placeholder="123"
+                            required="true"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Cidade"
+                            name="city"
+                            placeholder="Informe a cidade"
+                            required="true"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Estado"
+                            name="state"
+                            maxlength="2"
+                            placeholder="Informe o estado"
+                            required="true"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Complemento"
+                            name="complement"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+            </atlas-grid>
+            <atlas-button submit description="Salvar"></atlas-button>
+        </atlas-form>
+    </atlas-panel>
 </body>
 </html>

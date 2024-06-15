@@ -23,8 +23,8 @@ class PaymentController extends BaseController{
     def index() {
         try {
             List<Payer> payerList = PayerRepository.query([customerId: getCurrentCustomerId()]).list()
-            List<PaymentType> paymentTypes = PaymentType.values()
-            return [payerList: payerList, paymentTypes: paymentTypes]
+            List<PaymentType> paymentTypeList = PaymentType.values()
+            return [payerList: payerList, paymentTypeList: paymentTypeList]
         } catch (RuntimeException runtimeException) {
             flash.message = runtimeException.getMessage()
             redirect(uri: "/")
