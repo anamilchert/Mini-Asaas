@@ -54,6 +54,7 @@
                             mask-alias="phone"
                             label="Input de Celular"
                             value="${payer.phone}"
+                            disabled="${payer.deleted}"
                             required="true"
                         >
                         </atlas-masked-input>
@@ -80,21 +81,10 @@
                             name="personType"
                             value="${payer.personType}"
                             required="true"
+                            disabled="${payer.deleted}"
                             disabled
                         >
                         </atlas-masked-input>
-                    </atlas-col>
-                </atlas-row>
-                 <atlas-row>
-                    <atlas-col>
-                        <atlas-input
-                            name="customerId"
-                            value="${payer.customerId}"
-                            required="true"
-                            disabled
-                            hidden
-                        >
-                        </atlas-input>
                     </atlas-col>
                 </atlas-row>
                 <atlas-row>
@@ -113,6 +103,7 @@
                         label="CEP"
                         name="zipCode"
                         value="${payer.address.zipCode}"
+                        disabled="${payer.deleted}"
                         required="true"
                         >
                         </atlas-postal-code>
@@ -125,6 +116,7 @@
                             name="street"
                             placeholder="Informe a rua"
                             value="${payer.address.street}"
+                            disabled="${payer.deleted}"
                             required="true"
                         >
                         </atlas-input>
@@ -137,6 +129,7 @@
                             name="province"
                             placeholder="Informe o bairro"
                             value="${payer.address.province}"
+                            disabled="${payer.deleted}"
                             required="true"
                         >
                         </atlas-input>
@@ -149,6 +142,7 @@
                             name="number"
                             placeholder="123"
                             value="${payer.address.number}"
+                            disabled="${payer.deleted}"
                             required="true"
                         >
                         </atlas-input>
@@ -161,6 +155,7 @@
                             name="city"
                             placeholder="Informe a cidade"
                             value="${payer.address.city}"
+                            disabled="${payer.deleted}"
                             required="true"
                         >
                         </atlas-input>
@@ -174,6 +169,7 @@
                             maxlength="2"
                             placeholder="Informe o estado"
                             value="${payer.address.state}"
+                            disabled="${payer.deleted}"
                             required="true"
                         >
                         </atlas-input>
@@ -185,15 +181,30 @@
                             label="Complemento"
                             name="complement"
                             value="${payer.address.complement}"
+                            disabled="${payer.deleted}"
                         >
                         </atlas-input>
                     </atlas-col>
                 </atlas-row>
             </atlas-grid>
-            <atlas-layout gap="2" inline="" wrap="">
-                <atlas-button submit description="Salvar"></atlas-button>
-                <atlas-button type="outlined" size="md" theme="danger" description="Cancelar"></atlas-button>
-            </atlas-layout>
+            <g:if test="${ !payer.deleted }">
+                  <atlas-layout gap="2" inline="" wrap="">
+                    <atlas-button submit description="Salvar"></atlas-button>
+                    <atlas-button 
+                        type="outlined" 
+                        size="md" 
+                        theme="danger" 
+                        description="Cancelar"
+                        href="${createLink(controller: "payer", action: "index")}"
+                    >
+                    </atlas-button>
+                </atlas-layout>
+            </g:if>
+        </atlas-form>
+
+        
+        <atlas-form action="${createLink(customer: "payer", action: "restore", params: [id: payer.id])}">
+            <atlas-button submit description="Restaurar"></atlas-button>
         </atlas-form>
     </atlas-panel>
 </body>

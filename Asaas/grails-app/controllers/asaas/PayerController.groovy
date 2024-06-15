@@ -6,6 +6,7 @@ import asaas.Customer
 import asaas.Payer
 import asaas.Payer
 import asaas.PayerService
+import asaas.PersonType
 import asaas.repositories.PayerRepository
 
 import grails.plugin.springsecurity.annotation.Secured
@@ -18,6 +19,8 @@ class PayerController extends BaseController{
     PayerService payerService
 
     def index() {
+        List<PersonType> personTypeList = PersonType.values()
+        return [personTypeList: personTypeList]
     }
 
 
@@ -42,7 +45,7 @@ class PayerController extends BaseController{
 
     def show() {
         try {
-            Payer payer = PayerRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
+            Payer payer = PayerRepository.query([includeDeleted: true, customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
             if(!payer) throw new RuntimeException("Pagador não encontrado")
             return [payer: payer]
         } catch (RuntimeException runtimeException) {
@@ -57,7 +60,7 @@ class PayerController extends BaseController{
 
     def list() {
         try {
-            List<Payer> payerList = PayerRepository.query([customerId: getCurrentCustomerId()]).list()
+            List<Payer> payerList = PayerRepository.query([includeDeleted: params.includeDeleted, customerId: getCurrentCustomerId()]).list()
             return [payerList: payerList]   
         } catch (RuntimeException runtimeException) {
             flash.message = runtimeException.getMessage()
@@ -101,7 +104,7 @@ class PayerController extends BaseController{
 
     def restore() {
         try {
-            payerService.restore(params.id.toLong())
+            payerService.restore(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Pagador restaurado com sucesso"
         } catch (RuntimeException runtimeException) {
             flash.error = runtimeException.getMessage()

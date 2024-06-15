@@ -8,17 +8,31 @@
 </head>
 <body>
 <atlas-panel header="Pagadores">
-    <atlas-layout gap="2" justify="start">
+    <atlas-layout justify="space-between" alignment="center" inline>
         <atlas-button 
             type="outlined" 
             size="sm" 
             theme="secondary" 
             description="Voltar"
-            href="${createLink(controller: "payer", action: "index", params: [customerId: customerId])}"
+            href="${createLink(controller: "payer", action: "index")}"
             icon="arrow-left"
             pill
         >
         </atlas-button>
+        <div>
+            <atlas-layout inline gap="2" alignment="center">
+                <atlas-form action="${createLink(customer: "payer", action: "list")}">
+                    <atlas-checkbox name="includeDeleted" value="true">Deletados</atlas-checkbox>
+                    <atlas-button 
+                        description="Filtrar" 
+                        theme="primary" 
+                        size="sm"
+                        submit
+                    >
+                    </atlas-button>
+                </atlas-form>
+            </atlas-layout>
+        </div>
     </atlas-layout>
     <g:if test="${ payerList }">
         <g:each var="payer" in="${ payerList }">
@@ -43,15 +57,17 @@
                         href="${createLink(controller: "payer", action: "show", id: payer.id)}"
                     >
                     </atlas-button>
-                    <atlas-button 
-                        type="outlined" 
-                        description="Deletar" 
-                        theme="danger" 
-                        size="sm"
-                        icon="trash"
-                        href="${createLink(controller: "payer", action: "delete", id: payer.id)}"
-                    >
-                    </atlas-button>
+                    <g:if test="${ !payer.deleted }">
+                        <atlas-button 
+                            type="outlined" 
+                            description="Deletar" 
+                            theme="danger" 
+                            size="sm"
+                            icon="trash"
+                            href="${createLink(controller: "payer", action: "delete", id: payer.id)}"
+                        >
+                        </atlas-button>
+                    </g:if>
                 </atlas-layout>
             </atlas-card>
         </g:each>

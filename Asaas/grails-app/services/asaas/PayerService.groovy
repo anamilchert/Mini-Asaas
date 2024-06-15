@@ -76,8 +76,8 @@ class PayerService {
         payer.save(failOnError: true)
     }
 
-    public void restore(Long payerId) {
-        Payer payer = PayerRepository.query([includeDeleted: true, id: payerId]).get() as Payer
+    public void restore(Long payerId, Long customerId) {
+        Payer payer = PayerRepository.query([includeDeleted: true, customerId: customerId, id: payerId]).get() as Payer
 
         if (!payer) throw new RuntimeException("Pagador não encontrado")
 

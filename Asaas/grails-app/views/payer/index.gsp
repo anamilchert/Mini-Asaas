@@ -12,26 +12,15 @@
         <g:if test="${ flash.error }">
             <atlas-alert message="${flash.error}" type="error"></atlas-alert>
         </g:if>
-        <atlas-form action="${createLink(customer: "payer", action: "save", params:[customerId: customerId])}">
+        <atlas-form action="${createLink(customer: "payer", action: "save")}">
             <atlas-row>
                 <atlas-col>
                     <atlas-text
                         size="lg"
                         bold=""
                     >
-                        Dados básicos do pagador
+                        Dados do pagador
                     </atlas-text>
-                </atlas-col>
-            </atlas-row>
-            <atlas-row>
-                <atlas-col>
-                    <atlas-input
-                        name="customerId"
-                        required="true"
-                        value="${customerId}"
-                        hidden
-                    >
-                    </atlas-input>
                 </atlas-col>
             </atlas-row>
             <atlas-grid>
@@ -83,13 +72,15 @@
                         </atlas-element-group>
                     </atlas-col>
                 </atlas-row>
+                <div id="inputContainer">
+
+                </div>
                 <atlas-row>
                     <atlas-col>
                         <atlas-masked-input
                             label="CPF/CNPJ"
                             name="cpfCnpj"
                             mask-alias="cpf-cnpj"
-                            label="Input de CPF/CNPJ"
                             required="true"
                         >
                         </atlas-masked-input>
