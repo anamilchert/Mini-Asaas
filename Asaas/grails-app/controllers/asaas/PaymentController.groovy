@@ -88,7 +88,6 @@ class PaymentController extends BaseController{
     }
 
     def confirmReceivedInCash() {
-        println params
         try {
             Payment payment = paymentService.confirmReceivedInCash(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Pagamento confirmado como recebido em dinheiro"
@@ -120,10 +119,8 @@ class PaymentController extends BaseController{
             paymentService.delete(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Cobrança cancelada com sucesso"
         } catch (RuntimeException runtimeException) {
-            println runtimeException
             flash.error = runtimeException.getMessage()
         } catch (Exception exception) {
-            println runtimeException
             flash.error = "Erro ao cancelar a cobrança. Por favor, contate o time de suporte"
         } finally {
             redirect(action: "list")
