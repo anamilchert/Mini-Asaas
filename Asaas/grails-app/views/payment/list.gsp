@@ -5,7 +5,7 @@
     <title>Lista de Cobranças</title>
 </head>
 <body>
-    <atlas-panel header="Cobranças">
+    <atlas-panel header="Cobranças" >
         <atlas-layout justify="space-between" alignment="center" inline>
             <atlas-button 
                 type="outlined" 

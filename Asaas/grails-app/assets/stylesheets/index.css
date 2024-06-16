@@ -1,0 +1,70 @@
+/* Resetando margens e preenchimento padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.center-content {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    height: 500px;
+    width: 50%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.options {
+    display: flex;
+    justify-content: center;
+}
+
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.image-container {
+    flex: 1;
+}
+
+.image-container {
+    width: 50%;
+    height: 50%;
+}
+
+
+.content-container {
+    flex: 1;
+    padding: 20px;
+}
+
+.main-text {
+    margin-bottom: 20px;
+}
+
+.button-container {
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.btn-login {
+    width: 50%;
+    margin-bottom: 20px;
+}
+
+
+

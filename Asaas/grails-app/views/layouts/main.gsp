@@ -21,13 +21,13 @@
     <style>
         body, html {
             height: 100%;
+            background-color:"red"
         }
     </style>
 </head>
 
 <body>
     <atlas-screen>  
-        <g:render template="/templates/sidebar" />
         <atlas-page class="js-atlas-page">
             <atlas-page-header 
                 slot="header"
