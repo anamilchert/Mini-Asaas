@@ -43,7 +43,7 @@
                         <atlas-money 
                             label="Valor"
                             name="value"
-                            value="${CurrencyUtils.removeNonNumerics(payment.value)}"
+                            value="${CurrencyUtils.replaceDotToComma(payment.value)}"
                             required
                         >
                         </atlas-money>

@@ -11,7 +11,9 @@ class CurrencyUtils {
         }
     }
 
-    public static String removeNonNumerics(BigDecimal currency) {
-        return currency.toString()
+    public static String replaceDotToComma(BigDecimal currency) {
+        println currency
+        String replacedCurrency = currency.toString().replace(".", ",")
+        return replacedCurrency
     }
 }
