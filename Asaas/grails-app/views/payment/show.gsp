@@ -1,3 +1,5 @@
+<%@ page import="asaas.utils.CurrencyUtils" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -41,7 +43,7 @@
                         <atlas-money 
                             label="Valor"
                             name="value"
-                            value="${payment.value}"
+                            value="${CurrencyUtils.removeNonNumerics(payment.value)}"
                             required
                         >
                         </atlas-money>
@@ -86,18 +88,6 @@
                             >
                             </atlas-datepicker>
                         </div>
-                    </atlas-col>
-                </atlas-row>
-                 <atlas-row>
-                    <atlas-col>
-                        <atlas-input
-                            name="customerId"
-                            required="true"
-                            value="${payment.customer.id}"
-                            disabled
-                            hidden
-                        >
-                        </atlas-input>
                     </atlas-col>
                 </atlas-row>
                 <atlas-row>

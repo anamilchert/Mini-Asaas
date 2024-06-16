@@ -27,6 +27,7 @@
 
 <body>
     <atlas-screen>  
+        <g:render template="/templates/sidebar" />
         <atlas-page class="js-atlas-page">
             <atlas-page-header 
                 slot="header"

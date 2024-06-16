@@ -26,17 +26,6 @@
                 </atlas-row>
                 <atlas-row>
                     <atlas-col>
-                        <atlas-input
-                            name="customerId"
-                            required="true"
-                            value="${customerId}"
-                            hidden
-                        >
-                        </atlas-input>
-                    </atlas-col>
-                </atlas-row>
-                <atlas-row>
-                    <atlas-col>
                         <atlas-select name="payerId" label="Pagador" placeholder="Selecione um pagador" required>
                             <g:each var="payer" in="${ payerList }">
                                 <atlas-option value-key label="${payer.name}" value="${payer.id}"></atlas-option>
