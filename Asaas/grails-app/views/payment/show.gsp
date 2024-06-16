@@ -103,10 +103,51 @@
                     </atlas-col>
                 </atlas-row>
             </atlas-grid>
-            <atlas-layout gap="2" inline="" wrap="">
-                <atlas-button submit description="Salvar"></atlas-button>
-            </atlas-layout>
+            <g:if test="${ payment.status.isPending() && !payment.deleted}">
+                <atlas-layout gap="2" inline="" wrap="">
+                    <atlas-button submit description="Salvar"></atlas-button>
+                    <atlas-button 
+                        type="outlined" 
+                        size="md" 
+                        theme="danger" 
+                        description="Cancelar"
+                        href="${createLink(controller: "payment", action: "index")}"
+                    >
+                    </atlas-button>
+                </atlas-layout>
+            </g:if>
         </atlas-form>
     </atlas-panel>
+
+    <g:if test="${ payment.status.isPending() && !payment.deleted}">
+        <atlas-panel header="Recebemento em dinheiro">
+            <atlas-layout>
+                <atlas-button 
+                    type="outlined" 
+                    size="md" 
+                    theme="success" 
+                    description="Confirmar Pagamento"
+                    href="${createLink(controller: "payment", action: "confirmReceivedInCash", params: [id: payment.id])}"
+                >
+                </atlas-button>
+            </atlas-layout>
+        </atlas-panel>
+    </g:if>
+
+    <g:if test="${ payment.status.isPending() && payment.deleted}">
+        <atlas-panel header="Restaurar cobrança">
+            <atlas-layout>
+                <atlas-button 
+                    type="outlined" 
+                    size="md" 
+                    theme="danger" 
+                    description="Restaurar"
+                    href="${createLink(controller: "payment", action: "restore", params: [id: payment.id])}"
+                >
+                </atlas-button>
+            </atlas-layout>
+        </atlas-panel>
+    </g:if>
+    
 </body>
 </html>

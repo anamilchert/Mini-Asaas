@@ -88,6 +88,7 @@ class PaymentController extends BaseController{
     }
 
     def confirmReceivedInCash() {
+        println params
         try {
             Payment payment = paymentService.confirmReceivedInCash(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Pagamento confirmado como recebido em dinheiro"
@@ -131,7 +132,7 @@ class PaymentController extends BaseController{
 
     def restore() {
         try {
-            paymentService.restore(params.id.toLong())
+            paymentService.restore(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Cobrança restaurada com sucesso"
         } catch (RuntimeException runtimeException) {
             flash.error = runtimeException.getMessage()

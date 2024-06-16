@@ -12,7 +12,6 @@ class CurrencyUtils {
     }
 
     public static String replaceDotToComma(BigDecimal currency) {
-        println currency
         String replacedCurrency = currency.toString().replace(".", ",")
         return replacedCurrency
     }
