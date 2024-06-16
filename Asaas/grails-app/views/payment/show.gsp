@@ -14,10 +14,6 @@
     </g:if>
     <g:form controller="payment" action="update" method="post" params="[id: payment?.id]">
         <div>
-            <label for="customer">Cobrador:</label>
-            <input type="text" id="customer" name="customerId" value="${payment.customer.id}" readonly>
-        </div>
-        <div>
             <label for="payer">Pagador:</label>
             <input type="text" id="payer" name="payerId" value="${payment.payer.id}" readonly>
         </div>
@@ -39,9 +35,30 @@
         </div>
         <div>
             <g:link action="index" params="[customerId:payment.customer.id]">Voltar</g:link>
-            <input type="submit" value="Editar" />
+            <g:if test="${ payment.status.isPending() }">
+                <input type="submit" value="Editar" />
+            </g:if>
         </div>
     </g:form>
+
+    
+    <g:if test="${  payment.status.isPending() }"> 
+        <div>
+            <h3>Cancelar cobrança</h3>
+        </div>  
+        <g:form controller="payment" action="delete" method="post" params="[id: payment.id]">
+            <input type="submit" value="Deletar">
+        </g:form>
+    </g:if>
+
+      <div>
+        <h3>Confirmar recebimento em dinheiro</h3>
+    </div>
+    <g:if test="${ payment.status.isPending() }">
+        <g:form controller="payment" action="confirmReceivedInCash" method="post" params="[id: payment.id]">
+            <input type="submit" value="Confirmar recebimento">
+        </g:form>
+    </g:if>
 
 </body>
 </html>

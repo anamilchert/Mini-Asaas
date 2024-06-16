@@ -5,7 +5,7 @@ import asaas.PersonType
 import grails.compiler.GrailsCompileStatic
 
 @GrailsCompileStatic
-class PayerAdapter{
+class CustomerAdapter {
 
     String name
 
@@ -31,9 +31,7 @@ class PayerAdapter{
 
     String zipCode
 
-    Long customerId
-
-    public PayerAdapter(Map params, Long customerId) {
+    public CustomerAdapter(Map params) {
         this.name = params.name
         this.email = params.email
         this.phone = params.phone
@@ -46,6 +44,5 @@ class PayerAdapter{
         this.state = params.state
         this.complement = params.complement
         this.zipCode = params.zipCode
-        this.customerId = customerId
     }
 }

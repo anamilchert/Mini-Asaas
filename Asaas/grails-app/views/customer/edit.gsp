@@ -31,22 +31,22 @@
 
         <div class="form-group">
             <label for="street">Rua:</label>
-            <g:textField name="address.street" value="${customer?.address?.street}" class="form-control" required=""/>
+            <g:textField name="street" value="${customer?.address?.street}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">
             <label for="number">Número:</label>
-            <g:textField name="address.number" value="${customer?.address?.number}" class="form-control" required=""/>
+            <g:textField name="number" value="${customer?.address?.number}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">
             <label for="province">Bairro:</label>
-            <g:textField name="address.province" value="${customer?.address?.province}" class="form-control" required=""/>
+            <g:textField name="province" value="${customer?.address?.province}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">
             <label for="city">Cidade:</label>
-            <g:textField name="address.city" value="${customer?.address?.city}" class="form-control" required=""/>
+            <g:textField name="city" value="${customer?.address?.city}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">
@@ -85,12 +85,12 @@
 
         <div class="form-group">
             <label for="complement">Complemento:</label>
-            <g:textField name="address.complement" value="${customer?.address?.complement}" class="form-control"/>
+            <g:textField name="complement" value="${customer?.address?.complement}" class="form-control"/>
         </div>
 
         <div class="form-group">
             <label for="zipCode">zipCode:</label>
-            <g:textField name="address.zipCode" value="${customer?.address?.zipCode}" class="form-control" required=""/>
+            <g:textField name="zipCode" value="${customer?.address?.zipCode}" class="form-control" required=""/>
         </div>
 
         <div class="form-group">

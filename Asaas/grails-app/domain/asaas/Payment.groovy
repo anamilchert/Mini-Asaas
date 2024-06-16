@@ -21,7 +21,7 @@ class Payment extends BaseEntity {
   Payer payer
 
   static constraints = {
-    value  min: 0
+    value  min: BigDecimal.ZERO
     status validator: { val, obj -> return val in PaymentStatus.values() }
     type validator: { val, obj -> return val in PaymentType.values() }
   }
