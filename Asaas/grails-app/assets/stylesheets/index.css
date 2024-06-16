@@ -1,8 +1,19 @@
-/* Resetando margens e preenchimento padrão */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ffffff;
+    overflow: hidden;
+    flex-wrap: wrap;
+}
+
+.main-container {
+    width: 80%;
+    height: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .center-content {
@@ -12,22 +23,20 @@
     border-radius: 8px;
     height: 500px;
     width: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80%;
 }
 
 .options {
     display: flex;
     justify-content: center;
-}
-
-.main-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #ffffff;
-    overflow: hidden;
-    flex-wrap: wrap;
 }
 
 .image-container {
@@ -46,23 +55,6 @@
 }
 
 .main-text {
-    margin-bottom: 20px;
-}
-
-.button-container {
-    height: 100%;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-.btn-login {
-    width: 50%;
     margin-bottom: 20px;
 }
 
