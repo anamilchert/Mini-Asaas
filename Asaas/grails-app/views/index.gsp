@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="layout" content="main"/>
-    <title>Welcome to Grails</title>
+    <title>MIni Asaas</title>
     <asset:stylesheet src="index.css"/>
 </head>
 <body>
