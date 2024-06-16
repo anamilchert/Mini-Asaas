@@ -6,7 +6,6 @@ import asaas.Address
 import asaas.Customer
 import asaas.PersonType
 import asaas.UserService
-import asaas.State
 import asaas.utils.DomainUtils
 import asaas.utils.CpfCnpjUtils
 
@@ -89,6 +88,8 @@ class CustomerService {
         if (!CpfCnpjUtils.isValidCpfCnpj(customerAdapter.cpfCnpj)) {
             DomainUtils.addError(customer, "CPF/CNPJ é inválido")
         }
+
+        validateAddress(customerAdapter, customer)
 
         return customer
     }
