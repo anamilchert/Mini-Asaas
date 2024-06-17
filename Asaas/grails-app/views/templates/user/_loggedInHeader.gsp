@@ -1,12 +1,7 @@
 <header>
 <atlas-layout inline justify="end">
     <div>
-        <atlas-dropdown-button type="filled" size="md" theme="primary" description="${user.name}" icon="asaas-logo">
-            <atlas-dropdown-item
-                href="#"
-            >
-                Dashboard
-            </atlas-dropdown-item> 
+        <atlas-dropdown-button type="filled" size="md" theme="primary" description="${user.name}" icon="asaas-logo"> 
             <atlas-dropdown-item
                 href="${createLink(controller: "payer", action: "list")}"
             >
