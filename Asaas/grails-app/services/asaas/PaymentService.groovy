@@ -20,7 +20,7 @@ import org.springframework.transaction.TransactionStatus
 class PaymentService {
 
     def emailService
-  
+
     public Payment save(PaymentAdapter paymentAdapter) {
         Payment validatedPayment = validate(paymentAdapter, false)
         if (validatedPayment.hasErrors()) throw new ValidationException("Error ao criar uma cobrança", validatedPayment.errors)
@@ -34,10 +34,10 @@ class PaymentService {
         payment.customer = Customer.load(paymentAdapter.customerId)
         payment.payer = Payer.load(paymentAdapter.payerId)
 
-        emailService.sendCreatePaymentEmailToPayer(payment.payer, payment)
-        emailService.sendCreatePaymentEmailToCustomer(payment.payer, payment) 
-        
         payment.save(failOnError: true)
+
+        emailService.sendCreatePaymentEmailToPayer(payment.payer, payment)
+        emailService.sendCreatePaymentEmailToCustomer(payment.customer, payment)
 
         return payment
     }
@@ -62,6 +62,9 @@ class PaymentService {
 
         payment.save(failOnError: true)
 
+        emailService.sendStatusChangeEmailToPayer(payment.payer, payment)
+        emailService.sendStatusChangeEmailToCustomer(payment.customer, payment)
+
         return payment
     }
 
@@ -78,6 +81,9 @@ class PaymentService {
 
         payment.status = PaymentStatus.RECEIVED_IN_CASH
         payment.save(failOnError: true)
+
+        emailService.sendStatusChangeEmailToPayer(payment.payer, payment)
+        emailService.sendStatusChangeEmailToCustomer(payment.customer, payment)
 
         return payment
     }
@@ -128,6 +134,9 @@ class PaymentService {
                     Payment payment = Payment.get(id)
                     payment.status = PaymentStatus.OVERDUE
                     payment.save(failOnError: true)
+
+                    emailService.sendStatusChangeEmailToPayer(payment.payer, payment)
+                    emailService.sendStatusChangeEmailToCustomer(payment.customer, payment)
                 } catch (Exception exception) {
                     status.setRollbackOnly()
                 }
