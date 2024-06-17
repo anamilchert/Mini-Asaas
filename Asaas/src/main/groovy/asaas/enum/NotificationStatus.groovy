@@ -6,7 +6,6 @@ enum NotificationStatus {
     UNREAD,
     READ,
 
-  
     public static NotificationStatus convert(String notificationStatus) {
         try {
             if (notificationStatus instanceof String) notificationStatus = notificationStatus.toUpperCase()

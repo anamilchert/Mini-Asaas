@@ -2,6 +2,8 @@ package asaas
 
 import asaas.adapter.PaymentAdapter
 import asaas.Customer
+import asaas.NotificationService
+import asaas.NotificationType
 import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
@@ -18,6 +20,8 @@ import org.springframework.transaction.TransactionStatus
 @GrailsCompileStatic
 @Transactional
 class PaymentService {
+
+    NotificationService notificationService
   
     public Payment save(PaymentAdapter paymentAdapter) {
         Payment validatedPayment = validate(paymentAdapter, false)
@@ -74,6 +78,8 @@ class PaymentService {
         payment.status = PaymentStatus.RECEIVED_IN_CASH
         payment.save(failOnError: true)
 
+        notificationService.create(NotificationType.PAYMENT_RECEIVED, customerId, paymentId)
+
         return payment
     }
 
@@ -123,6 +129,9 @@ class PaymentService {
                     Payment payment = Payment.get(id)
                     payment.status = PaymentStatus.OVERDUE
                     payment.save(failOnError: true)
+
+                    Long customerId = payment.customer.id
+                    notificationService.create(NotificationType.PAYMENT_OVERDUE, customerId, payment.id)
                 } catch (Exception exception) {
                     status.setRollbackOnly()
                 }
