@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="layout" content="external"/>
-    <title>Registrar pagamento</title>
+    <meta name="layout" content="internal"/>
+    <title>Criar cobrança</title>
 </head>
 <body>
     <atlas-panel>

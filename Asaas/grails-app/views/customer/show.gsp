@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta name="layout" content="external"/>
-    <title>Detalhes do Cliente</title>
+    <meta name="layout" content="internal"/>
+    <title>Detalhes</title>
 </head>
 <body>
      <g:if test="${ flash.message }">

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="layout" content="external"/>
-    <title>Lista de Cobranças</title>
+    <meta name="layout" content="internal"/>
+    <title>Cobranças</title>
 </head>
 <body>
     <atlas-panel header="Cobranças" >

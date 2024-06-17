@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="layout" content="external"/>
-    <title>Document</title>
+    <meta name="layout" content="internal"/>
+    <title>Criar Pagador</title>
 </head>
 <body>
     <atlas-panel>

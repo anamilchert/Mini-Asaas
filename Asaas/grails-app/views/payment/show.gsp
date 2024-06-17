@@ -3,8 +3,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="layout" content="external"/>
-    <title>Mostrar Pagamento</title>
+    <meta name="layout" content="internal"/>
+    <title>Cobrança</title>
 </head>
 <body>
     <g:if test="${ flash.message }">
