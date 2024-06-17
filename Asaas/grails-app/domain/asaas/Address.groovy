@@ -28,14 +28,14 @@ class Address extends BaseEntity {
     }
 
     static namedQueries = {
-    query { search ->
-      if (!Boolean.valueOf(search.includeDeleted)) {
-        eq('deleted', false)
-      }
+        query { search ->
+            if (!Boolean.valueOf(search.includeDeleted)) {
+                eq('deleted', false)
+            }
 
-      if (search.containsKey('id')) {
-        eq('id', search.id)
-      }
-    }
-  } 
+            if (search.containsKey('id')) {
+                eq('id', search.id)
+            }
+        }
+    } 
 }

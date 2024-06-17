@@ -6,43 +6,43 @@ import asaas.Customer
 
 class Payer extends BaseEntity {
 
-  String name
+    String name
 
-  String email
+    String email
 
-  String phone
+    String phone
 
-  String cpfCnpj
-  
-  PersonType personType
+    String cpfCnpj
 
-  Address address
+    PersonType personType
 
-  Customer customer
+    Address address
 
-  static constraints = {
-    name  blank:false
-    email blank:false, email:true, unique: true
-    phone blank:false, size: 11..11
-    cpfCnpj blank:false, unique:true, size:11..14
-    personType blank: false
-  }
+    Customer customer
 
-  static namedQueries = {
-    query { search ->
-      if (!Boolean.valueOf(search.includeDeleted)) {
-        eq('deleted', false)
-      }
-
-      if (search.containsKey('id')) {
-        eq('id', search.id)
-      }
-
-      if (search.containsKey('customerId')) {
-        eq('customer.id', search.customerId.toLong())
-      }
+    static constraints = {
+        name  blank:false
+        email blank:false, email:true, unique: true
+        phone blank:false, size: 11..11
+        cpfCnpj blank:false, unique:true, size:11..14
+        personType blank: false
     }
 
-  }
+    static namedQueries = {
+        query { search ->
+            if (!Boolean.valueOf(search.includeDeleted)) {
+                eq('deleted', false)
+            }
+
+            if (search.containsKey('id')) {
+                eq('id', search.id)
+            }
+
+            if (search.containsKey('customerId')) {
+                eq('customer.id', search.customerId.toLong())
+            }
+        }
+
+    }
 }
 

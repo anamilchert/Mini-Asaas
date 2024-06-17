@@ -8,33 +8,33 @@ import asaas.Payer
 
 class Payment extends BaseEntity {
   
-  BigDecimal value
+    BigDecimal value
 
-  Date dueDate
+    Date dueDate
 
-  PaymentStatus status
+    PaymentStatus status
 
-  PaymentType type
+    PaymentType type
 
-  Customer customer
+    Customer customer
 
-  Payer payer
+    Payer payer
 
-  static constraints = {
-    value  min: BigDecimal.ZERO
-    status validator: { val, obj -> return val in PaymentStatus.values() }
-    type validator: { val, obj -> return val in PaymentType.values() }
-  }
-
-  static namedQueries = {
-    query { search ->
-      if (!Boolean.valueOf(search.includeDeleted)) {
-        eq('deleted', false)
-      }
-
-      if (search.containsKey('id')) {
-        eq('id', search.id)
-      }
+    static constraints = {
+        value  min: BigDecimal.ZERO
+        status validator: { val, obj -> return val in PaymentStatus.values() }
+        type validator: { val, obj -> return val in PaymentType.values() }
     }
-  }
+
+    static namedQueries = {
+        query { search ->
+            if (!Boolean.valueOf(search.includeDeleted)) {
+                eq('deleted', false)
+            }
+
+            if (search.containsKey('id')) {
+                eq('id', search.id)
+            }
+        }
+    }
 }
