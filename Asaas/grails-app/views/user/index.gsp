@@ -5,25 +5,72 @@
     <title>Criar usuário</title>
 </head>
 <body>
-    <h1>Cadastro de Usuário</h1>
-    <form action="${createLink(controller: "user", action: "save")}" method="post">
-    
-        <label for="name">Nome:</label>
-        <input type="text" id="name" name="name" required>
-        <br>
-
-        <label for="username">username:</label>
-        <input type="text" id="username" name="username" required>
-        <br>
-        
-        <label for="password">Senha:</label>
-        <input type="password" id="password" name="password" required>
-        <br>
-        
-        <label for="confirmedPassword">Confirmar Senha:</label>
-        <input type="password" id="confirmedPassword" name="confirmedPassword" required>
-        <br>
-        <input type="submit" value="Cadastrar">
-    </form>
+    <atlas-panel>
+        <g:if test="${ flash.message }">
+            <atlas-alert message="${flash.message}" type="success"></atlas-alert>
+        </g:if>
+        <g:if test="${ flash.error }">
+            <atlas-alert message="${flash.error}" type="error"></atlas-alert>
+        </g:if>
+        <atlas-form action="${createLink(customer: "user", action: "save")}">
+            <atlas-row>
+                <atlas-col>
+                    <atlas-text
+                        size="lg"
+                        bold=""
+                    >
+                        Criar usuário
+                    </atlas-text>
+                </atlas-col>
+            </atlas-row>
+            <atlas-grid>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Nome"
+                            name="name"
+                            required="true"
+                            placeholder="Informe um nome"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                 <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Username"
+                            name="username"
+                            required="true"
+                            placeholder="Informe um username"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-password-input 
+                            label="Senha" 
+                            name="password"
+                            placeholder="Informe um password"
+                            required=""
+                        >
+                        </atlas-password-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-password-input 
+                            label="Confirme a senha" 
+                            name="confirmedPassword"
+                            placeholder="Confirme a senha"
+                            required=""
+                        >
+                        </atlas-password-input>
+                    </atlas-col>
+                </atlas-row>
+            </atlas-grid>
+            <atlas-button submit description="Salvar"></atlas-button>
+        </atlas-form>
+    </atlas-panel>
 </body>
 </html>
