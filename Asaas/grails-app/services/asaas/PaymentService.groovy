@@ -6,6 +6,7 @@ import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
 import asaas.PaymentType
+import asaas.EmailService
 import asaas.repositories.PaymentRepository
 import asaas.utils.DomainUtils
 
@@ -19,7 +20,7 @@ import org.springframework.transaction.TransactionStatus
 @Transactional
 class PaymentService {
 
-    def emailService
+    EmailService emailService
 
     public Payment save(PaymentAdapter paymentAdapter) {
         Payment validatedPayment = validate(paymentAdapter, false)
