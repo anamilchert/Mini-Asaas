@@ -1,5 +1,9 @@
 package asaas
 
+import asaas.Customer
+import asaas.Payment
+import asaas.Payer
+
 import grails.gorm.transactions.Transactional
 import java.text.SimpleDateFormat
 import static grails.async.Promises.*
@@ -17,7 +21,7 @@ class EmailService {
         sendEmail(payer.email, "Status da sua cobrança foi alterado", getStatusChangeEmailBody(payer.name, payment))
     }
 
-    public void sendCreatePaymentEmailToCustomer(Customer customer, Payment payment) {
+    public void sendCreatePaymentEmailToCustomer(Customer customer, Payment payment, Payer payer = null) {
         sendEmail(customer.email, "Criação de cobrança", getCreatePaymentEmailBody(customer.name, payment, payer))
     }
 
