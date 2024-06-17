@@ -1,13 +1,20 @@
 package asaas 
 
-import asaas.utils.BaseEntity
-import asaas.NotificationType
+import asaas.Customer
+import asaas.Payment
 import asaas.NotificationStatus
+import asaas.NotificationType
+import asaas.utils.BaseEntity
 
 class Notification extends BaseEntity {
 
     NotificationType type
+
     NotificationStatus status
+
+    Customer customer
+    
+    Payment payment
 
     static constraints = {
         type validator: { val, obj -> return val in NotificationType.values() }
