@@ -11,8 +11,8 @@ grails:
     mail: 
     host: "smtp.gmail.com"
     port: 587
-    username: ${EMAIL}
-    password: ${SENHA}
+    username: "miniasaas2024@gmail.com"
+    password: "AnaJoao@123"
     props: 
         mail.smtp.ssl.trust: "smtp.gmail.com"
         mail.smtp.starttls.enable: "true"
