@@ -35,7 +35,7 @@
 </head>
 <body>
 <atlas-screen>
-    <g:render template="/templates/sidebar" />
+    <g:render template="/templates/sidebar" model="[user: user]"/>
     <atlas-page class="js-atlas-page">
         <atlas-page-content slot="content" class="js-atlas-content">
             <g:render template="/templates/user/loggedInHeader" model="[user: user]" />

@@ -57,20 +57,21 @@
                 ${ controllerName == "payment" && actionName == "list" ? "active" : "" }
             ></atlas-sidebar-menu-item>
         </atlas-sidebar-menu-item>
-
-        <atlas-sidebar-menu-item
-            icon="user-plus"
-            value="user-group"
-            text="Usuários"
-            ${ controllerName == "user" ? "active" : "" }
-        >   
-            <atlas-sidebar-menu-item
+        <g:if test="${ user.authorities.any { it.authority == 'ROLE_ADMIN' } }">
+             <atlas-sidebar-menu-item
                 icon="user-plus"
                 value="user-group"
-                text="Criar Usuário"
-                href="${createLink(controller: "user", action: "index")}"
-                ${ controllerName == "user" && actionName == "index" ? "active" : "" }
-            ></atlas-sidebar-menu-item>
-        </atlas-sidebar-menu-item>
+                text="Usuários"
+                ${ controllerName == "user" ? "active" : "" }
+            >   
+                <atlas-sidebar-menu-item
+                    icon="user-plus"
+                    value="user-group"
+                    text="Criar Usuário"
+                    href="${createLink(controller: "user", action: "index")}"
+                    ${ controllerName == "user" && actionName == "index" ? "active" : "" }
+                ></atlas-sidebar-menu-item>
+            </atlas-sidebar-menu-item>
+        </g:if>
     </atlas-sidebar-menu>
 </atlas-sidebar>
