@@ -18,6 +18,8 @@ import org.springframework.transaction.TransactionStatus
 @GrailsCompileStatic
 @Transactional
 class PaymentService {
+
+    def emailService
   
     public Payment save(PaymentAdapter paymentAdapter) {
         Payment validatedPayment = validate(paymentAdapter, false)
@@ -31,6 +33,9 @@ class PaymentService {
         payment.status = paymentAdapter.status
         payment.customer = Customer.load(paymentAdapter.customerId)
         payment.payer = Payer.load(paymentAdapter.payerId)
+
+        emailService.sendCreatePaymentEmailToPayer(payment.payer, payment)
+        emailService.sendCreatePaymentEmailToCustomer(payment.payer, payment) 
         
         payment.save(failOnError: true)
 
