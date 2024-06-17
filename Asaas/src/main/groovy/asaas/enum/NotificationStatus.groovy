@@ -19,4 +19,8 @@ enum NotificationStatus {
         return Holders.applicationContext.getBean("messageSource")
             .getMessage("NotificationStatus.${this}.label", null, "", new Locale("pt", "BR"))
     }
+
+    public Boolean isUnread() {
+        return this == UNREAD
+    }
 }

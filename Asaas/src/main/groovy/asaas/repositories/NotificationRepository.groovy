@@ -33,7 +33,7 @@ class NotificationRepository {
                 eq('status', NotificationStatus.valueOf(search.status.toString()))
             }
         }
-
+        
         return query
     }
 }

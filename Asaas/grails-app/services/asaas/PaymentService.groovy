@@ -78,7 +78,7 @@ class PaymentService {
         payment.status = PaymentStatus.RECEIVED_IN_CASH
         payment.save(failOnError: true)
 
-        notificationService.create(NotificationType.PAYMENT_RECEIVED, customerId, paymentId)
+        notificationService.create(NotificationType.PAYMENT_RECEIVED, customerId, payment.id)
 
         return payment
     }

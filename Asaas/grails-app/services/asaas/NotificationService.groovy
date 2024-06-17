@@ -22,6 +22,12 @@ class NotificationService {
         notification.save(failOnError: true)
     }
 
+    public List<Notification> listAllNotifications(Long customerId) {
+        List<Notification> notificationList = NotificationRepository
+            .query([customerId: customerId]).list(max: 10) as List<Notification>
+        return notificationList
+    }
+
     public List<Notification> listUnreadNotifications(Long customerId) {
         List<Notification> notificationUnreadList = NotificationRepository
             .query([customerId: customerId, status: NotificationStatus.UNREAD]).list() as List<Notification>
