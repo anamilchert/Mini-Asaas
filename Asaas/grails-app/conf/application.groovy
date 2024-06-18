@@ -7,6 +7,9 @@
     grails.plugin.springsecurity.logout.postOnly = false
     grails.plugin.springsecurity.logout.filterProcessesUrl = '/logout'
 
+    grails.plugin.springsecurity.successHandler.alwaysUseDefault = true
+    grails.plugin.springsecurity.successHandler.defaultTargetUrl = '/payer/list'
+
     grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         [pattern: '/',               access: ['permitAll']],
         [pattern: '/error',          access: ['permitAll']],
