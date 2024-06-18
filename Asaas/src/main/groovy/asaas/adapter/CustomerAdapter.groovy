@@ -1,6 +1,7 @@
 package asaas.adapter
 
 import asaas.PersonType
+import asaas.utils.Utils
 
 import grails.compiler.GrailsCompileStatic
 
@@ -34,8 +35,8 @@ class CustomerAdapter {
     public CustomerAdapter(Map params) {
         this.name = params.name
         this.email = params.email
-        this.phone = params.phone
-        this.cpfCnpj = params.cpfCnpj
+        this.phone = Utils.removeNonNumerics(params.phone.toString())
+        this.cpfCnpj = Utils.removeNonNumerics(params.cpfCnpj.toString())
         this.personType = PersonType.convert(params.personType as String)
         this.street = params.street
         this.number = params.number as Integer
@@ -43,6 +44,6 @@ class CustomerAdapter {
         this.city = params.city
         this.state = params.state
         this.complement = params.complement
-        this.zipCode = params.zipCode
+        this.zipCode = Utils.removeNonNumerics(params.zipCode.toString())
     }
 }

@@ -42,5 +42,4 @@ class UserController extends BaseController{
 
         redirect(action: "index")
     }
-
 }

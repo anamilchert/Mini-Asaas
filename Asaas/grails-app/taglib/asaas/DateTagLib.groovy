@@ -5,7 +5,7 @@ class DateTagLib {
 
     def formatDate = { attrs, body ->
         def inputDate = attrs.date
-        def formattedDate = new java.text.SimpleDateFormat('yyyy-MM-dd').format(inputDate)
+        def formattedDate = new java.text.SimpleDateFormat('dd/MM/yyyy').format(inputDate)
         out << formattedDate
     }
 }
