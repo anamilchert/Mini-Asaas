@@ -89,6 +89,7 @@
                         name="zipCode"
                         value="${customer.address.zipCode}"
                         required="true"
+                        id="zipCode"
                         >
                         </atlas-postal-code>
                     </atlas-col>
@@ -101,6 +102,7 @@
                             placeholder="Informe a rua"
                             value="${customer.address.street}"
                             required="true"
+                            id="street"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -113,6 +115,7 @@
                             placeholder="Informe o bairro"
                             value="${customer.address.province}"
                             required="true"
+                            id="province"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -137,6 +140,7 @@
                             placeholder="Informe a cidade"
                             value="${customer.address.city}"
                             required="true"
+                            id="city"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -150,6 +154,7 @@
                             placeholder="Informe o estado"
                             value="${customer.address.state}"
                             required="true"
+                            id="state"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -170,24 +175,6 @@
             </atlas-layout>
         </atlas-form>
     </atlas-panel>
-    <%-- <h1>Detalhes do Cliente</h1>
-
-    <div>
-     <g:if test="${customer}">
-        <strong>Nome:</strong> ${customer.name}<br/>
-        <strong>Email:</strong> ${customer.email}<br/>
-        <strong>CPF/CNPJ:</strong> ${customer.cpfCnpj}<br/>
-        <strong>Tipo de Pessoa:</strong> ${customer.personType}<br/>
-        <h2>Endereço</h2>
-        <strong>Rua:</strong> ${customer.address.street}<br/>
-        <strong>Número:</strong> ${customer.address.number}<br/>
-        <strong>Bairro:</strong> ${customer.address.province}<br/>
-        <strong>Cidade:</strong> ${customer.address.city}<br/>
-        <strong>Estado:</strong> ${customer.address.state}<br/>
-        <strong>Complemento:</strong> ${customer.address.complement}<br/>
-        <strong>CEP:</strong> ${customer.address.zipCode}<br/>
-     </g:if>
-    </div>
-     <g:link action="edit" id="${customer?.id}" class="btn btn-primary">Editar Cliente</g:link> --%>
+    <asset:javascript src="zipCode.js"/>
 </body>
 </html>
