@@ -103,6 +103,7 @@
                         name="zipCode"
                         value="${payer.address.zipCode}"
                         required="true"
+                        id="zipCode"
                         >
                         </atlas-postal-code>
                     </atlas-col>
@@ -115,6 +116,7 @@
                             placeholder="Informe a rua"
                             value="${payer.address.street}"                  
                             required="true"
+                            id="street"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -127,6 +129,7 @@
                             placeholder="Informe o bairro"
                             value="${payer.address.province}"
                             required="true"
+                            id="province"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -151,6 +154,7 @@
                             placeholder="Informe a cidade"
                             value="${payer.address.city}"
                             required="true"
+                            id="city"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -164,6 +168,7 @@
                             placeholder="Informe o estado"
                             value="${payer.address.state}"
                             required="true"
+                            id="state"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -210,5 +215,6 @@
             </atlas-panel>
         </g:if>
     </atlas-panel>
+    <asset:javascript src="zipCode.js"/>
 </body>
 </html>

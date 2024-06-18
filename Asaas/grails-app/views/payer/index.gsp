@@ -101,7 +101,9 @@
                         <atlas-postal-code 
                         label="CEP"
                         name="zipCode"
-                        required="true">
+                        required="true"
+                        id="zipCode"
+                        >
                         </atlas-postal-code>
                     </atlas-col>
                 </atlas-row>
@@ -112,6 +114,7 @@
                             name="street"
                             placeholder="Informe a rua"
                             required="true"
+                            id="street"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -123,6 +126,7 @@
                             name="province"
                             placeholder="Informe o bairro"
                             required="true"
+                            id="province"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -145,6 +149,7 @@
                             name="city"
                             placeholder="Informe a cidade"
                             required="true"
+                            id="city"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -157,6 +162,7 @@
                             maxlength="2"
                             placeholder="Informe o estado"
                             required="true"
+                            id="state"
                         >
                         </atlas-input>
                     </atlas-col>
@@ -174,6 +180,7 @@
             <atlas-button submit description="Salvar"></atlas-button>
         </atlas-form>
     </atlas-panel>
+    <asset:javascript src="zipCode.js"/>
 </body>
 </html>
 
