@@ -2,6 +2,8 @@ package asaas
 
 import asaas.adapter.PaymentAdapter
 import asaas.Customer
+import asaas.NotificationService
+import asaas.NotificationType
 import asaas.Payer
 import asaas.Payment
 import asaas.PaymentStatus
@@ -19,6 +21,8 @@ import org.springframework.transaction.TransactionStatus
 @GrailsCompileStatic
 @Transactional
 class PaymentService {
+
+    NotificationService notificationService
 
     EmailService emailService
 
@@ -71,7 +75,7 @@ class PaymentService {
 
     public Payment confirmReceivedInCash(Long paymentId, Long customerId) {
         Payment payment = PaymentRepository.query([customerId: customerId, id: paymentId]).get() as Payment
-
+        print payment
         if (!payment) {
             throw new RuntimeException("Cobrança não encontrada")
         }
@@ -82,6 +86,8 @@ class PaymentService {
 
         payment.status = PaymentStatus.RECEIVED_IN_CASH
         payment.save(failOnError: true)
+
+        notificationService.create(NotificationType.PAYMENT_RECEIVED, customerId, payment.id)
 
         emailService.sendStatusChangeEmailToPayer(payment.payer, payment)
         emailService.sendStatusChangeEmailToCustomer(payment.customer, payment)
@@ -105,8 +111,8 @@ class PaymentService {
         payment.save(failOnError: true)
     }
 
-    public void restore(Long paymentId) {
-        Payment payment = PaymentRepository.query([includeDeleted: true, id: paymentId]).get()
+    public void restore(Long paymentId, Long customerId) {
+        Payment payment = PaymentRepository.query([includeDeleted: true, customerId: customerId, id: paymentId]).get()
 
         if (!payment) {
             throw new RuntimeException("Pagamento não encontrado")
@@ -135,6 +141,9 @@ class PaymentService {
                     Payment payment = Payment.get(id)
                     payment.status = PaymentStatus.OVERDUE
                     payment.save(failOnError: true)
+
+                    Long customerId = payment.customer.id
+                    notificationService.create(NotificationType.PAYMENT_OVERDUE, customerId, payment.id)
 
                     emailService.sendStatusChangeEmailToPayer(payment.payer, payment)
                     emailService.sendStatusChangeEmailToCustomer(payment.customer, payment)

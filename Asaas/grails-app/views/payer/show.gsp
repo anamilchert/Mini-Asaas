@@ -1,85 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta name="layout" content="internal"/>
+    <title>Pagador</title>
 </head>
 <body>
-  <g:if test="${ payer }">
-    <h1>Detalhes do Pagador</h1>
     <g:if test="${ flash.message }">
-       <p>${flash.message}</p>
+        <atlas-alert message="${flash.message}" type="success"></atlas-alert>
     </g:if>
-    <g:form controller="payer" action="update" id="${payer.id}">
-        <div>
-            <label for="name">Nome:</label>
-            <g:textField id="nameField" name="name" value="${payer.name}" />
-        </div>
+    <g:if test="${ flash.error }">
+        <atlas-alert message="${flash.error}" type="error"></atlas-alert>
+    </g:if>
+    <atlas-panel>
+        <atlas-form action="${createLink(customer: "payer", action: "update", params: [id: payer.id])}">
+            <atlas-text
+                size="lg"   
+                bold=""
+            >
+                Atualizar dados de ${payer.name.toUpperCase()}
+            </atlas-text>
+            <atlas-grid>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Nome"
+                            name="name"
+                            value="${payer.name}"
+                            required="true"
+                            disabled
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+               
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-masked-input
+                            label="Email"
+                            name="email"
+                            mask-alias="email"
+                            value="${payer.email}"
+                            required="true"
+                            disabled
+                        >
+                        </atlas-masked-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-masked-input
+                            label="Telefone"
+                            name="phone"
+                            mask-alias="phone"
+                            label="Input de Celular"
+                            value="${payer.phone}"
 
-        <div>
-            <label for="email">Email:</label>
-            <g:textField id="emailField" name="email" value="${payer.email}"  />
-        </div>
+                            required="true"
+                        >
+                        </atlas-masked-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-masked-input
+                            label="CPF/CNPJ"
+                            name="cpfCnpj"
+                            mask-alias="cpf-cnpj"
+                            label="Input de CPF/CNPJ"
+                            value="${payer.cpfCnpj}"
+                            required="true"
+                            disabled
+                        >
+                        </atlas-masked-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-masked-input
+                            label="Tipo de pessoa"
+                            name="personType"
+                            value="${payer.personType}"
+                            required="true"
+                            disabled
+                        >
+                        </atlas-masked-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-text
+                            size="lg"
+                            bold=""
+                        >
+                            Endereço de cobrança
+                        </atlas-text>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-postal-code 
+                        label="CEP"
+                        name="zipCode"
+                        value="${payer.address.zipCode}"
+                        required="true"
+                        id="zipCode"
+                        >
+                        </atlas-postal-code>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Rua"
+                            name="street"
+                            placeholder="Informe a rua"
+                            value="${payer.address.street}"                  
+                            required="true"
+                            id="street"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Bairro"
+                            name="province"
+                            placeholder="Informe o bairro"
+                            value="${payer.address.province}"
+                            required="true"
+                            id="province"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Número"
+                            name="number"
+                            placeholder="123"
+                            value="${payer.address.number}"
+                            required="true"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Cidade"
+                            name="city"
+                            placeholder="Informe a cidade"
+                            value="${payer.address.city}"
+                            required="true"
+                            id="city"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Estado"
+                            name="state"
+                            maxlength="2"
+                            placeholder="Informe o estado"
+                            value="${payer.address.state}"
+                            required="true"
+                            id="state"
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+                 <atlas-row>
+                    <atlas-col>
+                        <atlas-input
+                            label="Complemento"
+                            name="complement"
+                            value="${payer.address.complement}"
 
-        <div>
-            <label for="phone">Telefone:</label>
-            <g:textField id="phoneField" name="phone" value="${payer.phone}"  />
-        </div>
+                        >
+                        </atlas-input>
+                    </atlas-col>
+                </atlas-row>
+            </atlas-grid>
+            <g:if test="${ !payer.deleted }">
+                  <atlas-layout gap="2" inline="" wrap="">
+                    <atlas-button submit description="Salvar"></atlas-button>
+                    <atlas-button 
+                        type="outlined" 
+                        size="md" 
+                        theme="danger" 
+                        description="Cancelar"
+                        href="${createLink(controller: "payer", action: "index")}"
+                    >
+                    </atlas-button>
+                </atlas-layout>
+            </g:if>
+        </atlas-form>
 
-        <div>
-            <label for="personType">Tipo de Pessoa:</label>
-            <g:textField id="personTypeField" name="personType" value="${payer.personType}" disabled="${true}" />
-        </div>
-
-        <div>
-            <label for="cpfCnpj">CPF/CNPJ:</label>
-            <g:textField id="cpfCnpjField" name="cpfCnpj" value="${payer.cpfCnpj}" disabled="${true}" />
-        </div>
-
-        <div>
-            <h2>Endereço:</h2>      
-            <div>
-                <label for="street">Rua:</label>
-                <g:textField id="streetField" name="street" value="${payer.address.street}"  />
-            </div>
-            <div>
-                <label for="number">Número:</label>
-                <g:textField id="numberField" name="number" value="${payer.address.number}"  />
-            </div>
-            <div>
-                <label for="state">Estado:</label>
-                <g:textField id="stateField" name="state" value="${payer.address.state}"  />
-            </div>
-            <div>
-                <label for="province">Bairro:</label>
-                <g:textField id="provinceField" name="province" value="${payer.address.province}"  />
-            </div>
-            <div>
-                <label for="city">Cidade:</label>
-                <g:textField id="cityField" name="city" value="${payer.address.city}"  />
-            </div>
-            <div>
-                <label for="zipCode">CEP:</label>
-                <g:textField id="zipCodeField" name="zipCode" value="${payer.address.zipCode}"  />
-            </div>
-            <div>
-                <label for="complement">Complemento:</label>
-                <g:textField id="complementField" name="complement" value="${payer.address.complement}"  />
-            </div>
-        </div>  
-
-        <g:link action="index">Voltar</g:link>
-        <input type="submit" value="Salvar" />
-    </g:form>
-
-    <form action="${createLink(controller: "payer", action: "delete")}" method="post">
-        <input type="hidden" name="id" value="${payer.id}" />
-        <button type="submit">Excluir Pagador</button>
-    </form>
-  </g:if>
-  <g:else>
-     <p>Não foi possível registrar o pagador</p>
-  </g:else>
+         <g:if test="${ payer.deleted}">
+            <atlas-panel header="Restaurar pagador">
+                <atlas-layout>
+                    <atlas-button 
+                        type="outlined" 
+                        size="md" 
+                        theme="danger" 
+                        description="Restaurar"
+                        href="${createLink(controller: "payer", action: "restore", params: [id: payer.id])}"
+                    >
+                    </atlas-button>
+                </atlas-layout>
+            </atlas-panel>
+        </g:if>
+    </atlas-panel>
+    <asset:javascript src="zipCode.js"/>
 </body>
 </html>

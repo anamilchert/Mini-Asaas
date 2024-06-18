@@ -23,8 +23,8 @@ class PaymentController extends BaseController{
     def index() {
         try {
             List<Payer> payerList = PayerRepository.query([customerId: getCurrentCustomerId()]).list()
-            List<PaymentType> paymentTypes = PaymentType.values()
-            return [payerList: payerList, paymentTypes: paymentTypes]
+            List<PaymentType> paymentTypeList = PaymentType.values()
+            return [payerList: payerList, paymentTypeList: paymentTypeList]
         } catch (RuntimeException runtimeException) {
             flash.message = runtimeException.getMessage()
             redirect(uri: "/")
@@ -38,6 +38,7 @@ class PaymentController extends BaseController{
         try {
             PaymentAdapter paymentAdapter = new PaymentAdapter(params, getCurrentCustomerId())
             Payment payment = paymentService.save(paymentAdapter)
+            flash.message = "Cobrança criada com sucesso"
             redirect(action:"show", id:payment.id)
         } catch (ValidationException validationException) {
             String errorsMessage = validationException.errors.allErrors.defaultMessage.join(", ")
@@ -70,14 +71,12 @@ class PaymentController extends BaseController{
 
     def show() {
         try {
-            Payment payment = PaymentRepository.query([customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
-
+            Payment payment = PaymentRepository.query([includeDeleted: true, customerId: getCurrentCustomerId(), id: params.id.toLong()]).get()
+       
             if (!payment) throw new RuntimeException("Cobrança não encontrada")
 
             List<PaymentType> paymentTypeList = PaymentType.values()
             return [payment: payment, paymentTypeList:paymentTypeList]
-
-            redirect(action: "index")
         } catch (RuntimeException runtimeException) {
             flash.erro = runtimeException.getMessage()
             redirect(action: "index")
@@ -104,21 +103,7 @@ class PaymentController extends BaseController{
 
     def list() {
         try {
-            List<Payment> paymentList = PaymentRepository.query([customerId: getCurrentCustomerId()]).list()
-            return [paymentList: paymentList]
-        } catch (RuntimeException runtimeException) {
-            flash.erro = runtimeException.getMessage()
-            redirect(action: "index")
-        } catch (Exception exception) {
-            flash.erro = "Erro ao buscar cobranças. Por favor, contate o suporte"
-            redirect(action: "index")
-        }
-    }
-
-    def fetchAllCustomerAndPayerPayment() {
-        try {
-            List<Payment> paymentList = PaymentRepository
-                .query([customerId: getCurrentCustomerId(), payerId: params.payerId.toLong()]).list()
+            List<Payment> paymentList = PaymentRepository.query([includeDeleted: params.includeDeleted, customerId: getCurrentCustomerId()]).list()
             return [paymentList: paymentList]
         } catch (RuntimeException runtimeException) {
             flash.erro = runtimeException.getMessage()
@@ -138,13 +123,13 @@ class PaymentController extends BaseController{
         } catch (Exception exception) {
             flash.error = "Erro ao cancelar a cobrança. Por favor, contate o time de suporte"
         } finally {
-            redirect(action: "show", id: params.id)
+            redirect(action: "list")
         }
     }
 
     def restore() {
         try {
-            paymentService.restore(params.id.toLong())
+            paymentService.restore(params.id.toLong(), getCurrentCustomerId())
             flash.message = "Cobrança restaurada com sucesso"
         } catch (RuntimeException runtimeException) {
             flash.error = runtimeException.getMessage()
