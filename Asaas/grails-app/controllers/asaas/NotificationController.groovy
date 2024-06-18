@@ -15,7 +15,6 @@ class NotificationController extends BaseController {
     
     def list() {
         List<Notification> notificationList = notificationService.listAllNotifications(getCurrentCustomerId())
-
-        return [notificationList: notificationList]
+        render(template: "/templates/bell", model: [notificationList: notificationList])
     }
 }
