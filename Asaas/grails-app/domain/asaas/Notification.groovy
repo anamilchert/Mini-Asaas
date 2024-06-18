@@ -1,31 +1,24 @@
 package asaas 
 
-import asaas.utils.BaseEntity
-import asaas.PersonType
 import asaas.Customer
+import asaas.Payment
+import asaas.NotificationStatus
+import asaas.NotificationType
+import asaas.utils.BaseEntity
 
-class Payer extends BaseEntity {
+class Notification extends BaseEntity {
 
-    String name
+    NotificationType type
 
-    String email
-
-    String phone
-
-    String cpfCnpj
-
-    PersonType personType
-
-    Address address
+    NotificationStatus status
 
     Customer customer
+    
+    Payment payment
 
     static constraints = {
-        name  blank:false
-        email blank:false, email:true, unique: true
-        phone blank:false, size: 11..11
-        cpfCnpj blank:false, unique:true, size:11..14
-        personType blank: false
+        type validator: { val, obj -> return val in NotificationType.values() }
+        status validator: { val, obj -> return val in NotificationStatus.values() }
     }
 
     static namedQueries = {
@@ -42,7 +35,5 @@ class Payer extends BaseEntity {
                 eq('customer.id', search.customerId.toLong())
             }
         }
-
     }
 }
-
