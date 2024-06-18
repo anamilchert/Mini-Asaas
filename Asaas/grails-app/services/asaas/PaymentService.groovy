@@ -66,7 +66,7 @@ class PaymentService {
 
     public Payment confirmReceivedInCash(Long paymentId, Long customerId) {
         Payment payment = PaymentRepository.query([customerId: customerId, id: paymentId]).get() as Payment
-
+        print payment
         if (!payment) {
             throw new RuntimeException("Cobrança não encontrada")
         }
@@ -99,8 +99,8 @@ class PaymentService {
         payment.save(failOnError: true)
     }
 
-    public void restore(Long paymentId) {
-        Payment payment = PaymentRepository.query([includeDeleted: true, id: paymentId]).get()
+    public void restore(Long paymentId, Long customerId) {
+        Payment payment = PaymentRepository.query([includeDeleted: true, customerId: customerId, id: paymentId]).get()
 
         if (!payment) {
             throw new RuntimeException("Pagamento não encontrado")

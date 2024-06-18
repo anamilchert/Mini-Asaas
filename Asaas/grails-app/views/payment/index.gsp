@@ -1,44 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registrar pagamento</title>
+    <meta name="layout" content="internal"/>
+    <title>Criar cobrança</title>
 </head>
 <body>
-    <g:if test="${ flash.error }">
-       <p>${flash.error}</p>
-    </g:if>
-  <form action="${createLink(controller:"payment", action:"save")}" method="post">
-    <g:select name="payerId" from="${payerList}" optionKey="id" optionValue="name"
-      noSelection="['':'Selecione um pagador']" 
-    />
-    <div>
-      <label for="value">
-        Valor: 
-        <input type="text" name="value" placeholder="100,00">
-      </label>
-    </div>
-
-    <div>
-      <label for="dueDate">
-        Data de vencimento: 
-        <input type="date" name="dueDate" id="">
-      </label>
-    </div>
-
-    <div>
-      <label for="type">
-        Forma de pagamento:
-        <select name="type" id="">
-        <g:each var="type" in="${ paymentTypes }">
-          <option value="${type}">${type.getLabel()}</option>
-        </g:each>
-        </select>
-      </label>
-    </div>
-
-    <button type="submit">Registrar</button>
-  </form>
+    <atlas-panel>
+        <g:if test="${ flash.message }">
+            <atlas-alert message="${flash.message}" type="success"></atlas-alert>
+        </g:if>
+        <g:if test="${ flash.error }">
+            <atlas-alert message="${flash.error}" type="error"></atlas-alert>
+        </g:if>
+        <atlas-form action="${createLink(controller:"payment", action:"save")}">
+            <atlas-grid>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-text
+                            size="lg"
+                            bold=""
+                        >
+                            Criar cobrança
+                        </atlas-text>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-select name="payerId" label="Pagador" placeholder="Selecione um pagador" required>
+                            <g:each var="payer" in="${ payerList }">
+                                <atlas-option value-key label="${payer.name}" value="${payer.id}"></atlas-option>
+                            </g:each>
+                        </atlas-select>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-money 
+                            label="Valor"
+                            name="value"
+                            required
+                        >
+                        </atlas-money>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <atlas-select name="type" label="Método de pagamento" placeholder="Selecione uma método de pagamento" required>
+                            <g:each var="type" in="${ paymentTypeList }">
+                                <atlas-option label="${type.getLabel()}" value="${type}"></atlas-option>
+                            </g:each>
+                        </atlas-select>
+                    </atlas-col>
+                </atlas-row>
+                <atlas-row>
+                    <atlas-col>
+                        <div>
+                            <atlas-datepicker name="dueDate" label="Data de vencimento"  prevent-past-date required></atlas-datepicker>
+                        </div>
+                    </atlas-col>
+                </atlas-row>
+            </atlas-grid>
+            <atlas-button submit description="Salvar"></atlas-button>
+        </atlas-form>
+    </atlas-panel>
 </body>
 </html>
